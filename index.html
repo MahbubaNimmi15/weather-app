@@ -1,18 +1,56 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Weather App</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>Weather App</h1>
+    <div class="weather-container">
+
+        <h1>Weather App</h1>
+
+        <div class="search-box">
+            <input type="text" placeholder="Enter city name" id="cityInput">
+            <button id="searchBtn">Search</button>
+        </div>
+
+        <div class="weather-card">
+
+            <h2 id="cityName">Dhaka</h2>
+
+            <div class="weather-icon">☀️</div>
+
+            <h3 id="temperature">28°C</h3>
+
+            <p id="condition">Sunny</p>
+
+            <div class="weather-info">
+
+                <div>
+                    <span>💧</span>
+                    <p>Humidity</p>
+                    <strong id="humidity">65%</strong>
+                </div>
+
+                <div>
+                    <span>💨</span>
+                    <p>Wind</p>
+                    <strong id="wind">12 km/h</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
+```
