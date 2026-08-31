@@ -1,4 +1,4 @@
-```css
+
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +10,8 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding: 40px 20px;
     background: linear-gradient(135deg, #74ebd5, #9face6);
 }
 
@@ -100,4 +101,4 @@ h1 {
 .weather-info strong {
     font-size: 18px;
 }
-```
+
