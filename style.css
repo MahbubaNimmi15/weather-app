@@ -1,6 +1,6 @@
-/* =========================
+/* ===============================
    RESET
-========================= */
+=============================== */
 
 * {
     margin: 0;
@@ -9,9 +9,9 @@
 }
 
 
-/* =========================
+/* ===============================
    BODY
-========================= */
+=============================== */
 
 body {
     font-family: Arial, sans-serif;
@@ -31,20 +31,20 @@ body {
 }
 
 
-/* =========================
+/* ===============================
    NAVBAR
-========================= */
+=============================== */
 
 .navbar {
-    width: 100%;
     height: 70px;
+    width: 100%;
 
     display: flex;
     align-items: center;
 
     padding: 0 25px;
 
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.92);
 
     box-shadow:
         0 3px 15px rgba(0, 0, 0, 0.12);
@@ -53,23 +53,29 @@ body {
     top: 0;
 
     z-index: 1000;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
 }
 
 
 /* Menu Button */
 
 .menu-btn {
-    width: 45px;
-    height: 45px;
-
     border: none;
-    border-radius: 10px;
-
     background: transparent;
 
     font-size: 28px;
 
     cursor: pointer;
+
+    width: 45px;
+    height: 45px;
+
+    border-radius: 10px;
+
+    transition: 0.2s;
 }
 
 .menu-btn:hover {
@@ -80,29 +86,29 @@ body {
 /* Logo */
 
 .logo {
-    margin-left: 10px;
-
     font-size: 22px;
     font-weight: bold;
+
+    margin-left: 10px;
 }
 
 
 /* Theme Button */
 
 .theme-btn {
+    margin-left: auto;
+
     width: 44px;
     height: 44px;
-
-    margin-left: auto;
 
     border: none;
     border-radius: 50%;
 
-    background: #eef2ff;
+    cursor: pointer;
 
     font-size: 21px;
 
-    cursor: pointer;
+    background: #eef2ff;
 
     transition: 0.2s;
 }
@@ -112,9 +118,9 @@ body {
 }
 
 
-/* =========================
+/* ===============================
    SIDEBAR
-========================= */
+=============================== */
 
 .sidebar {
     position: fixed;
@@ -127,7 +133,7 @@ body {
 
     padding: 25px 18px;
 
-    background: white;
+    background: rgba(255, 255, 255, 0.98);
 
     box-shadow:
         5px 0 25px rgba(0, 0, 0, 0.2);
@@ -151,7 +157,6 @@ body {
 
 .sidebar-header {
     display: flex;
-
     align-items: center;
     justify-content: space-between;
 
@@ -159,6 +164,7 @@ body {
 }
 
 .sidebar-header h2 {
+    color: #333;
     font-size: 21px;
 }
 
@@ -167,16 +173,15 @@ body {
 
 .close-btn {
     border: none;
-
     background: transparent;
 
     font-size: 21px;
 
+    cursor: pointer;
+
     padding: 7px;
 
     border-radius: 7px;
-
-    cursor: pointer;
 }
 
 .close-btn:hover {
@@ -184,9 +189,9 @@ body {
 }
 
 
-/* =========================
-   SIDEBAR SECTION
-========================= */
+/* ===============================
+   SIDEBAR SECTIONS
+=============================== */
 
 .sidebar-section {
     margin-bottom: 30px;
@@ -196,26 +201,27 @@ body {
     font-size: 17px;
 
     margin-bottom: 13px;
+
+    color: #444;
 }
 
 
-/* =========================
-   SIDEBAR ITEM
-========================= */
+/* ===============================
+   SIDEBAR ITEMS
+=============================== */
 
 .sidebar-item {
     display: flex;
-
     align-items: center;
     justify-content: space-between;
 
     gap: 8px;
 
+    background: #f3f5f7;
+
     padding: 10px 12px;
 
     margin-bottom: 8px;
-
-    background: #f3f5f7;
 
     border-radius: 9px;
 
@@ -233,16 +239,15 @@ body {
     flex: 1;
 
     border: none;
-
     background: transparent;
 
     text-align: left;
 
+    cursor: pointer;
+
     font-size: 15px;
 
     color: #333;
-
-    cursor: pointer;
 }
 
 .city-button:hover {
@@ -254,12 +259,13 @@ body {
 
 .delete-btn {
     border: none;
-
     background: transparent;
+
+    cursor: pointer;
 
     font-size: 16px;
 
-    cursor: pointer;
+    padding: 3px;
 }
 
 .delete-btn:hover {
@@ -278,9 +284,9 @@ body {
 }
 
 
-/* =========================
+/* ===============================
    OVERLAY
-========================= */
+=============================== */
 
 .overlay {
     position: fixed;
@@ -296,25 +302,24 @@ body {
     visibility: hidden;
 
     transition:
-        opacity 0.3s ease;
+        opacity 0.3s ease,
+        visibility 0.3s ease;
 }
 
 .overlay.active {
     opacity: 1;
-
     visibility: visible;
 }
 
 
-/* =========================
+/* ===============================
    MAIN CONTENT
-========================= */
+=============================== */
 
 .main-content {
     min-height: calc(100vh - 70px);
 
     display: flex;
-
     justify-content: center;
 
     padding: 45px 20px;
@@ -323,26 +328,27 @@ body {
 
 .weather-container {
     width: 90%;
+
     max-width: 850px;
 
     text-align: center;
 }
 
 
-/* Main Heading */
+/* Heading */
 
 .weather-container > h1 {
     color: white;
 
-    font-size: 36px;
-
     margin-bottom: 20px;
+
+    font-size: 36px;
 }
 
 
-/* =========================
+/* ===============================
    SEARCH
-========================= */
+=============================== */
 
 .search-box {
     display: flex;
@@ -362,9 +368,9 @@ body {
 
     border-radius: 10px;
 
-    outline: none;
-
     font-size: 16px;
+
+    outline: none;
 
     background: white;
 }
@@ -391,9 +397,9 @@ body {
 }
 
 
-/* =========================
+/* ===============================
    LOADING
-========================= */
+=============================== */
 
 #loading {
     display: none;
@@ -406,19 +412,14 @@ body {
 }
 
 
-/* =========================
+/* ===============================
    WEATHER CARD
-========================= */
+=============================== */
 
 .weather-card {
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.92);
 
-    background: rgba(
-        255,
-        255,
-        255,
-        0.92
-    );
+    padding: 30px;
 
     border-radius: 20px;
 
@@ -431,7 +432,7 @@ body {
 }
 
 
-/* City */
+/* City Title */
 
 .city-title {
     display: flex;
@@ -442,6 +443,7 @@ body {
 
     gap: 12px;
 }
+
 
 .weather-card h2 {
     font-size: 28px;
@@ -505,9 +507,9 @@ body {
 }
 
 
-/* =========================
+/* ===============================
    WEATHER INFO
-========================= */
+=============================== */
 
 .weather-info {
     display: flex;
@@ -518,9 +520,9 @@ body {
 
     gap: 15px;
 
-    padding-top: 20px;
-
     border-top: 1px solid #ddd;
+
+    padding-top: 20px;
 }
 
 
@@ -548,9 +550,9 @@ body {
 }
 
 
-/* =========================
+/* ===============================
    FORECAST
-========================= */
+=============================== */
 
 .forecast-section {
     margin-top: 25px;
@@ -575,14 +577,9 @@ body {
 
 
 .forecast-card {
-    padding: 18px 10px;
+    background: rgba(255, 255, 255, 0.92);
 
-    background: rgba(
-        255,
-        255,
-        255,
-        0.92
-    );
+    padding: 18px 10px;
 
     border-radius: 15px;
 
@@ -621,9 +618,9 @@ body {
 }
 
 
-/* =========================
+/* ===============================
    DARK MODE
-========================= */
+=============================== */
 
 body.dark-mode {
     background: linear-gradient(
@@ -641,7 +638,7 @@ body.dark-mode {
 body.dark-mode .navbar {
     background: #111827;
 
-    color: white;
+    color: #f9fafb;
 }
 
 
@@ -656,7 +653,7 @@ body.dark-mode .menu-btn:hover {
 }
 
 
-/* Theme Button */
+/* Theme */
 
 body.dark-mode .theme-btn {
     background: #374151;
@@ -684,19 +681,6 @@ body.dark-mode .sidebar-section h3 {
 }
 
 
-/* Close */
-
-body.dark-mode .close-btn {
-    color: white;
-}
-
-body.dark-mode .close-btn:hover {
-    background: #374151;
-}
-
-
-/* Sidebar Items */
-
 body.dark-mode .sidebar-item {
     background: #1f2937;
 }
@@ -709,6 +693,16 @@ body.dark-mode .city-button {
 
 body.dark-mode .city-button:hover {
     color: #93c5fd;
+}
+
+
+body.dark-mode .close-btn {
+    color: white;
+}
+
+
+body.dark-mode .close-btn:hover {
+    background: #374151;
 }
 
 
@@ -780,9 +774,9 @@ body.dark-mode .forecast-condition {
 }
 
 
-/* =========================
+/* ===============================
    MOBILE
-========================= */
+=============================== */
 
 @media (max-width: 800px) {
 
