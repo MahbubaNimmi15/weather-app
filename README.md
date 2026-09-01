@@ -20,22 +20,23 @@ A responsive Weather App built with HTML, CSS, and JavaScript using the Open-Met
 * 💾 Saved theme preferences
 * 📱 Mobile-friendly responsive design
 * 📂 Responsive sidebar layout
+* 📊 Temperature graph
 
 ## 🛠️ Technologies Used
 
-* **HTML5**
-* **CSS3**
-* **JavaScript**
-* **Open-Meteo API**
-* **LocalStorage**
-* **Git & GitHub**
+* HTML5
+* CSS3
+* JavaScript
+* Open-Meteo API
+* LocalStorage
+* Git & GitHub
 
 ## 📦 Dependencies
 
 This project does not require any external npm packages.
 
 * **Open-Meteo API** — provides weather and forecast data
-* **Browser LocalStorage** — stores favorite cities, search history, and theme preferences
+* **Browser LocalStorage** — stores favorites, search history, and theme preferences
 
 ## ⚙️ How to Run
 
