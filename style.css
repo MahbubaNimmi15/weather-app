@@ -43,12 +43,14 @@ body {
 
     padding: 0 25px;
 
-    background: rgba(15, 23, 42, 0.25);
+    background:
+        rgba(15, 23, 42, 0.25);
 
     backdrop-filter: blur(12px);
 
     border-bottom:
-        1px solid rgba(255, 255, 255, 0.2);
+        1px solid
+        rgba(255, 255, 255, 0.2);
 
     position: sticky;
     top: 0;
@@ -110,7 +112,8 @@ body {
         );
 
     box-shadow:
-        5px 0 25px rgba(0, 0, 0, 0.3);
+        5px 0 25px
+        rgba(0, 0, 0, 0.3);
 
     transition: left 0.3s ease;
 
@@ -281,7 +284,8 @@ body {
     border-radius: 12px;
 
     box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.2);
+        0 8px 25px
+        rgba(0, 0, 0, 0.2);
 
     overflow: visible;
 }
@@ -324,7 +328,7 @@ body {
 
 
 /* =====================================================
-   CLEAR BUTTON
+   CLEAR
 ===================================================== */
 
 .clear-search-btn {
@@ -407,7 +411,7 @@ body {
 
 
 /* =====================================================
-   SEARCH SUGGESTIONS
+   SUGGESTIONS
 ===================================================== */
 
 .search-suggestions {
@@ -464,11 +468,6 @@ body {
 }
 
 
-.search-suggestion:last-child {
-    border-bottom: none;
-}
-
-
 .search-suggestion:hover {
     background:
         linear-gradient(
@@ -484,10 +483,6 @@ body {
 }
 
 
-/* =====================================================
-   SUGGESTION LOADING / EMPTY
-===================================================== */
-
 .suggestion-loading,
 .no-suggestion {
     padding: 15px;
@@ -501,7 +496,7 @@ body {
 
 
 /* =====================================================
-   LOCATION BUTTON
+   LOCATION
 ===================================================== */
 
 .location-btn {
@@ -733,19 +728,168 @@ body {
 
 
 /* =====================================================
-   HOURLY FORECAST
+   GRAPH
+===================================================== */
+
+.graph-section {
+    margin-top: 35px;
+}
+
+
+.graph-section h2 {
+    margin-bottom: 20px;
+}
+
+
+.graph-card {
+    padding: 20px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.2);
+
+    box-shadow:
+        0 12px 35px
+        rgba(0, 0, 0, 0.15);
+}
+
+
+#temperatureChart {
+    width: 100%;
+
+    height: 300px;
+
+    display: block;
+}
+
+
+/* =====================================================
+   AIR QUALITY
+===================================================== */
+
+.air-quality-section {
+    margin-top: 35px;
+}
+
+
+.air-quality-section h2 {
+    margin-bottom: 20px;
+}
+
+
+.air-quality-card {
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.2);
+
+    box-shadow:
+        0 12px 35px
+        rgba(0, 0, 0, 0.15);
+}
+
+
+.aqi-main {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 20px;
+}
+
+
+.aqi-icon {
+    font-size: 55px;
+}
+
+
+.aqi-label {
+    font-size: 14px;
+
+    opacity: 0.85;
+}
+
+
+#aqiValue {
+    font-size: 38px;
+
+    margin: 5px 0;
+}
+
+
+#aqiStatus {
+    font-size: 16px;
+}
+
+
+.aqi-details {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+
+.aqi-box {
+    padding: 18px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+}
+
+
+.aqi-box span {
+    font-size: 25px;
+}
+
+
+.aqi-box p {
+    margin: 8px 0;
+
+    font-size: 14px;
+}
+
+
+.aqi-box strong {
+    font-size: 17px;
+}
+
+
+/* =====================================================
+   HOURLY
 ===================================================== */
 
 .hourly-section,
-.forecast-section,
-.temperature-graph-section {
+.forecast-section {
     margin-top: 35px;
 }
 
 
 .hourly-section h2,
-.forecast-section h2,
-.temperature-graph-section h2 {
+.forecast-section h2 {
     margin-bottom: 20px;
 }
 
@@ -821,159 +965,6 @@ body {
 
 
 /* =====================================================
-   📊 TEMPERATURE GRAPH
-===================================================== */
-
-.temperature-graph-card {
-    padding: 25px;
-
-    border-radius: 22px;
-
-    background:
-        rgba(255, 255, 255, 0.15);
-
-    backdrop-filter: blur(15px);
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.22);
-
-    box-shadow:
-        0 15px 40px
-        rgba(0, 0, 0, 0.12);
-}
-
-
-.graph-header {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 15px;
-
-    text-align: left;
-}
-
-
-.graph-header strong {
-    font-size: 18px;
-}
-
-
-.graph-header p {
-    margin-top: 5px;
-
-    font-size: 13px;
-
-    opacity: 0.8;
-}
-
-
-.graph-unit {
-    padding: 8px 12px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255, 255, 255, 0.18);
-
-    font-weight: bold;
-}
-
-
-.graph-wrapper {
-    width: 100%;
-
-    overflow-x: auto;
-}
-
-
-.temperature-graph {
-    width: 100%;
-
-    min-width: 700px;
-
-    height: 330px;
-
-    overflow: visible;
-}
-
-
-.graph-grid-line {
-    stroke: rgba(255, 255, 255, 0.18);
-
-    stroke-width: 1;
-
-    stroke-dasharray: 5 5;
-}
-
-
-.graph-grid-label {
-    fill: rgba(255, 255, 255, 0.8);
-
-    font-size: 12px;
-
-    text-anchor: end;
-}
-
-
-.graph-line {
-    fill: none;
-
-    stroke: #ffffff;
-
-    stroke-width: 4;
-
-    stroke-linecap: round;
-
-    stroke-linejoin: round;
-}
-
-
-.graph-area {
-    fill: url(#graphGradient);
-
-    opacity: 0.8;
-}
-
-
-.graph-point {
-    fill: #ffffff;
-
-    stroke: #2563eb;
-
-    stroke-width: 4;
-}
-
-
-.graph-point:hover {
-    r: 8;
-}
-
-
-.graph-temp-label {
-    fill: #ffffff;
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-    text-anchor: middle;
-}
-
-
-.graph-time-label {
-    fill: rgba(255, 255, 255, 0.9);
-
-    font-size: 12px;
-
-    text-anchor: middle;
-}
-
-
-/* =====================================================
    5 DAY FORECAST
 ===================================================== */
 
@@ -1032,11 +1023,6 @@ body {
 }
 
 
-.forecast-empty {
-    padding: 20px;
-}
-
-
 /* =====================================================
    DARK MODE
 ===================================================== */
@@ -1077,26 +1063,6 @@ body.dark-mode .search-wrapper input::placeholder {
 }
 
 
-body.dark-mode .search-btn {
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #7c3aed
-        );
-}
-
-
-body.dark-mode .clear-search-btn {
-    color: #cbd5e1;
-}
-
-
-body.dark-mode .clear-search-btn:hover {
-    color: #f87171;
-}
-
-
 body.dark-mode .search-suggestions {
     background: #1e293b;
 }
@@ -1132,7 +1098,9 @@ body.dark-mode .weather-info > div,
 body.dark-mode .detail-box,
 body.dark-mode .hourly-card,
 body.dark-mode .forecast-card,
-body.dark-mode .temperature-graph-card {
+body.dark-mode .graph-card,
+body.dark-mode .air-quality-card,
+body.dark-mode .aqi-box {
     background:
         rgba(30, 41, 59, 0.65);
 }
@@ -1149,8 +1117,10 @@ body.dark-mode .sidebar {
 }
 
 
-body.dark-mode .graph-grid-line {
-    stroke: rgba(255, 255, 255, 0.12);
+body.dark-mode #unitBtn {
+    background: #e2e8f0;
+
+    color: #0f172a;
 }
 
 
@@ -1180,11 +1150,6 @@ body.dark-mode .graph-grid-line {
 
     #temperature {
         font-size: 42px;
-    }
-
-
-    .temperature-graph-card {
-        padding: 18px;
     }
 
 }
@@ -1229,6 +1194,11 @@ body.dark-mode .graph-grid-line {
     }
 
 
+    .aqi-details {
+        grid-template-columns: 1fr;
+    }
+
+
     .sidebar {
         width: 290px;
     }
@@ -1239,8 +1209,8 @@ body.dark-mode .graph-grid-line {
     }
 
 
-    .temperature-graph {
-        min-width: 650px;
+    #temperatureChart {
+        height: 240px;
     }
 
 }

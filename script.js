@@ -100,31 +100,20 @@ const overlay =
 const themeBtn =
     document.getElementById("themeBtn");
 
+const temperatureChart =
+    document.getElementById("temperatureChart");
 
-/* =====================================================
-   GRAPH ELEMENTS
-===================================================== */
+const aqiValue =
+    document.getElementById("aqiValue");
 
-const temperatureGraph =
-    document.getElementById("temperatureGraph");
+const aqiStatus =
+    document.getElementById("aqiStatus");
 
-const graphGrid =
-    document.getElementById("graphGrid");
+const pm25 =
+    document.getElementById("pm25");
 
-const graphArea =
-    document.getElementById("graphArea");
-
-const graphLine =
-    document.getElementById("graphLine");
-
-const graphPoints =
-    document.getElementById("graphPoints");
-
-const graphLabels =
-    document.getElementById("graphLabels");
-
-const graphCurrentUnit =
-    document.getElementById("graphCurrentUnit");
+const pm10 =
+    document.getElementById("pm10");
 
 
 /* =====================================================
@@ -132,6 +121,8 @@ const graphCurrentUnit =
 ===================================================== */
 
 let currentWeatherData = null;
+
+let currentAirQualityData = null;
 
 let currentCity = "Dhaka";
 
@@ -257,9 +248,13 @@ function getWeatherInfo(code) {
 
 
     return weather[code] || {
+
         icon: "🌤️",
+
         text: "Unknown"
+
     };
+
 }
 
 
@@ -270,7 +265,9 @@ function getWeatherInfo(code) {
 function formatTime(timeString) {
 
     if (!timeString) {
+
         return "--:--";
+
     }
 
 
@@ -318,6 +315,7 @@ function formatDate(dateString) {
 function getWindDirection(degrees) {
 
     const directions = [
+
         "N",
         "NE",
         "E",
@@ -326,6 +324,7 @@ function getWindDirection(degrees) {
         "SW",
         "W",
         "NW"
+
     ];
 
 
@@ -339,7 +338,7 @@ function getWindDirection(degrees) {
 
 
 /* =====================================================
-   SHOW / HIDE LOADING
+   LOADING
 ===================================================== */
 
 function showLoading() {
@@ -518,6 +517,7 @@ async function loadWeather(
             "https://api.open-meteo.com/v1/forecast" +
             "?latitude=" + latitude +
             "&longitude=" + longitude +
+
             "&current=" +
             "temperature_2m," +
             "relative_humidity_2m," +
@@ -530,12 +530,14 @@ async function loadWeather(
             "wind_speed_10m," +
             "wind_direction_10m," +
             "wind_gusts_10m" +
+
             "&hourly=" +
             "temperature_2m," +
             "weather_code," +
             "precipitation_probability," +
             "visibility," +
             "wind_speed_10m" +
+
             "&daily=" +
             "weather_code," +
             "temperature_2m_max," +
@@ -543,7 +545,9 @@ async function loadWeather(
             "sunrise," +
             "sunset," +
             "precipitation_probability_max" +
+
             "&forecast_days=6" +
+
             "&timezone=auto";
 
 
@@ -564,12 +568,9 @@ async function loadWeather(
             await response.json();
 
 
-        currentWeatherData =
-            data;
+        currentWeatherData = data;
 
-
-        currentCity =
-            name;
+        currentCity = name;
 
 
         displayCurrentWeather(
@@ -584,20 +585,23 @@ async function loadWeather(
         );
 
 
-        displayTemperatureGraph(
-            data
-        );
-
-
         displayFiveDayForecast(
             data
         );
 
 
-        addToHistory(
-            name
+        drawTemperatureGraph(
+            data
         );
 
+
+        await loadAirQuality(
+            latitude,
+            longitude
+        );
+
+
+        addToHistory(name);
 
         updateFavoriteButton();
 
@@ -721,13 +725,11 @@ function displayCurrentWeather(
 
     if (
         data.daily &&
-        data.daily
-            .precipitation_probability_max
+        data.daily.precipitation_probability_max
     ) {
 
         rainProbability.textContent =
-            `${data.daily
-                .precipitation_probability_max[0]}%`;
+            `${data.daily.precipitation_probability_max[0]}%`;
 
     }
 
@@ -771,7 +773,9 @@ function formatTemperature(
 
 
     const fahrenheit =
-        (celsius * 9 / 5) + 32;
+        (
+            celsius * 9 / 5
+        ) + 32;
 
 
     return `${Math.round(
@@ -790,9 +794,7 @@ function updateTemperatureDisplay(
 ) {
 
     temperature.textContent =
-        formatTemperature(
-            celsius
-        );
+        formatTemperature(celsius);
 
 
     unitBtn.textContent =
@@ -837,12 +839,12 @@ unitBtn.addEventListener(
             );
 
 
-            displayTemperatureGraph(
+            displayFiveDayForecast(
                 currentWeatherData
             );
 
 
-            displayFiveDayForecast(
+            drawTemperatureGraph(
                 currentWeatherData
             );
 
@@ -853,7 +855,7 @@ unitBtn.addEventListener(
 
 
 /* =====================================================
-   UPDATE EXTRA TEMPERATURE
+   EXTRA TEMPERATURE
 ===================================================== */
 
 function updateExtraTemperature() {
@@ -900,7 +902,7 @@ function displayHourlyWeather(
     let startIndex = 0;
 
 
-    const currentTime =
+    const now =
         new Date();
 
 
@@ -910,14 +912,14 @@ function displayHourlyWeather(
         i++
     ) {
 
-        const time =
+        const forecastTime =
             new Date(
                 hourly.time[i]
             );
 
 
         if (
-            time >= currentTime
+            forecastTime >= now
         ) {
 
             startIndex = i;
@@ -966,8 +968,7 @@ function displayHourlyWeather(
 
         const rain =
             hourly.precipitation_probability
-                ? hourly
-                    .precipitation_probability[i]
+                ? hourly.precipitation_probability[i]
                 : 0;
 
 
@@ -999,497 +1000,6 @@ function displayHourlyWeather(
         );
 
     }
-
-}
-
-
-/* =====================================================
-   📊 TEMPERATURE GRAPH
-===================================================== */
-
-function displayTemperatureGraph(
-    data
-) {
-
-    if (
-        !data ||
-        !data.hourly ||
-        !temperatureGraph
-    ) {
-
-        return;
-
-    }
-
-
-    const hourly =
-        data.hourly;
-
-
-    let startIndex = 0;
-
-
-    const now =
-        new Date();
-
-
-    for (
-        let i = 0;
-        i < hourly.time.length;
-        i++
-    ) {
-
-        const time =
-            new Date(
-                hourly.time[i]
-            );
-
-
-        if (
-            time >= now
-        ) {
-
-            startIndex = i;
-
-            break;
-
-        }
-
-    }
-
-
-    const endIndex =
-        Math.min(
-            startIndex + 12,
-            hourly.time.length
-        );
-
-
-    const temperatures =
-        hourly.temperature_2m
-            .slice(
-                startIndex,
-                endIndex
-            );
-
-
-    const times =
-        hourly.time
-            .slice(
-                startIndex,
-                endIndex
-            );
-
-
-    if (
-        temperatures.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    const width = 900;
-
-    const height = 330;
-
-    const paddingLeft = 55;
-
-    const paddingRight = 25;
-
-    const paddingTop = 35;
-
-    const paddingBottom = 50;
-
-
-    const graphWidth =
-        width -
-        paddingLeft -
-        paddingRight;
-
-
-    const graphHeight =
-        height -
-        paddingTop -
-        paddingBottom;
-
-
-    const convertedTemperatures =
-        temperatures.map(
-            temp => {
-
-                if (
-                    currentUnit === "F"
-                ) {
-
-                    return (
-                        temp * 9 / 5
-                    ) + 32;
-
-                }
-
-                return temp;
-
-            }
-        );
-
-
-    let minTemp =
-        Math.floor(
-            Math.min(
-                ...convertedTemperatures
-            ) - 2
-        );
-
-
-    let maxTemp =
-        Math.ceil(
-            Math.max(
-                ...convertedTemperatures
-            ) + 2
-        );
-
-
-    if (
-        minTemp === maxTemp
-    ) {
-
-        minTemp -= 2;
-
-        maxTemp += 2;
-
-    }
-
-
-    const tempRange =
-        maxTemp - minTemp;
-
-
-    const points =
-        convertedTemperatures.map(
-            (temp, index) => {
-
-                const x =
-                    paddingLeft +
-                    (
-                        index /
-                        Math.max(
-                            convertedTemperatures.length - 1,
-                            1
-                        )
-                    ) *
-                    graphWidth;
-
-
-                const y =
-                    paddingTop +
-                    (
-                        (maxTemp - temp) /
-                        tempRange
-                    ) *
-                    graphHeight;
-
-
-                return {
-                    x,
-                    y,
-                    temp,
-                    time: times[index]
-                };
-
-            }
-        );
-
-
-    /* =================================================
-       CLEAR OLD GRAPH
-    ================================================= */
-
-    graphGrid.innerHTML = "";
-
-    graphPoints.innerHTML = "";
-
-    graphLabels.innerHTML = "";
-
-
-    /* =================================================
-       GRID
-    ================================================= */
-
-    const gridCount = 5;
-
-
-    for (
-        let i = 0;
-        i <= gridCount;
-        i++
-    ) {
-
-        const y =
-            paddingTop +
-            (
-                i / gridCount
-            ) *
-            graphHeight;
-
-
-        const value =
-            maxTemp -
-            (
-                i / gridCount
-            ) *
-            tempRange;
-
-
-        const line =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "line"
-            );
-
-
-        line.setAttribute(
-            "x1",
-            paddingLeft
-        );
-
-
-        line.setAttribute(
-            "y1",
-            y
-        );
-
-
-        line.setAttribute(
-            "x2",
-            width - paddingRight
-        );
-
-
-        line.setAttribute(
-            "y2",
-            y
-        );
-
-
-        line.classList.add(
-            "graph-grid-line"
-        );
-
-
-        graphGrid.appendChild(
-            line
-        );
-
-
-        const label =
-            document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "text"
-            );
-
-
-        label.setAttribute(
-            "x",
-            paddingLeft - 10
-        );
-
-
-        label.setAttribute(
-            "y",
-            y + 4
-        );
-
-
-        label.classList.add(
-            "graph-grid-label"
-        );
-
-
-        label.textContent =
-            `${Math.round(
-                value
-            )}°`;
-
-
-        graphGrid.appendChild(
-            label
-        );
-
-    }
-
-
-    /* =================================================
-       LINE POINTS
-    ================================================= */
-
-    const pointString =
-        points
-            .map(
-                point =>
-                    `${point.x},${point.y}`
-            )
-            .join(" ");
-
-
-    graphLine.setAttribute(
-        "points",
-        pointString
-    );
-
-
-    /* =================================================
-       GRAPH AREA
-    ================================================= */
-
-    const firstPoint =
-        points[0];
-
-
-    const lastPoint =
-        points[points.length - 1];
-
-
-    const areaPath =
-        `M ${firstPoint.x} ${firstPoint.y}
-         L ${lastPoint.x} ${lastPoint.y}
-         L ${lastPoint.x} ${height - paddingBottom}
-         L ${firstPoint.x} ${height - paddingBottom}
-         Z`;
-
-
-    graphArea.setAttribute(
-        "d",
-        areaPath
-    );
-
-
-    /* =================================================
-       POINTS + LABELS
-    ================================================= */
-
-    points.forEach(
-        (point, index) => {
-
-            const circle =
-                document.createElementNS(
-                    "http://www.w3.org/2000/svg",
-                    "circle"
-                );
-
-
-            circle.setAttribute(
-                "cx",
-                point.x
-            );
-
-
-            circle.setAttribute(
-                "cy",
-                point.y
-            );
-
-
-            circle.setAttribute(
-                "r",
-                6
-            );
-
-
-            circle.classList.add(
-                "graph-point"
-            );
-
-
-            circle.setAttribute(
-                "title",
-                `${Math.round(
-                    point.temp
-                )}°${currentUnit}`
-            );
-
-
-            graphPoints.appendChild(
-                circle
-            );
-
-
-            const tempLabel =
-                document.createElementNS(
-                    "http://www.w3.org/2000/svg",
-                    "text"
-                );
-
-
-            tempLabel.setAttribute(
-                "x",
-                point.x
-            );
-
-
-            tempLabel.setAttribute(
-                "y",
-                point.y - 14
-            );
-
-
-            tempLabel.classList.add(
-                "graph-temp-label"
-            );
-
-
-            tempLabel.textContent =
-                `${Math.round(
-                    point.temp
-                )}°`;
-
-
-            graphLabels.appendChild(
-                tempLabel
-            );
-
-
-            const timeLabel =
-                document.createElementNS(
-                    "http://www.w3.org/2000/svg",
-                    "text"
-                );
-
-
-            timeLabel.setAttribute(
-                "x",
-                point.x
-            );
-
-
-            timeLabel.setAttribute(
-                "y",
-                height - 20
-            );
-
-
-            timeLabel.classList.add(
-                "graph-time-label"
-            );
-
-
-            timeLabel.textContent =
-                formatTime(
-                    point.time
-                );
-
-
-            graphLabels.appendChild(
-                timeLabel
-            );
-
-        }
-    );
-
-
-    graphCurrentUnit.textContent =
-        `°${currentUnit}`;
 
 }
 
@@ -1558,10 +1068,8 @@ function displayFiveDayForecast(
 
 
         const rain =
-            daily
-                .precipitation_probability_max
-                ? daily
-                    .precipitation_probability_max[i]
+            daily.precipitation_probability_max
+                ? daily.precipitation_probability_max[i]
                 : 0;
 
 
@@ -1602,6 +1110,580 @@ function displayFiveDayForecast(
 
 
 /* =====================================================
+   🌡️ TEMPERATURE GRAPH
+===================================================== */
+
+function drawTemperatureGraph(
+    data
+) {
+
+    if (
+        !temperatureChart ||
+        !data.hourly
+    ) {
+
+        return;
+
+    }
+
+
+    const ctx =
+        temperatureChart.getContext(
+            "2d"
+        );
+
+
+    const rect =
+        temperatureChart.getBoundingClientRect();
+
+
+    const width =
+        rect.width;
+
+
+    const height =
+        rect.height;
+
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+
+    temperatureChart.width =
+        width * dpr;
+
+
+    temperatureChart.height =
+        height * dpr;
+
+
+    ctx.scale(
+        dpr,
+        dpr
+    );
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    const hourly =
+        data.hourly;
+
+
+    const startIndex =
+        findCurrentHourIndex(
+            hourly.time
+        );
+
+
+    const count = 12;
+
+
+    const endIndex =
+        Math.min(
+            startIndex + count,
+            hourly.time.length
+        );
+
+
+    const temperatures =
+        hourly.temperature_2m.slice(
+            startIndex,
+            endIndex
+        );
+
+
+    const times =
+        hourly.time.slice(
+            startIndex,
+            endIndex
+        );
+
+
+    if (
+        temperatures.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const padding = 45;
+
+
+    const graphWidth =
+        width - padding * 2;
+
+
+    const graphHeight =
+        height - padding * 2;
+
+
+    const minTemp =
+        Math.min(
+            ...temperatures
+        ) - 2;
+
+
+    const maxTemp =
+        Math.max(
+            ...temperatures
+        ) + 2;
+
+
+    /* GRID */
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.20)";
+
+    ctx.lineWidth = 1;
+
+
+    for (
+        let i = 0;
+        i <= 4;
+        i++
+    ) {
+
+        const y =
+            padding +
+            (
+                graphHeight / 4
+            ) * i;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            padding,
+            y
+        );
+
+        ctx.lineTo(
+            width - padding,
+            y
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    /* TEMPERATURE LINE */
+
+    ctx.beginPath();
+
+
+    temperatures.forEach(
+        (temp, index) => {
+
+            const x =
+                padding +
+                (
+                    index /
+                    Math.max(
+                        temperatures.length - 1,
+                        1
+                    )
+                ) *
+                graphWidth;
+
+
+            const y =
+                padding +
+                (
+                    1 -
+                    (
+                        temp - minTemp
+                    ) /
+                    (
+                        maxTemp - minTemp
+                    )
+                ) *
+                graphHeight;
+
+
+            if (index === 0) {
+
+                ctx.moveTo(
+                    x,
+                    y
+                );
+
+            } else {
+
+                ctx.lineTo(
+                    x,
+                    y
+                );
+
+            }
+
+        }
+    );
+
+
+    ctx.strokeStyle =
+        "#ffffff";
+
+    ctx.lineWidth = 3;
+
+    ctx.stroke();
+
+
+    /* POINTS */
+
+    temperatures.forEach(
+        (temp, index) => {
+
+            const x =
+                padding +
+                (
+                    index /
+                    Math.max(
+                        temperatures.length - 1,
+                        1
+                    )
+                ) *
+                graphWidth;
+
+
+            const y =
+                padding +
+                (
+                    1 -
+                    (
+                        temp - minTemp
+                    ) /
+                    (
+                        maxTemp - minTemp
+                    )
+                ) *
+                graphHeight;
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                5,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fillStyle =
+                "#ffffff";
+
+            ctx.fill();
+
+
+            /* TEMP TEXT */
+
+            ctx.font =
+                "12px Arial";
+
+            ctx.fillStyle =
+                "#ffffff";
+
+            ctx.textAlign =
+                "center";
+
+
+            ctx.fillText(
+                formatTemperature(
+                    temp
+                ),
+                x,
+                y - 10
+            );
+
+
+            /* TIME */
+
+            ctx.font =
+                "11px Arial";
+
+
+            ctx.fillText(
+                formatTime(
+                    times[index]
+                ),
+                x,
+                height - 15
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FIND CURRENT HOUR
+===================================================== */
+
+function findCurrentHourIndex(
+    times
+) {
+
+    const now =
+        new Date();
+
+
+    for (
+        let i = 0;
+        i < times.length;
+        i++
+    ) {
+
+        if (
+            new Date(times[i]) >= now
+        ) {
+
+            return i;
+
+        }
+
+    }
+
+
+    return 0;
+
+}
+
+
+/* =====================================================
+   WINDOW RESIZE GRAPH
+===================================================== */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        if (
+            currentWeatherData
+        ) {
+
+            drawTemperatureGraph(
+                currentWeatherData
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   🌬️ AIR QUALITY
+===================================================== */
+
+async function loadAirQuality(
+    latitude,
+    longitude
+) {
+
+    try {
+
+        const url =
+            "https://air-quality-api.open-meteo.com/v1/air-quality" +
+
+            "?latitude=" +
+            latitude +
+
+            "&longitude=" +
+            longitude +
+
+            "&current=" +
+            "european_aqi," +
+            "pm10," +
+            "pm2_5" +
+
+            "&timezone=auto";
+
+
+        const response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Air quality request failed"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        currentAirQualityData =
+            data;
+
+
+        displayAirQuality(
+            data
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        aqiValue.textContent =
+            "--";
+
+
+        aqiStatus.textContent =
+            "Unavailable";
+
+
+        pm25.textContent =
+            "-- µg/m³";
+
+
+        pm10.textContent =
+            "-- µg/m³";
+
+    }
+
+}
+
+
+/* =====================================================
+   DISPLAY AIR QUALITY
+===================================================== */
+
+function displayAirQuality(
+    data
+) {
+
+    if (
+        !data.current
+    ) {
+
+        return;
+
+    }
+
+
+    const current =
+        data.current;
+
+
+    const aqi =
+        current.european_aqi;
+
+
+    const pm25Value =
+        current.pm2_5;
+
+
+    const pm10Value =
+        current.pm10;
+
+
+    aqiValue.textContent =
+        aqi !== undefined &&
+        aqi !== null
+            ? Math.round(aqi)
+            : "--";
+
+
+    pm25.textContent =
+        pm25Value !== undefined &&
+        pm25Value !== null
+            ? `${pm25Value.toFixed(1)} µg/m³`
+            : "-- µg/m³";
+
+
+    pm10.textContent =
+        pm10Value !== undefined &&
+        pm10Value !== null
+            ? `${pm10Value.toFixed(1)} µg/m³`
+            : "-- µg/m³";
+
+
+    aqiStatus.textContent =
+        getAQIStatus(
+            aqi
+        );
+
+}
+
+
+/* =====================================================
+   AQI STATUS
+===================================================== */
+
+function getAQIStatus(
+    aqi
+) {
+
+    if (
+        aqi === undefined ||
+        aqi === null
+    ) {
+
+        return "Unavailable";
+
+    }
+
+
+    if (aqi <= 20) {
+
+        return "🟢 Good";
+
+    }
+
+
+    if (aqi <= 40) {
+
+        return "🟡 Fair";
+
+    }
+
+
+    if (aqi <= 60) {
+
+        return "🟠 Moderate";
+
+    }
+
+
+    if (aqi <= 80) {
+
+        return "🔴 Poor";
+
+    }
+
+
+    if (aqi <= 100) {
+
+        return "🟣 Very Poor";
+
+    }
+
+
+    return "⚠️ Extremely Poor";
+
+}
+
+
+/* =====================================================
    SEARCH BUTTON
 ===================================================== */
 
@@ -1628,12 +1710,12 @@ searchBtn.addEventListener(
 
 
 /* =====================================================
-   ENTER KEY SEARCH
+   ENTER SEARCH
 ===================================================== */
 
 cityInput.addEventListener(
     "keydown",
-    event => {
+    (event) => {
 
         if (
             event.key === "Enter"
@@ -1725,9 +1807,11 @@ async function getCitySuggestions(
 ) {
 
     searchSuggestions.innerHTML = `
+
         <div class="suggestion-loading">
             🔎 Searching cities...
         </div>
+
     `;
 
 
@@ -1776,9 +1860,11 @@ async function getCitySuggestions(
         ) {
 
             searchSuggestions.innerHTML = `
+
                 <div class="no-suggestion">
                     ❌ No city found
                 </div>
+
             `;
 
             return;
@@ -1787,7 +1873,7 @@ async function getCitySuggestions(
 
 
         data.results.forEach(
-            location => {
+            (location) => {
 
                 const item =
                     document.createElement(
@@ -1847,15 +1933,13 @@ async function getCitySuggestions(
                         updateClearButton();
 
 
-                        searchSuggestions
-                            .innerHTML =
+                        searchSuggestions.innerHTML =
                             "";
 
 
-                        searchSuggestions
-                            .classList.remove(
-                                "show"
-                            );
+                        searchSuggestions.classList.remove(
+                            "show"
+                        );
 
 
                         await loadWeather(
@@ -1869,10 +1953,9 @@ async function getCitySuggestions(
                 );
 
 
-                searchSuggestions
-                    .appendChild(
-                        item
-                    );
+                searchSuggestions.appendChild(
+                    item
+                );
 
             }
         );
@@ -1886,9 +1969,11 @@ async function getCitySuggestions(
 
 
         searchSuggestions.innerHTML = `
+
             <div class="no-suggestion">
                 ⚠️ Unable to load suggestions
             </div>
+
         `;
 
     }
@@ -1897,12 +1982,12 @@ async function getCitySuggestions(
 
 
 /* =====================================================
-   CLICK OUTSIDE SUGGESTIONS
+   CLICK OUTSIDE
 ===================================================== */
 
 document.addEventListener(
     "click",
-    event => {
+    (event) => {
 
         if (
             !event.target.closest(
@@ -1910,10 +1995,9 @@ document.addEventListener(
             )
         ) {
 
-            searchSuggestions
-                .classList.remove(
-                    "show"
-                );
+            searchSuggestions.classList.remove(
+                "show"
+            );
 
         }
 
@@ -1946,7 +2030,7 @@ locationBtn.addEventListener(
 
 
         navigator.geolocation.getCurrentPosition(
-            async position => {
+            async (position) => {
 
                 const latitude =
                     position.coords.latitude;
@@ -1959,13 +2043,18 @@ locationBtn.addEventListener(
                 try {
 
                     const url =
-                        "https://geocoding-api.open-meteo.com/v1/reverse" +
+                        "https://geocoding-api.open-meteo.com/v1/search" +
+
                         "?latitude=" +
                         latitude +
+
                         "&longitude=" +
                         longitude +
+
                         "&count=1" +
+
                         "&language=en" +
+
                         "&format=json";
 
 
@@ -1991,13 +2080,12 @@ locationBtn.addEventListener(
                     ) {
 
                         name =
-                            data.results[0]
-                                .name;
+                            data.results[0].name;
 
 
                         country =
-                            data.results[0]
-                                .country || "";
+                            data.results[0].country ||
+                            "";
 
                     }
 
@@ -2027,6 +2115,7 @@ locationBtn.addEventListener(
                 }
 
             },
+
 
             () => {
 
@@ -2121,9 +2210,7 @@ favoriteBtn.addEventListener(
             );
 
 
-        if (
-            exists
-        ) {
+        if (exists) {
 
             favorites =
                 favorites.filter(
@@ -2173,9 +2260,11 @@ function renderFavorites() {
     ) {
 
         favoriteList.innerHTML = `
+
             <p class="empty-message">
                 No favorite cities
             </p>
+
         `;
 
         return;
@@ -2379,9 +2468,11 @@ function renderHistory() {
     ) {
 
         historyList.innerHTML = `
+
             <p class="empty-message">
                 No search history
             </p>
+
         `;
 
         return;
@@ -2614,7 +2705,7 @@ function loadDarkMode() {
 
 
 /* =====================================================
-   INITIAL LOAD
+   INITIALIZE APP
 ===================================================== */
 
 function initializeApp() {

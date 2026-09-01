@@ -13,7 +13,7 @@
 <body>
 
     <!-- =========================
-         TOP NAVBAR
+         NAVBAR
     ========================== -->
 
     <header class="navbar">
@@ -57,8 +57,6 @@
         </div>
 
 
-        <!-- FAVORITES -->
-
         <div class="sidebar-section">
 
             <h3>⭐ Favorite Cities</h3>
@@ -73,8 +71,6 @@
 
         </div>
 
-
-        <!-- HISTORY -->
 
         <div class="sidebar-section">
 
@@ -94,7 +90,7 @@
 
 
     <!-- =========================
-         MAIN CONTENT
+         MAIN
     ========================== -->
 
     <main class="main-content">
@@ -106,9 +102,7 @@
             </h1>
 
 
-            <!-- =========================
-                 SEARCH AREA
-            ========================== -->
+            <!-- SEARCH -->
 
             <div class="search-wrapper">
 
@@ -119,9 +113,6 @@
                     autocomplete="off"
                 >
 
-
-                <!-- CLEAR BUTTON -->
-
                 <button
                     id="clearSearchBtn"
                     class="clear-search-btn"
@@ -130,9 +121,6 @@
                 >
                     ✕
                 </button>
-
-
-                <!-- SEARCH BUTTON -->
 
                 <button
                     id="searchBtn"
@@ -144,8 +132,6 @@
                 </button>
 
 
-                <!-- SEARCH SUGGESTIONS -->
-
                 <div
                     id="searchSuggestions"
                     class="search-suggestions"
@@ -154,7 +140,7 @@
             </div>
 
 
-            <!-- LOCATION BUTTON -->
+            <!-- LOCATION -->
 
             <button
                 id="locationBtn"
@@ -178,12 +164,10 @@
 
             <div class="weather-card">
 
-                <!-- CITY -->
-
                 <div class="city-title">
 
                     <h2 id="cityName">
-                        Dhaka
+                        Dhaka, Bangladesh
                     </h2>
 
                     <button
@@ -197,8 +181,6 @@
                 </div>
 
 
-                <!-- WEATHER ICON -->
-
                 <div
                     class="weather-icon"
                     id="weatherIcon"
@@ -207,14 +189,10 @@
                 </div>
 
 
-                <!-- TEMPERATURE -->
-
                 <h3 id="temperature">
                     28°C
                 </h3>
 
-
-                <!-- UNIT BUTTON -->
 
                 <button
                     id="unitBtn"
@@ -224,24 +202,18 @@
                 </button>
 
 
-                <!-- CONDITION -->
-
                 <p id="condition">
                     Sunny
                 </p>
 
 
-                <!-- =========================
-                     BASIC WEATHER INFO
-                ========================== -->
+                <!-- BASIC INFO -->
 
                 <div class="weather-info">
 
                     <div>
                         <span>💧</span>
-
                         <p>Humidity</p>
-
                         <strong id="humidity">
                             65%
                         </strong>
@@ -250,9 +222,7 @@
 
                     <div>
                         <span>💨</span>
-
                         <p>Wind</p>
-
                         <strong id="wind">
                             12 km/h
                         </strong>
@@ -261,9 +231,7 @@
 
                     <div>
                         <span>🌅</span>
-
                         <p>Sunrise</p>
-
                         <strong id="sunrise">
                             --:--
                         </strong>
@@ -272,9 +240,7 @@
 
                     <div>
                         <span>🌇</span>
-
                         <p>Sunset</p>
-
                         <strong id="sunset">
                             --:--
                         </strong>
@@ -283,9 +249,7 @@
                 </div>
 
 
-                <!-- =========================
-                     EXTRA DETAILS
-                ========================== -->
+                <!-- EXTRA DETAILS -->
 
                 <div class="extra-weather-info">
 
@@ -372,10 +336,110 @@
 
 
             <!-- =========================
+                 TEMPERATURE GRAPH
+            ========================== -->
+
+            <section class="graph-section">
+
+                <h2>
+                    📊 Temperature Graph
+                </h2>
+
+                <div class="graph-card">
+
+                    <canvas
+                        id="temperatureChart"
+                    ></canvas>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 AIR QUALITY
+            ========================== -->
+
+            <section class="air-quality-section">
+
+                <h2>
+                    🌬️ Air Quality
+                </h2>
+
+                <div class="air-quality-card">
+
+                    <div class="aqi-main">
+
+                        <div class="aqi-icon">
+                            🌎
+                        </div>
+
+                        <div>
+
+                            <p class="aqi-label">
+                                European AQI
+                            </p>
+
+                            <h3 id="aqiValue">
+                                --
+                            </h3>
+
+                            <strong id="aqiStatus">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="aqi-details">
+
+                        <div class="aqi-box">
+
+                            <span>
+                                🫁
+                            </span>
+
+                            <p>
+                                PM2.5
+                            </p>
+
+                            <strong id="pm25">
+                                -- µg/m³
+                            </strong>
+
+                        </div>
+
+
+                        <div class="aqi-box">
+
+                            <span>
+                                🌫️
+                            </span>
+
+                            <p>
+                                PM10
+                            </p>
+
+                            <strong id="pm10">
+                                -- µg/m³
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
                  HOURLY FORECAST
             ========================== -->
 
-            <div class="hourly-section">
+            <section class="hourly-section">
 
                 <h2>
                     🕐 Hourly Forecast
@@ -386,108 +450,14 @@
                     class="hourly-container"
                 ></div>
 
-            </div>
-
-
-            <!-- =========================
-                 TEMPERATURE GRAPH
-            ========================== -->
-
-            <div class="temperature-graph-section">
-
-                <h2>
-                    📊 Temperature Graph
-                </h2>
-
-                <div class="temperature-graph-card">
-
-                    <div class="graph-header">
-
-                        <div>
-                            <strong>
-                                Next 12 Hours
-                            </strong>
-
-                            <p>
-                                Hourly temperature trend
-                            </p>
-                        </div>
-
-                        <div
-                            id="graphCurrentUnit"
-                            class="graph-unit"
-                        >
-                            °C
-                        </div>
-
-                    </div>
-
-
-                    <div class="graph-wrapper">
-
-                        <svg
-                            id="temperatureGraph"
-                            class="temperature-graph"
-                            viewBox="0 0 900 330"
-                            preserveAspectRatio="none"
-                        >
-
-                            <defs>
-
-                                <linearGradient
-                                    id="graphGradient"
-                                    x1="0"
-                                    y1="0"
-                                    x2="0"
-                                    y2="1"
-                                >
-
-                                    <stop
-                                        offset="0%"
-                                        stop-opacity="0.45"
-                                    />
-
-                                    <stop
-                                        offset="100%"
-                                        stop-opacity="0"
-                                    />
-
-                                </linearGradient>
-
-                            </defs>
-
-                            <g id="graphGrid"></g>
-
-                            <path
-                                id="graphArea"
-                                class="graph-area"
-                                d=""
-                            ></path>
-
-                            <polyline
-                                id="graphLine"
-                                class="graph-line"
-                                points=""
-                            ></polyline>
-
-                            <g id="graphPoints"></g>
-
-                            <g id="graphLabels"></g>
-
-                        </svg>
-
-                    </div>
-
-                </div>
-
-            </div>
+            </section>
 
 
             <!-- =========================
                  5 DAY FORECAST
             ========================== -->
 
-            <div class="forecast-section">
+            <section class="forecast-section">
 
                 <h2>
                     📅 5-Day Forecast
@@ -498,7 +468,7 @@
                     class="forecast-container"
                 ></div>
 
-            </div>
+            </section>
 
         </div>
 
