@@ -1,6 +1,6 @@
 # 🌤️ Weather App
 
-A responsive **Weather App** built with **HTML, CSS, and JavaScript** using the **Open-Meteo API**. The application provides current weather information, forecasts, favorite cities, search history, and customizable Light/Dark mode.
+A responsive Weather App built with HTML, CSS, and JavaScript using the Open-Meteo API.
 
 ## ✨ Features
 
@@ -23,57 +23,43 @@ A responsive **Weather App** built with **HTML, CSS, and JavaScript** using the 
 
 ## 🛠️ Technologies Used
 
-### Languages
+* **HTML5**
+* **CSS3**
+* **JavaScript**
+* **Open-Meteo API**
+* **LocalStorage**
+* **Git & GitHub**
 
-* JavaScript
-* CSS
-* HTML
+## 📦 Dependencies
 
-### API
+This project does not require any external npm packages.
 
-* Open-Meteo API
-
-### Browser Storage
-
-* LocalStorage
-
-### Development Tools
-
-* Git
-* GitHub
-* Visual Studio Code
-
-## 📸 Screenshot
-
-> Add a screenshot of your Weather App here.
-
-```text
-screenshot.png
-```
+* **Open-Meteo API** — provides weather and forecast data
+* **Browser LocalStorage** — stores favorite cities, search history, and theme preferences
 
 ## ⚙️ How to Run
 
 1. Clone or download this repository.
 2. Open the project folder in Visual Studio Code.
 3. Open `index.html`.
-4. Run the project using **Live Server**.
+4. Run the project using Live Server.
 
 ## 📁 Project Structure
 
-```text
+text
 weather-app/
 ├── index.html
 ├── style.css
 ├── script.js
 └── README.md
-```
+
 
 ## 🔗 Live Demo
 
-Add your live Weather App link here.
+[🌤️ Weather App](https://mahbubanimmi15.github.io/weather-app/)
 
 ## 👩‍💻 Developer
 
 **Mahbuba Ferdous Nimmi**
 
-CSE Student | Web Developer
+CSE Student | Aspiring Web Developer
