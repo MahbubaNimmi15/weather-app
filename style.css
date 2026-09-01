@@ -1,5 +1,6 @@
 /* =====================================================
    🌤️ WEATHER APP
+   BLUE + PURPLE + SKY GRADIENT
 ===================================================== */
 
 * {
@@ -70,6 +71,7 @@ body {
     border: none;
     background: transparent;
     color: white;
+
     cursor: pointer;
 }
 
@@ -114,8 +116,7 @@ body {
         5px 0 25px
         rgba(0, 0, 0, 0.3);
 
-    transition:
-        left 0.3s ease;
+    transition: left 0.3s ease;
 
     overflow-y: auto;
 }
@@ -295,9 +296,11 @@ body {
     width: 100%;
     height: 52px;
 
-    padding: 0 105px 0 18px;
+    padding:
+        0 105px 0 18px;
 
     border: none;
+
     outline: none;
 
     border-radius: 12px;
@@ -323,7 +326,7 @@ body {
 
 
 /* =====================================================
-   CLEAR BUTTON
+   CLEAR SEARCH
 ===================================================== */
 
 .clear-search-btn {
@@ -541,6 +544,99 @@ body {
 
 
 /* =====================================================
+   🌧️ WEATHER ALERTS
+===================================================== */
+
+.alerts-section {
+    margin-top: 30px;
+}
+
+
+.alerts-section h2 {
+    margin-bottom: 15px;
+}
+
+
+.weather-alerts {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.weather-alert {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px 18px;
+
+    border-radius: 15px;
+
+    text-align: left;
+
+    background:
+        rgba(255, 255, 255, 0.18);
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.12);
+}
+
+
+.alert-icon {
+    font-size: 28px;
+}
+
+
+.alert-content {
+    flex: 1;
+}
+
+
+.alert-title {
+    font-size: 16px;
+
+    font-weight: bold;
+
+    margin-bottom: 4px;
+}
+
+
+.alert-description {
+    font-size: 13px;
+
+    opacity: 0.9;
+
+    line-height: 1.5;
+}
+
+
+.no-alert {
+    padding: 15px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.2);
+}
+
+
+/* =====================================================
    WEATHER CARD
 ===================================================== */
 
@@ -718,121 +814,6 @@ body {
 
 
 /* =====================================================
-   ⚠️ WEATHER ALERTS
-===================================================== */
-
-.alerts-section {
-    margin-top: 35px;
-}
-
-
-.alerts-section h2 {
-    margin-bottom: 20px;
-}
-
-
-.alerts-container {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 12px;
-}
-
-
-.alert {
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    padding: 18px 20px;
-
-    border-radius: 16px;
-
-    text-align: left;
-
-    background:
-        rgba(255, 255, 255, 0.16);
-
-    backdrop-filter: blur(12px);
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.25);
-
-    box-shadow:
-        0 8px 25px
-        rgba(0, 0, 0, 0.12);
-
-    animation:
-        alertIn 0.4s ease;
-}
-
-
-.alert-icon {
-    font-size: 30px;
-
-    flex-shrink: 0;
-}
-
-
-.alert-content {
-    flex: 1;
-}
-
-
-.alert-title {
-    font-weight: bold;
-
-    margin-bottom: 5px;
-}
-
-
-.alert-message {
-    font-size: 14px;
-
-    opacity: 0.9;
-
-    line-height: 1.5;
-}
-
-
-.alert-normal {
-    background:
-        rgba(34, 197, 94, 0.18);
-}
-
-
-.alert-warning {
-    background:
-        rgba(245, 158, 11, 0.22);
-}
-
-
-.alert-danger {
-    background:
-        rgba(239, 68, 68, 0.25);
-}
-
-
-@keyframes alertIn {
-
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-
-
-/* =====================================================
    ☀️ UV INDEX
 ===================================================== */
 
@@ -901,12 +882,23 @@ body {
 }
 
 
-.uv-scale {
+.uv-progress-wrapper {
     margin-top: 25px;
 }
 
 
-.uv-progress {
+.uv-scale {
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 12px;
+
+    margin-bottom: 7px;
+}
+
+
+.uv-progress-bg {
     width: 100%;
 
     height: 12px;
@@ -920,7 +912,7 @@ body {
 }
 
 
-.uv-progress-bar {
+.uv-progress {
     width: 0%;
 
     height: 100%;
@@ -942,32 +934,14 @@ body {
 }
 
 
-.uv-scale-labels {
-    display: flex;
-
-    justify-content: space-between;
-
-    margin-top: 7px;
-
-    font-size: 12px;
-
-    opacity: 0.8;
-}
-
-
 .uv-advice {
-    margin-top: 20px;
-
-    padding: 14px;
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.10);
+    margin-top: 15px;
 
     font-size: 14px;
 
-    line-height: 1.5;
+    line-height: 1.6;
+
+    opacity: 0.9;
 }
 
 
@@ -1333,8 +1307,10 @@ body.dark-mode .no-suggestion {
 
 
 body.dark-mode .weather-card,
-body.dark-mode .alert,
-body.dark-mode .uv-card {
+body.dark-mode .uv-card,
+body.dark-mode .graph-card,
+body.dark-mode .air-quality-card,
+body.dark-mode .weather-alert {
     background:
         rgba(15, 23, 42, 0.45);
 }
@@ -1344,10 +1320,7 @@ body.dark-mode .weather-info > div,
 body.dark-mode .detail-box,
 body.dark-mode .hourly-card,
 body.dark-mode .forecast-card,
-body.dark-mode .graph-card,
-body.dark-mode .air-quality-card,
-body.dark-mode .aqi-box,
-body.dark-mode .uv-advice {
+body.dark-mode .aqi-box {
     background:
         rgba(30, 41, 59, 0.65);
 }
@@ -1461,13 +1434,13 @@ body.dark-mode #unitBtn {
     }
 
 
-    .alert {
-        padding: 15px;
+    .uv-main {
+        flex-direction: column;
     }
 
 
-    .alert-icon {
-        font-size: 25px;
+    .alert-content {
+        font-size: 13px;
     }
 
 }

@@ -129,7 +129,6 @@
                     🔍
                 </button>
 
-
                 <div
                     id="searchSuggestions"
                     class="search-suggestions"
@@ -158,6 +157,30 @@
             <p id="loading">
                 ⏳ Loading weather...
             </p>
+
+
+            <!-- =========================
+                 WEATHER ALERTS
+            ========================== -->
+
+            <section class="alerts-section">
+
+                <h2>
+                    ⚠️ Weather Alerts
+                </h2>
+
+                <div
+                    id="weatherAlerts"
+                    class="weather-alerts"
+                >
+
+                    <div class="no-alert">
+                        ✅ No active weather alerts
+                    </div>
+
+                </div>
+
+            </section>
 
 
             <!-- =========================
@@ -216,25 +239,33 @@
                     <div>
                         <span>💧</span>
                         <p>Humidity</p>
-                        <strong id="humidity">65%</strong>
+                        <strong id="humidity">
+                            --%
+                        </strong>
                     </div>
 
                     <div>
                         <span>💨</span>
                         <p>Wind</p>
-                        <strong id="wind">12 km/h</strong>
+                        <strong id="wind">
+                            -- km/h
+                        </strong>
                     </div>
 
                     <div>
                         <span>🌅</span>
                         <p>Sunrise</p>
-                        <strong id="sunrise">--:--</strong>
+                        <strong id="sunrise">
+                            --:--
+                        </strong>
                     </div>
 
                     <div>
                         <span>🌇</span>
                         <p>Sunset</p>
-                        <strong id="sunset">--:--</strong>
+                        <strong id="sunset">
+                            --:--
+                        </strong>
                     </div>
 
                 </div>
@@ -245,62 +276,85 @@
                 <div class="extra-weather-info">
 
                     <div class="detail-box">
+
                         <span>🌡️</span>
+
                         <p>Feels Like</p>
-                        <strong id="feelsLike">--°C</strong>
+
+                        <strong id="feelsLike">
+                            --°C
+                        </strong>
+
                     </div>
 
+
                     <div class="detail-box">
+
                         <span>👁️</span>
+
                         <p>Visibility</p>
-                        <strong id="visibility">-- km</strong>
+
+                        <strong id="visibility">
+                            -- km
+                        </strong>
+
                     </div>
 
+
                     <div class="detail-box">
+
                         <span>🌧️</span>
+
                         <p>Rain Probability</p>
-                        <strong id="rainProbability">--%</strong>
+
+                        <strong id="rainProbability">
+                            --%
+                        </strong>
+
                     </div>
 
+
                     <div class="detail-box">
+
                         <span>🧭</span>
+
                         <p>Wind Direction</p>
-                        <strong id="windDirection">--</strong>
+
+                        <strong id="windDirection">
+                            --
+                        </strong>
+
                     </div>
 
+
                     <div class="detail-box">
+
                         <span>🔽</span>
+
                         <p>Pressure</p>
-                        <strong id="pressure">-- hPa</strong>
+
+                        <strong id="pressure">
+                            -- hPa
+                        </strong>
+
                     </div>
 
+
                     <div class="detail-box">
+
                         <span>🌬️</span>
+
                         <p>Wind Gusts</p>
-                        <strong id="windGusts">-- km/h</strong>
+
+                        <strong id="windGusts">
+                            -- km/h
+                        </strong>
+
                     </div>
 
                 </div>
 
             </div>
-
-
-            <!-- =========================
-                 WEATHER ALERTS
-            ========================== -->
-
-            <section class="alerts-section">
-
-                <h2>
-                    ⚠️ Weather Alerts
-                </h2>
-
-                <div
-                    id="alertsContainer"
-                    class="alerts-container"
-                ></div>
-
-            </section>
 
 
             <!-- =========================
@@ -340,21 +394,25 @@
                     </div>
 
 
-                    <div class="uv-scale">
+                    <div class="uv-progress-wrapper">
 
-                        <div class="uv-progress">
-                            <div
-                                id="uvProgress"
-                                class="uv-progress-bar"
-                            ></div>
-                        </div>
+                        <div class="uv-scale">
 
-                        <div class="uv-scale-labels">
                             <span>0</span>
                             <span>3</span>
                             <span>6</span>
                             <span>8</span>
                             <span>11+</span>
+
+                        </div>
+
+                        <div class="uv-progress-bg">
+
+                            <div
+                                id="uvProgress"
+                                class="uv-progress"
+                            ></div>
+
                         </div>
 
                     </div>
@@ -364,7 +422,7 @@
                         id="uvAdvice"
                         class="uv-advice"
                     >
-                        UV information will appear here.
+                        UV information loading...
                     </p>
 
                 </div>
@@ -384,7 +442,9 @@
 
                 <div class="graph-card">
 
-                    <canvas id="temperatureChart"></canvas>
+                    <canvas
+                        id="temperatureChart"
+                    ></canvas>
 
                 </div>
 
