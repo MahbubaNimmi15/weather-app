@@ -1,32 +1,69 @@
-const cityInput = document.getElementById("cityInput");
-const searchBtn = document.getElementById("searchBtn");
-const locationBtn = document.getElementById("locationBtn");
 
-const cityName = document.getElementById("cityName");
-const temperature = document.getElementById("temperature");
-const condition = document.getElementById("condition");
-const humidity = document.getElementById("humidity");
-const wind = document.getElementById("wind");
-const weatherIcon = document.getElementById("weatherIcon");
+const cityInput =
+    document.getElementById("cityInput");
 
-const unitBtn = document.getElementById("unitBtn");
-const forecastContainer = document.getElementById("forecastContainer");
-const loading = document.getElementById("loading");
+const searchBtn =
+    document.getElementById("searchBtn");
+
+const locationBtn =
+    document.getElementById("locationBtn");
+
+
+const cityName =
+    document.getElementById("cityName");
+
+const temperature =
+    document.getElementById("temperature");
+
+const condition =
+    document.getElementById("condition");
+
+const humidity =
+    document.getElementById("humidity");
+
+const wind =
+    document.getElementById("wind");
+
+const weatherIcon =
+    document.getElementById("weatherIcon");
+
+
+const sunrise =
+    document.getElementById("sunrise");
+
+const sunset =
+    document.getElementById("sunset");
+
+
+const unitBtn =
+    document.getElementById("unitBtn");
+
+const forecastContainer =
+    document.getElementById("forecastContainer");
+
+const loading =
+    document.getElementById("loading");
 
 const historyContainer =
     document.getElementById("historyContainer");
 
-let currentTemperatureCelsius = null;
-let isCelsius = true;
+
+let currentTemperatureCelsius =
+    null;
+
+let isCelsius =
+    true;
 
 
 // ===============================
-// SEARCH HISTORY DATA
+// SEARCH HISTORY
 // ===============================
 
 let searchHistory =
     JSON.parse(
-        localStorage.getItem("searchHistory")
+        localStorage.getItem(
+            "searchHistory"
+        )
     ) || [];
 
 
@@ -34,28 +71,83 @@ let searchHistory =
 // DISPLAY WEATHER
 // ===============================
 
-function displayWeather(current, city) {
+function displayWeather(
+    current,
+    daily,
+    city
+) {
 
-    cityName.textContent = city;
+    cityName.textContent =
+        city;
+
+
+    // Temperature
 
     currentTemperatureCelsius =
         current.temperature_2m;
 
+
     temperature.textContent =
-        `${Math.round(currentTemperatureCelsius)}°C`;
+        `${Math.round(
+            currentTemperatureCelsius
+        )}°C`;
 
-    isCelsius = true;
 
-    unitBtn.textContent = "Switch to °F";
+    isCelsius =
+        true;
+
+
+    unitBtn.textContent =
+        "Switch to °F";
+
+
+    // Humidity
 
     humidity.textContent =
         `${current.relative_humidity_2m}%`;
 
+
+    // Wind
+
     wind.textContent =
-        `${Math.round(current.wind_speed_10m)} km/h`;
+        `${Math.round(
+            current.wind_speed_10m
+        )} km/h`;
 
 
-    // Weather condition and icon
+    // Sunrise
+
+    if (
+        daily &&
+        daily.sunrise &&
+        daily.sunrise.length > 0
+    ) {
+
+        sunrise.textContent =
+            formatTime(
+                daily.sunrise[0]
+            );
+
+    }
+
+
+    // Sunset
+
+    if (
+        daily &&
+        daily.sunset &&
+        daily.sunset.length > 0
+    ) {
+
+        sunset.textContent =
+            formatTime(
+                daily.sunset[0]
+            );
+
+    }
+
+
+    // Weather condition
 
     const weatherCode =
         current.weather_code;
@@ -69,7 +161,9 @@ function displayWeather(current, city) {
         weatherIcon.textContent =
             "☀️";
 
-    } else if (weatherCode <= 3) {
+    }
+
+    else if (weatherCode <= 3) {
 
         condition.textContent =
             "Partly Cloudy";
@@ -77,7 +171,9 @@ function displayWeather(current, city) {
         weatherIcon.textContent =
             "⛅";
 
-    } else if (weatherCode <= 48) {
+    }
+
+    else if (weatherCode <= 48) {
 
         condition.textContent =
             "Foggy";
@@ -85,7 +181,9 @@ function displayWeather(current, city) {
         weatherIcon.textContent =
             "🌫️";
 
-    } else if (weatherCode <= 67) {
+    }
+
+    else if (weatherCode <= 67) {
 
         condition.textContent =
             "Rainy";
@@ -93,7 +191,9 @@ function displayWeather(current, city) {
         weatherIcon.textContent =
             "🌧️";
 
-    } else if (weatherCode <= 77) {
+    }
+
+    else if (weatherCode <= 77) {
 
         condition.textContent =
             "Snowy";
@@ -101,7 +201,9 @@ function displayWeather(current, city) {
         weatherIcon.textContent =
             "❄️";
 
-    } else if (weatherCode <= 82) {
+    }
+
+    else if (weatherCode <= 82) {
 
         condition.textContent =
             "Rain Showers";
@@ -109,7 +211,9 @@ function displayWeather(current, city) {
         weatherIcon.textContent =
             "🌦️";
 
-    } else {
+    }
+
+    else {
 
         condition.textContent =
             "Thunderstorm";
@@ -117,6 +221,26 @@ function displayWeather(current, city) {
         weatherIcon.textContent =
             "⛈️";
     }
+}
+
+
+// ===============================
+// FORMAT TIME
+// ===============================
+
+function formatTime(dateTime) {
+
+    const date =
+        new Date(dateTime);
+
+
+    return date.toLocaleTimeString(
+        "en-US",
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
 }
 
 
@@ -142,15 +266,13 @@ searchBtn.addEventListener(
         }
 
 
-        // Show loading
-
         loading.style.display =
             "block";
 
 
         try {
 
-            // Find city coordinates
+            // Find city
 
             const locationResponse =
                 await fetch(
@@ -182,11 +304,11 @@ searchBtn.addEventListener(
                 locationData.results[0];
 
 
-            // Get current + daily weather
+            // Weather API
 
             const weatherResponse =
                 await fetch(
-                    `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
+                    `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
                 );
 
 
@@ -194,14 +316,11 @@ searchBtn.addEventListener(
                 await weatherResponse.json();
 
 
-            const current =
-                weatherData.current;
-
-
-            // Display current weather
+            // Display weather
 
             displayWeather(
-                current,
+                weatherData.current,
+                weatherData.daily,
                 location.name
             );
 
@@ -213,17 +332,16 @@ searchBtn.addEventListener(
             );
 
 
-            // Add city to search history
+            // Add history
 
             addToHistory(
                 location.name
             );
 
 
-            // Hide loading
-
             loading.style.display =
                 "none";
+
 
         } catch (error) {
 
@@ -247,13 +365,20 @@ searchBtn.addEventListener(
 
 function displayForecast(daily) {
 
-    forecastContainer.innerHTML = "";
+    forecastContainer.innerHTML =
+        "";
 
 
-    for (let i = 0; i < 5; i++) {
+    for (
+        let i = 0;
+        i < 5;
+        i++
+    ) {
 
         const date =
-            new Date(daily.time[i]);
+            new Date(
+                daily.time[i]
+            );
 
 
         const dayName =
@@ -281,49 +406,87 @@ function displayForecast(daily) {
             daily.weather_code[i];
 
 
-        let icon = "☀️";
-        let text = "Clear Sky";
+        let icon =
+            "☀️";
+
+        let text =
+            "Clear Sky";
 
 
         if (weatherCode === 0) {
 
-            icon = "☀️";
-            text = "Clear Sky";
+            icon =
+                "☀️";
 
-        } else if (weatherCode <= 3) {
+            text =
+                "Clear Sky";
 
-            icon = "⛅";
-            text = "Cloudy";
+        }
 
-        } else if (weatherCode <= 48) {
+        else if (weatherCode <= 3) {
 
-            icon = "🌫️";
-            text = "Foggy";
+            icon =
+                "⛅";
 
-        } else if (weatherCode <= 67) {
+            text =
+                "Cloudy";
 
-            icon = "🌧️";
-            text = "Rainy";
+        }
 
-        } else if (weatherCode <= 77) {
+        else if (weatherCode <= 48) {
 
-            icon = "❄️";
-            text = "Snowy";
+            icon =
+                "🌫️";
 
-        } else if (weatherCode <= 82) {
+            text =
+                "Foggy";
 
-            icon = "🌦️";
-            text = "Rain Showers";
+        }
 
-        } else {
+        else if (weatherCode <= 67) {
 
-            icon = "⛈️";
-            text = "Thunderstorm";
+            icon =
+                "🌧️";
+
+            text =
+                "Rainy";
+
+        }
+
+        else if (weatherCode <= 77) {
+
+            icon =
+                "❄️";
+
+            text =
+                "Snowy";
+
+        }
+
+        else if (weatherCode <= 82) {
+
+            icon =
+                "🌦️";
+
+            text =
+                "Rain Showers";
+
+        }
+
+        else {
+
+            icon =
+                "⛈️";
+
+            text =
+                "Thunderstorm";
         }
 
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
 
         card.className =
@@ -331,7 +494,10 @@ function displayForecast(daily) {
 
 
         card.innerHTML = `
-            <h3>${dayName}</h3>
+
+            <h3>
+                ${dayName}
+            </h3>
 
             <div class="forecast-icon">
                 ${icon}
@@ -344,6 +510,7 @@ function displayForecast(daily) {
             <div class="forecast-condition">
                 ${text}
             </div>
+
         `;
 
 
@@ -362,7 +529,9 @@ cityInput.addEventListener(
     "keypress",
     function (event) {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
 
             searchBtn.click();
 
@@ -398,26 +567,34 @@ unitBtn.addEventListener(
 
 
             temperature.textContent =
-                `${Math.round(fahrenheit)}°F`;
+                `${Math.round(
+                    fahrenheit
+                )}°F`;
 
 
             unitBtn.textContent =
                 "Switch to °C";
 
 
-            isCelsius = false;
+            isCelsius =
+                false;
 
-        } else {
+        }
+
+        else {
 
             temperature.textContent =
-                `${Math.round(currentTemperatureCelsius)}°C`;
+                `${Math.round(
+                    currentTemperatureCelsius
+                )}°C`;
 
 
             unitBtn.textContent =
                 "Switch to °F";
 
 
-            isCelsius = true;
+            isCelsius =
+                true;
         }
 
     }
@@ -425,14 +602,16 @@ unitBtn.addEventListener(
 
 
 // ===============================
-// MY LOCATION WEATHER
+// MY LOCATION
 // ===============================
 
 locationBtn.addEventListener(
     "click",
     function () {
 
-        if (!navigator.geolocation) {
+        if (
+            !navigator.geolocation
+        ) {
 
             alert(
                 "Geolocation is not supported by your browser."
@@ -441,8 +620,6 @@ locationBtn.addEventListener(
             return;
         }
 
-
-        // Show loading
 
         loading.style.display =
             "block";
@@ -455,6 +632,7 @@ locationBtn.addEventListener(
                 const latitude =
                     position.coords.latitude;
 
+
                 const longitude =
                     position.coords.longitude;
 
@@ -463,7 +641,7 @@ locationBtn.addEventListener(
 
                     const response =
                         await fetch(
-                            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
+                            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
                         );
 
 
@@ -471,22 +649,17 @@ locationBtn.addEventListener(
                         await response.json();
 
 
-                    // Display current weather
-
                     displayWeather(
                         data.current,
+                        data.daily,
                         "Your Location"
                     );
 
-
-                    // Display forecast
 
                     displayForecast(
                         data.daily
                     );
 
-
-                    // Hide loading
 
                     loading.style.display =
                         "none";
@@ -498,7 +671,6 @@ locationBtn.addEventListener(
 
                     loading.style.display =
                         "none";
-
 
                     alert(
                         "Unable to get weather data."
@@ -513,7 +685,6 @@ locationBtn.addEventListener(
                 loading.style.display =
                     "none";
 
-
                 alert(
                     "Please allow location access."
                 );
@@ -527,12 +698,10 @@ locationBtn.addEventListener(
 
 
 // ===============================
-// ADD TO SEARCH HISTORY
+// ADD TO HISTORY
 // ===============================
 
 function addToHistory(city) {
-
-    // Remove duplicate city
 
     searchHistory =
         searchHistory.filter(
@@ -547,22 +716,23 @@ function addToHistory(city) {
         );
 
 
-    // Add newest city first
+    searchHistory.unshift(
+        city
+    );
 
-    searchHistory.unshift(city);
-
-
-    // Keep only last 5 searches
 
     searchHistory =
-        searchHistory.slice(0, 5);
+        searchHistory.slice(
+            0,
+            5
+        );
 
-
-    // Save history
 
     localStorage.setItem(
         "searchHistory",
-        JSON.stringify(searchHistory)
+        JSON.stringify(
+            searchHistory
+        )
     );
 
 
@@ -571,15 +741,18 @@ function addToHistory(city) {
 
 
 // ===============================
-// DISPLAY SEARCH HISTORY
+// DISPLAY HISTORY
 // ===============================
 
 function displayHistory() {
 
-    historyContainer.innerHTML = "";
+    historyContainer.innerHTML =
+        "";
 
 
-    if (searchHistory.length === 0) {
+    if (
+        searchHistory.length === 0
+    ) {
 
         historyContainer.innerHTML =
             "<p>No search history yet.</p>";
@@ -592,7 +765,9 @@ function displayHistory() {
         function (city) {
 
             const button =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
 
             button.textContent =
@@ -622,7 +797,7 @@ function displayHistory() {
 
 
 // ===============================
-// LOAD SEARCH HISTORY
+// LOAD HISTORY
 // ===============================
 
 displayHistory();

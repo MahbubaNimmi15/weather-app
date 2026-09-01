@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +16,7 @@
     <div class="weather-container">
 
         <h1>Weather App</h1>
+
 
         <!-- Search Box -->
         <div class="search-box">
@@ -36,7 +38,7 @@
         </div>
 
 
-        <!-- Loading Message -->
+        <!-- Loading -->
         <p id="loading" style="display: none;">
             ⏳ Loading weather...
         </p>
@@ -51,7 +53,7 @@
                 class="history-container"
                 id="historyContainer"
             >
-                <!-- History buttons will appear here -->
+                <!-- History will appear here -->
             </div>
 
         </div>
@@ -64,17 +66,24 @@
                 Dhaka
             </h2>
 
-            <div class="weather-icon" id="weatherIcon">
+
+            <div
+                class="weather-icon"
+                id="weatherIcon"
+            >
                 ☀️
             </div>
+
 
             <h3 id="temperature">
                 28°C
             </h3>
 
+
             <button id="unitBtn">
                 Switch to °F
             </button>
+
 
             <p id="condition">
                 Sunny
@@ -84,6 +93,8 @@
             <!-- Weather Information -->
             <div class="weather-info">
 
+
+                <!-- Humidity -->
                 <div>
 
                     <span>💧</span>
@@ -99,6 +110,7 @@
                 </div>
 
 
+                <!-- Wind -->
                 <div>
 
                     <span>💨</span>
@@ -113,6 +125,39 @@
 
                 </div>
 
+
+                <!-- Sunrise -->
+                <div>
+
+                    <span>🌅</span>
+
+                    <p>
+                        Sunrise
+                    </p>
+
+                    <strong id="sunrise">
+                        --:--
+                    </strong>
+
+                </div>
+
+
+                <!-- Sunset -->
+                <div>
+
+                    <span>🌇</span>
+
+                    <p>
+                        Sunset
+                    </p>
+
+                    <strong id="sunset">
+                        --:--
+                    </strong>
+
+                </div>
+
+
             </div>
 
         </div>
@@ -125,11 +170,12 @@
                 5-Day Forecast
             </h2>
 
+
             <div
                 class="forecast-container"
                 id="forecastContainer"
             >
-                <!-- Forecast cards will appear here -->
+                <!-- Forecast cards -->
             </div>
 
         </div>
