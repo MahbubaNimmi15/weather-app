@@ -117,6 +117,23 @@ const pm10 =
 
 
 /* =====================================================
+   ☀️ UV INDEX ELEMENTS
+===================================================== */
+
+const uvValue =
+    document.getElementById("uvValue");
+
+const uvStatus =
+    document.getElementById("uvStatus");
+
+const uvProgress =
+    document.getElementById("uvProgress");
+
+const uvAdvice =
+    document.getElementById("uvAdvice");
+
+
+/* =====================================================
    VARIABLES
 ===================================================== */
 
@@ -544,7 +561,8 @@ async function loadWeather(
             "temperature_2m_min," +
             "sunrise," +
             "sunset," +
-            "precipitation_probability_max" +
+            "precipitation_probability_max," +
+            "uv_index_max" +
 
             "&forecast_days=6" +
 
@@ -591,6 +609,11 @@ async function loadWeather(
 
 
         drawTemperatureGraph(
+            data
+        );
+
+
+        displayUVIndex(
             data
         );
 
@@ -1110,6 +1133,165 @@ function displayFiveDayForecast(
 
 
 /* =====================================================
+   ☀️ UV INDEX
+===================================================== */
+
+function displayUVIndex(
+    data
+) {
+
+    if (
+        !data.daily ||
+        !data.daily.uv_index_max
+    ) {
+
+        uvValue.textContent = "--";
+
+        uvStatus.textContent =
+            "Unavailable";
+
+        uvAdvice.textContent =
+            "UV information is unavailable.";
+
+        uvProgress.style.width = "0%";
+
+        return;
+
+    }
+
+
+    const uv =
+        data.daily.uv_index_max[0];
+
+
+    if (
+        uv === undefined ||
+        uv === null
+    ) {
+
+        uvValue.textContent = "--";
+
+        uvStatus.textContent =
+            "Unavailable";
+
+        uvAdvice.textContent =
+            "UV information is unavailable.";
+
+        uvProgress.style.width = "0%";
+
+        return;
+
+    }
+
+
+    uvValue.textContent =
+        Number(uv).toFixed(1);
+
+
+    const uvInfo =
+        getUVStatus(
+            Number(uv)
+        );
+
+
+    uvStatus.textContent =
+        uvInfo.status;
+
+
+    uvAdvice.textContent =
+        uvInfo.advice;
+
+
+    const percentage =
+        Math.min(
+            (Number(uv) / 11) * 100,
+            100
+        );
+
+
+    uvProgress.style.width =
+        `${percentage}%`;
+
+}
+
+
+/* =====================================================
+   UV STATUS
+===================================================== */
+
+function getUVStatus(
+    uv
+) {
+
+    if (uv < 3) {
+
+        return {
+
+            status: "🟢 Low",
+
+            advice:
+                "Low UV level. Normal outdoor activities are generally fine."
+
+        };
+
+    }
+
+
+    if (uv < 6) {
+
+        return {
+
+            status: "🟡 Moderate",
+
+            advice:
+                "Moderate UV level. Consider protection during longer outdoor activities."
+
+        };
+
+    }
+
+
+    if (uv < 8) {
+
+        return {
+
+            status: "🟠 High",
+
+            advice:
+                "High UV level. Take extra care and consider sun protection."
+
+        };
+
+    }
+
+
+    if (uv < 11) {
+
+        return {
+
+            status: "🔴 Very High",
+
+            advice:
+                "Very high UV level. Limit prolonged exposure and use appropriate sun protection."
+
+        };
+
+    }
+
+
+    return {
+
+        status: "🟣 Extreme",
+
+        advice:
+            "Extreme UV level. Avoid prolonged direct sun exposure and use appropriate protection."
+
+    };
+
+}
+
+
+/* =====================================================
    🌡️ TEMPERATURE GRAPH
 ===================================================== */
 
@@ -1157,9 +1339,13 @@ function drawTemperatureGraph(
         height * dpr;
 
 
-    ctx.scale(
+    ctx.setTransform(
         dpr,
-        dpr
+        0,
+        0,
+        dpr,
+        0,
+        0
     );
 
 
@@ -1771,11 +1957,9 @@ cityInput.addEventListener(
             searchSuggestions.innerHTML =
                 "";
 
-
             searchSuggestions.classList.remove(
                 "show"
             );
-
 
             return;
 
