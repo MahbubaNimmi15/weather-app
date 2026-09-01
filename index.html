@@ -2,7 +2,12 @@
 
 <html lang="en">
 
-<head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Weather App</title> <link rel="stylesheet" href="style.css"> </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
 <body>
 
@@ -14,13 +19,19 @@
 
     <div class="sidebar-top">
 
-        <button id="menuBtn" class="menu-btn" title="Toggle Sidebar">
+        <button
+            id="menuBtn"
+            class="menu-btn"
+            title="Toggle Sidebar"
+        >
             ☰
         </button>
 
         <div class="sidebar-logo">
             <span>🌤️</span>
-            <span class="sidebar-title">Weather</span>
+            <span class="sidebar-title">
+                Weather
+            </span>
         </div>
 
     </div>
@@ -34,13 +45,17 @@
 
             <h3>
                 <span>⭐</span>
-                <span class="sidebar-text">Favorite Cities</span>
+                <span class="sidebar-text">
+                    Favorite Cities
+                </span>
             </h3>
 
             <div id="favoriteList">
+
                 <p class="empty-message sidebar-text">
                     No favorite cities
                 </p>
+
             </div>
 
         </div>
@@ -52,13 +67,17 @@
 
             <h3>
                 <span>🕘</span>
-                <span class="sidebar-text">Search History</span>
+                <span class="sidebar-text">
+                    Search History
+                </span>
             </h3>
 
             <div id="historyList">
+
                 <p class="empty-message sidebar-text">
                     No search history
                 </p>
+
             </div>
 
         </div>
@@ -72,7 +91,10 @@
      MAIN CONTENT
 ========================== -->
 
-<main class="main-content" id="mainContent">
+<main
+    class="main-content"
+    id="mainContent"
+>
 
     <div class="weather-container">
 
@@ -115,12 +137,17 @@
 
         <!-- Loading -->
 
-        <p id="loading" style="display: none;">
+        <p
+            id="loading"
+            style="display: none;"
+        >
             ⏳ Loading weather...
         </p>
 
 
-        <!-- Current Weather -->
+        <!-- =========================
+             CURRENT WEATHER
+        ========================== -->
 
         <div class="weather-card">
 
@@ -163,43 +190,129 @@
             </p>
 
 
-            <!-- Weather Info -->
+            <!-- =========================
+                 WEATHER INFORMATION
+            ========================== -->
 
             <div class="weather-info">
 
+                <!-- Humidity -->
+
                 <div>
+
                     <span>💧</span>
+
                     <p>Humidity</p>
+
                     <strong id="humidity">
                         65%
                     </strong>
+
                 </div>
 
 
+                <!-- Wind -->
+
                 <div>
+
                     <span>💨</span>
+
                     <p>Wind</p>
+
                     <strong id="wind">
                         12 km/h
                     </strong>
+
                 </div>
 
 
+                <!-- Feels Like -->
+
                 <div>
+
+                    <span>🌡️</span>
+
+                    <p>Feels Like</p>
+
+                    <strong id="feelsLike">
+                        --°C
+                    </strong>
+
+                </div>
+
+
+                <!-- Pressure -->
+
+                <div>
+
+                    <span>🔵</span>
+
+                    <p>Pressure</p>
+
+                    <strong id="pressure">
+                        -- hPa
+                    </strong>
+
+                </div>
+
+
+                <!-- Visibility -->
+
+                <div>
+
+                    <span>👁️</span>
+
+                    <p>Visibility</p>
+
+                    <strong id="visibility">
+                        -- km
+                    </strong>
+
+                </div>
+
+
+                <!-- UV Index -->
+
+                <div>
+
+                    <span>☀️</span>
+
+                    <p>UV Index</p>
+
+                    <strong id="uvIndex">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <!-- Sunrise -->
+
+                <div>
+
                     <span>🌅</span>
+
                     <p>Sunrise</p>
+
                     <strong id="sunrise">
                         --:--
                     </strong>
+
                 </div>
 
 
+                <!-- Sunset -->
+
                 <div>
+
                     <span>🌇</span>
+
                     <p>Sunset</p>
+
                     <strong id="sunset">
                         --:--
                     </strong>
+
                 </div>
 
             </div>
@@ -207,11 +320,15 @@
         </div>
 
 
-        <!-- Forecast -->
+        <!-- =========================
+             FORECAST
+        ========================== -->
 
         <div class="forecast-section">
 
-            <h2>5-Day Forecast</h2>
+            <h2>
+                5-Day Forecast
+            </h2>
 
             <div
                 class="forecast-container"
@@ -227,6 +344,7 @@
 
 
 <script src="script.js"></script>
+
 
 </body>
 

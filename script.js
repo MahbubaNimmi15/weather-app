@@ -1,19 +1,53 @@
-const cityInput = document.getElementById("cityInput");
-const searchBtn = document.getElementById("searchBtn");
-const locationBtn = document.getElementById("locationBtn");
+const cityInput =
+document.getElementById("cityInput");
 
-const cityName = document.getElementById("cityName");
-const temperature = document.getElementById("temperature");
-const condition = document.getElementById("condition");
-const humidity = document.getElementById("humidity");
-const wind = document.getElementById("wind");
-const weatherIcon = document.getElementById("weatherIcon");
+const searchBtn =
+document.getElementById("searchBtn");
 
-const sunrise = document.getElementById("sunrise");
-const sunset = document.getElementById("sunset");
+const locationBtn =
+document.getElementById("locationBtn");
 
-const unitBtn = document.getElementById("unitBtn");
-const favoriteBtn = document.getElementById("favoriteBtn");
+const cityName =
+document.getElementById("cityName");
+
+const temperature =
+document.getElementById("temperature");
+
+const condition =
+document.getElementById("condition");
+
+const humidity =
+document.getElementById("humidity");
+
+const wind =
+document.getElementById("wind");
+
+const weatherIcon =
+document.getElementById("weatherIcon");
+
+const feelsLike =
+document.getElementById("feelsLike");
+
+const pressure =
+document.getElementById("pressure");
+
+const visibility =
+document.getElementById("visibility");
+
+const uvIndex =
+document.getElementById("uvIndex");
+
+const sunrise =
+document.getElementById("sunrise");
+
+const sunset =
+document.getElementById("sunset");
+
+const unitBtn =
+document.getElementById("unitBtn");
+
+const favoriteBtn =
+document.getElementById("favoriteBtn");
 
 const forecastContainer =
 document.getElementById("forecastContainer");
@@ -36,7 +70,11 @@ document.getElementById("mainContent");
 const menuBtn =
 document.getElementById("menuBtn");
 
-let currentTemperatureCelsius = null;
+let currentTemperatureCelsius =
+null;
+
+let currentFeelsLikeCelsius =
+null;
 
 let isCelsius = true;
 
@@ -46,13 +84,21 @@ let currentCity = "";
 // SIDEBAR TOGGLE
 // ===============================
 
-menuBtn.addEventListener("click", function () {
+menuBtn.addEventListener(
+"click",
+function () {
 
-sidebar.classList.toggle("collapsed");
+    sidebar.classList.toggle(
+        "collapsed"
+    );
 
-mainContent.classList.toggle("expanded");
+    mainContent.classList.toggle(
+        "expanded"
+    );
 
-});
+}
+
+);
 
 // ===============================
 // STORAGE
@@ -60,12 +106,16 @@ mainContent.classList.toggle("expanded");
 
 let favorites =
 JSON.parse(
-localStorage.getItem("favoriteCities")
+localStorage.getItem(
+"favoriteCities"
+)
 ) || [];
 
 let history =
 JSON.parse(
-localStorage.getItem("searchHistory")
+localStorage.getItem(
+"searchHistory"
+)
 ) || [];
 
 // ===============================
@@ -86,71 +136,97 @@ historyList.innerHTML = "";
 if (favorites.length === 0) {
 
     favoriteList.innerHTML =
-        `<p class="empty-message sidebar-text">
+        `
+        <p class="empty-message sidebar-text">
             No favorite cities
-        </p>`;
+        </p>
+        `;
 
 } else {
 
-    favorites.forEach(function (city, index) {
+    favorites.forEach(
+        function (city, index) {
 
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "sidebar-item";
-
-
-        item.innerHTML = `
-            <button class="city-button">
-                ⭐ ${city}
-            </button>
-
-            <button
-                class="delete-btn"
-                title="Delete favorite"
-            >
-                🗑️
-            </button>
-        `;
+            const item =
+                document.createElement(
+                    "div"
+                );
 
 
-        item.querySelector(".city-button")
-            .addEventListener(
-                "click",
-                function () {
+            item.className =
+                "sidebar-item";
 
-                    cityInput.value = city;
 
-                    searchBtn.click();
+            item.innerHTML =
+                `
+                <button
+                    class="city-button"
+                >
+                    ⭐ ${city}
+                </button>
 
-                }
+                <button
+                    class="delete-btn"
+                    title="Delete favorite"
+                >
+                    🗑️
+                </button>
+                `;
+
+
+            item
+                .querySelector(
+                    ".city-button"
+                )
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        cityInput.value =
+                            city;
+
+                        searchBtn.click();
+
+                    }
+                );
+
+
+            item
+                .querySelector(
+                    ".delete-btn"
+                )
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        favorites.splice(
+                            index,
+                            1
+                        );
+
+
+                        localStorage.setItem(
+                            "favoriteCities",
+                            JSON.stringify(
+                                favorites
+                            )
+                        );
+
+
+                        displaySidebar();
+
+                        updateFavoriteButton();
+
+                    }
+                );
+
+
+            favoriteList.appendChild(
+                item
             );
 
-
-        item.querySelector(".delete-btn")
-            .addEventListener(
-                "click",
-                function () {
-
-                    favorites.splice(index, 1);
-
-                    localStorage.setItem(
-                        "favoriteCities",
-                        JSON.stringify(favorites)
-                    );
-
-                    displaySidebar();
-
-                    updateFavoriteButton();
-
-                }
-            );
-
-
-        favoriteList.appendChild(item);
-
-    });
+        }
+    );
 
 }
 
@@ -162,69 +238,95 @@ if (favorites.length === 0) {
 if (history.length === 0) {
 
     historyList.innerHTML =
-        `<p class="empty-message sidebar-text">
+        `
+        <p class="empty-message sidebar-text">
             No search history
-        </p>`;
+        </p>
+        `;
 
 } else {
 
-    history.forEach(function (city, index) {
+    history.forEach(
+        function (city, index) {
 
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "sidebar-item";
-
-
-        item.innerHTML = `
-            <button class="city-button">
-                🕘 ${city}
-            </button>
-
-            <button
-                class="delete-btn"
-                title="Delete history"
-            >
-                🗑️
-            </button>
-        `;
+            const item =
+                document.createElement(
+                    "div"
+                );
 
 
-        item.querySelector(".city-button")
-            .addEventListener(
-                "click",
-                function () {
+            item.className =
+                "sidebar-item";
 
-                    cityInput.value = city;
 
-                    searchBtn.click();
+            item.innerHTML =
+                `
+                <button
+                    class="city-button"
+                >
+                    🕘 ${city}
+                </button>
 
-                }
+                <button
+                    class="delete-btn"
+                    title="Delete history"
+                >
+                    🗑️
+                </button>
+                `;
+
+
+            item
+                .querySelector(
+                    ".city-button"
+                )
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        cityInput.value =
+                            city;
+
+                        searchBtn.click();
+
+                    }
+                );
+
+
+            item
+                .querySelector(
+                    ".delete-btn"
+                )
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        history.splice(
+                            index,
+                            1
+                        );
+
+
+                        localStorage.setItem(
+                            "searchHistory",
+                            JSON.stringify(
+                                history
+                            )
+                        );
+
+
+                        displaySidebar();
+
+                    }
+                );
+
+
+            historyList.appendChild(
+                item
             );
 
-
-        item.querySelector(".delete-btn")
-            .addEventListener(
-                "click",
-                function () {
-
-                    history.splice(index, 1);
-
-                    localStorage.setItem(
-                        "searchHistory",
-                        JSON.stringify(history)
-                    );
-
-                    displaySidebar();
-
-                }
-            );
-
-
-        historyList.appendChild(item);
-
-    });
+        }
+    );
 
 }
 
@@ -237,12 +339,16 @@ if (history.length === 0) {
 function addToHistory(city) {
 
 history =
-    history.filter(function (item) {
+    history.filter(
+        function (item) {
 
-        return item.toLowerCase() !==
-            city.toLowerCase();
+            return (
+                item.toLowerCase() !==
+                city.toLowerCase()
+            );
 
-    });
+        }
+    );
 
 
 history.unshift(city);
@@ -279,8 +385,10 @@ function () {
         favorites.findIndex(
             function (city) {
 
-                return city.toLowerCase() ===
-                    currentCity.toLowerCase();
+                return (
+                    city.toLowerCase() ===
+                    currentCity.toLowerCase()
+                );
 
             }
         );
@@ -288,11 +396,16 @@ function () {
 
     if (index === -1) {
 
-        favorites.push(currentCity);
+        favorites.push(
+            currentCity
+        );
 
     } else {
 
-        favorites.splice(index, 1);
+        favorites.splice(
+            index,
+            1
+        );
 
     }
 
@@ -312,7 +425,7 @@ function () {
 );
 
 // ===============================
-// UPDATE FAVORITE ICON
+// UPDATE FAVORITE BUTTON
 // ===============================
 
 function updateFavoriteButton() {
@@ -321,8 +434,10 @@ const exists =
     favorites.some(
         function (city) {
 
-            return city.toLowerCase() ===
-                currentCity.toLowerCase();
+            return (
+                city.toLowerCase() ===
+                currentCity.toLowerCase()
+            );
 
         }
     );
@@ -330,21 +445,25 @@ const exists =
 
 if (exists) {
 
-    favoriteBtn.textContent = "★";
+    favoriteBtn.textContent =
+        "★";
 
 } else {
 
-    favoriteBtn.textContent = "☆";
+    favoriteBtn.textContent =
+        "☆";
 
 }
 
 }
 
 // ===============================
-// WEATHER CONDITION
+// WEATHER INFORMATION
 // ===============================
 
-function getWeatherInfo(weatherCode) {
+function getWeatherInfo(
+weatherCode
+) {
 
 if (weatherCode === 0) {
 
@@ -403,33 +522,117 @@ if (weatherCode === 0) {
 // DISPLAY WEATHER
 // ===============================
 
-function displayWeather(current, city, daily) {
+function displayWeather(
+current,
+city,
+daily
+) {
 
-currentCity = city;
+currentCity =
+    city;
 
-cityName.textContent = city;
+
+cityName.textContent =
+    city;
 
 
 currentTemperatureCelsius =
     current.temperature_2m;
 
 
+currentFeelsLikeCelsius =
+    current.apparent_temperature;
+
+
 temperature.textContent =
-    `${Math.round(currentTemperatureCelsius)}°C`;
+    `${Math.round(
+        currentTemperatureCelsius
+    )}°C`;
 
 
 isCelsius = true;
 
+
 unitBtn.textContent =
     "Switch to °F";
 
+
+// =========================
+// BASIC DATA
+// =========================
 
 humidity.textContent =
     `${current.relative_humidity_2m}%`;
 
 
 wind.textContent =
-    `${Math.round(current.wind_speed_10m)} km/h`;
+    `${Math.round(
+        current.wind_speed_10m
+    )} km/h`;
+
+
+// =========================
+// FEELS LIKE
+// =========================
+
+feelsLike.textContent =
+    `${Math.round(
+        currentFeelsLikeCelsius
+    )}°C`;
+
+
+// =========================
+// PRESSURE
+// =========================
+
+pressure.textContent =
+    `${Math.round(
+        current.surface_pressure
+    )} hPa`;
+
+
+// =========================
+// VISIBILITY
+// =========================
+
+if (
+    current.visibility !== undefined
+) {
+
+    visibility.textContent =
+        `${(
+            current.visibility / 1000
+        ).toFixed(1)} km`;
+
+} else {
+
+    visibility.textContent =
+        "-- km";
+
+}
+
+
+// =========================
+// UV INDEX
+// =========================
+
+if (
+    daily &&
+    daily.uv_index_max &&
+    daily.uv_index_max[0] !== undefined
+) {
+
+    uvIndex.textContent =
+        Number(
+            daily.uv_index_max[0]
+        ).toFixed(1);
+
+} else {
+
+    uvIndex.textContent =
+        "--";
+
+}
 
 
 // =========================
@@ -439,11 +642,15 @@ wind.textContent =
 if (daily) {
 
     const sunriseTime =
-        new Date(daily.sunrise[0]);
+        new Date(
+            daily.sunrise[0]
+        );
 
 
     const sunsetTime =
-        new Date(daily.sunset[0]);
+        new Date(
+            daily.sunset[0]
+        );
 
 
     sunrise.textContent =
@@ -469,11 +676,13 @@ if (daily) {
 
 
 // =========================
-// WEATHER CONDITION
+// CONDITION
 // =========================
 
 const weatherInfo =
-    getWeatherInfo(current.weather_code);
+    getWeatherInfo(
+        current.weather_code
+    );
 
 
 condition.textContent =
@@ -507,6 +716,7 @@ async function () {
         );
 
         return;
+
     }
 
 
@@ -517,7 +727,7 @@ async function () {
     try {
 
         // =========================
-        // GET CITY LOCATION
+        // CITY LOCATION
         // =========================
 
         const locationResponse =
@@ -538,9 +748,14 @@ async function () {
             loading.style.display =
                 "none";
 
-            alert("City not found.");
+
+            alert(
+                "City not found."
+            );
+
 
             return;
+
         }
 
 
@@ -549,12 +764,12 @@ async function () {
 
 
         // =========================
-        // GET WEATHER
+        // WEATHER API
         // =========================
 
         const weatherResponse =
             await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+                `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature,surface_pressure,visibility&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto`
             );
 
 
@@ -582,12 +797,15 @@ async function () {
         loading.style.display =
             "none";
 
+
     } catch (error) {
 
         console.error(error);
 
+
         loading.style.display =
             "none";
+
 
         alert(
             "Something went wrong. Please try again."
@@ -605,13 +823,20 @@ async function () {
 
 function displayForecast(daily) {
 
-forecastContainer.innerHTML = "";
+forecastContainer.innerHTML =
+    "";
 
 
-for (let i = 0; i < 5; i++) {
+for (
+    let i = 0;
+    i < 5;
+    i++
+) {
 
     const date =
-        new Date(daily.time[i]);
+        new Date(
+            daily.time[i]
+        );
 
 
     const dayName =
@@ -642,14 +867,17 @@ for (let i = 0; i < 5; i++) {
 
 
     const card =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     card.className =
         "forecast-card";
 
 
-    card.innerHTML = `
+    card.innerHTML =
+        `
         <h3>${dayName}</h3>
 
         <div class="forecast-icon">
@@ -663,10 +891,12 @@ for (let i = 0; i < 5; i++) {
         <div class="forecast-condition">
             ${weatherInfo.text}
         </div>
-    `;
+        `;
 
 
-    forecastContainer.appendChild(card);
+    forecastContainer.appendChild(
+        card
+    );
 
 }
 
@@ -680,7 +910,9 @@ cityInput.addEventListener(
 "keypress",
 function (event) {
 
-    if (event.key === "Enter") {
+    if (
+        event.key === "Enter"
+    ) {
 
         searchBtn.click();
 
@@ -716,8 +948,23 @@ function () {
             ) + 32;
 
 
+        const feelsLikeFahrenheit =
+            (
+                currentFeelsLikeCelsius *
+                9 / 5
+            ) + 32;
+
+
         temperature.textContent =
-            `${Math.round(fahrenheit)}°F`;
+            `${Math.round(
+                fahrenheit
+            )}°F`;
+
+
+        feelsLike.textContent =
+            `${Math.round(
+                feelsLikeFahrenheit
+            )}°F`;
 
 
         unitBtn.textContent =
@@ -726,11 +973,18 @@ function () {
 
         isCelsius = false;
 
+
     } else {
 
         temperature.textContent =
             `${Math.round(
                 currentTemperatureCelsius
+            )}°C`;
+
+
+        feelsLike.textContent =
+            `${Math.round(
+                currentFeelsLikeCelsius
             )}°C`;
 
 
@@ -754,13 +1008,16 @@ locationBtn.addEventListener(
 "click",
 function () {
 
-    if (!navigator.geolocation) {
+    if (
+        !navigator.geolocation
+    ) {
 
         alert(
             "Geolocation is not supported by your browser."
         );
 
         return;
+
     }
 
 
@@ -784,7 +1041,7 @@ function () {
 
                 const response =
                     await fetch(
-                        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+                        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,apparent_temperature,surface_pressure,visibility&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto`
                     );
 
 
@@ -807,12 +1064,15 @@ function () {
                 loading.style.display =
                     "none";
 
+
             } catch (error) {
 
                 console.error(error);
 
+
                 loading.style.display =
                     "none";
+
 
                 alert(
                     "Unable to get weather data."
@@ -827,6 +1087,7 @@ function () {
 
             loading.style.display =
                 "none";
+
 
             alert(
                 "Please allow location access."
