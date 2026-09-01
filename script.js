@@ -1,4 +1,3 @@
-
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
 const locationBtn = document.getElementById("locationBtn");
@@ -12,6 +11,7 @@ const weatherIcon = document.getElementById("weatherIcon");
 
 const unitBtn = document.getElementById("unitBtn");
 const forecastContainer = document.getElementById("forecastContainer");
+const loading = document.getElementById("loading");
 
 let currentTemperatureCelsius = null;
 let isCelsius = true;
@@ -95,6 +95,9 @@ searchBtn.addEventListener("click", async function () {
         return;
     }
 
+    // Show loading
+    loading.style.display = "block";
+
     try {
 
         // Find city coordinates
@@ -105,6 +108,9 @@ searchBtn.addEventListener("click", async function () {
         const locationData = await locationResponse.json();
 
         if (!locationData.results || locationData.results.length === 0) {
+
+            loading.style.display = "none";
+
             alert("City not found.");
             return;
         }
@@ -123,17 +129,30 @@ searchBtn.addEventListener("click", async function () {
 
 
         // Display current weather
-        displayWeather(current, location.name);
+        displayWeather(
+            current,
+            location.name
+        );
 
 
         // Display 5-day forecast
-        displayForecast(weatherData.daily);
+        displayForecast(
+            weatherData.daily
+        );
+
+
+        // Hide loading
+        loading.style.display = "none";
 
     } catch (error) {
 
         console.error(error);
-        alert("Something went wrong. Please try again.");
 
+        loading.style.display = "none";
+
+        alert(
+            "Something went wrong. Please try again."
+        );
     }
 
 });
@@ -151,15 +170,22 @@ function displayForecast(daily) {
 
         const date = new Date(daily.time[i]);
 
-        const dayName = date.toLocaleDateString("en-US", {
-            weekday: "short"
-        });
+        const dayName = date.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "short"
+            }
+        );
 
         const maxTemp =
-            Math.round(daily.temperature_2m_max[i]);
+            Math.round(
+                daily.temperature_2m_max[i]
+            );
 
         const minTemp =
-            Math.round(daily.temperature_2m_min[i]);
+            Math.round(
+                daily.temperature_2m_min[i]
+            );
 
         const weatherCode =
             daily.weather_code[i];
@@ -206,7 +232,8 @@ function displayForecast(daily) {
         }
 
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("div");
 
         card.className = "forecast-card";
 
@@ -235,106 +262,144 @@ function displayForecast(daily) {
 // ENTER KEY SEARCH
 // ===============================
 
-cityInput.addEventListener("keypress", function (event) {
+cityInput.addEventListener(
+    "keypress",
+    function (event) {
 
-    if (event.key === "Enter") {
-        searchBtn.click();
+        if (event.key === "Enter") {
+            searchBtn.click();
+        }
+
     }
-
-});
+);
 
 
 // ===============================
 // CELSIUS / FAHRENHEIT
 // ===============================
 
-unitBtn.addEventListener("click", function () {
+unitBtn.addEventListener(
+    "click",
+    function () {
 
-    if (currentTemperatureCelsius === null) {
-        return;
+        if (currentTemperatureCelsius === null) {
+            return;
+        }
+
+        if (isCelsius) {
+
+            const fahrenheit =
+                (currentTemperatureCelsius * 9 / 5) + 32;
+
+            temperature.textContent =
+                `${Math.round(fahrenheit)}°F`;
+
+            unitBtn.textContent =
+                "Switch to °C";
+
+            isCelsius = false;
+
+        } else {
+
+            temperature.textContent =
+                `${Math.round(currentTemperatureCelsius)}°C`;
+
+            unitBtn.textContent =
+                "Switch to °F";
+
+            isCelsius = true;
+        }
+
     }
-
-    if (isCelsius) {
-
-        const fahrenheit =
-            (currentTemperatureCelsius * 9 / 5) + 32;
-
-        temperature.textContent =
-            `${Math.round(fahrenheit)}°F`;
-
-        unitBtn.textContent = "Switch to °C";
-
-        isCelsius = false;
-
-    } else {
-
-        temperature.textContent =
-            `${Math.round(currentTemperatureCelsius)}°C`;
-
-        unitBtn.textContent = "Switch to °F";
-
-        isCelsius = true;
-    }
-
-});
+);
 
 
 // ===============================
 // MY LOCATION WEATHER
 // ===============================
 
-locationBtn.addEventListener("click", function () {
+locationBtn.addEventListener(
+    "click",
+    function () {
 
-    if (!navigator.geolocation) {
-
-        alert("Geolocation is not supported by your browser.");
-        return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-
-        async function (position) {
-
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            try {
-
-                const response = await fetch(
-                    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
-                );
-
-                const data = await response.json();
-
-                // Display current weather
-                displayWeather(
-                    data.current,
-                    "Your Location"
-                );
-
-                // Display forecast
-                displayForecast(data.daily);
-
-            } catch (error) {
-
-                console.error(error);
-
-                alert(
-                    "Unable to get weather data."
-                );
-            }
-        },
-
-        function () {
+        if (!navigator.geolocation) {
 
             alert(
-                "Please allow location access."
+                "Geolocation is not supported by your browser."
             );
 
+            return;
         }
 
-    );
 
-});
+        // Show loading
+        loading.style.display = "block";
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            async function (position) {
+
+                const latitude =
+                    position.coords.latitude;
+
+                const longitude =
+                    position.coords.longitude;
+
+
+                try {
+
+                    const response = await fetch(
+                        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
+                    );
+
+                    const data =
+                        await response.json();
+
+
+                    // Display current weather
+                    displayWeather(
+                        data.current,
+                        "Your Location"
+                    );
+
+
+                    // Display forecast
+                    displayForecast(
+                        data.daily
+                    );
+
+
+                    // Hide loading
+                    loading.style.display = "none";
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    loading.style.display = "none";
+
+                    alert(
+                        "Unable to get weather data."
+                    );
+                }
+            },
+
+
+            function () {
+
+                loading.style.display = "none";
+
+                alert(
+                    "Please allow location access."
+                );
+
+            }
+
+        );
+
+    }
+);
 
 
