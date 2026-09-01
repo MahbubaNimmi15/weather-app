@@ -1,6 +1,7 @@
 
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
+const locationBtn = document.getElementById("locationBtn");
 
 const cityName = document.getElementById("cityName");
 const temperature = document.getElementById("temperature");
@@ -14,6 +15,71 @@ const forecastContainer = document.getElementById("forecastContainer");
 
 let currentTemperatureCelsius = null;
 let isCelsius = true;
+
+
+// ===============================
+// DISPLAY WEATHER
+// ===============================
+
+function displayWeather(current, city) {
+
+    cityName.textContent = city;
+
+    currentTemperatureCelsius = current.temperature_2m;
+
+    temperature.textContent =
+        `${Math.round(currentTemperatureCelsius)}°C`;
+
+    isCelsius = true;
+
+    unitBtn.textContent = "Switch to °F";
+
+    humidity.textContent =
+        `${current.relative_humidity_2m}%`;
+
+    wind.textContent =
+        `${Math.round(current.wind_speed_10m)} km/h`;
+
+
+    // Weather condition and icon
+    const weatherCode = current.weather_code;
+
+    if (weatherCode === 0) {
+
+        condition.textContent = "Clear Sky";
+        weatherIcon.textContent = "☀️";
+
+    } else if (weatherCode <= 3) {
+
+        condition.textContent = "Partly Cloudy";
+        weatherIcon.textContent = "⛅";
+
+    } else if (weatherCode <= 48) {
+
+        condition.textContent = "Foggy";
+        weatherIcon.textContent = "🌫️";
+
+    } else if (weatherCode <= 67) {
+
+        condition.textContent = "Rainy";
+        weatherIcon.textContent = "🌧️";
+
+    } else if (weatherCode <= 77) {
+
+        condition.textContent = "Snowy";
+        weatherIcon.textContent = "❄️";
+
+    } else if (weatherCode <= 82) {
+
+        condition.textContent = "Rain Showers";
+        weatherIcon.textContent = "🌦️";
+
+    } else {
+
+        condition.textContent = "Thunderstorm";
+        weatherIcon.textContent = "⛈️";
+    }
+}
 
 
 // ===============================
@@ -56,75 +122,11 @@ searchBtn.addEventListener("click", async function () {
         const current = weatherData.current;
 
 
-        // ===============================
-        // CURRENT WEATHER
-        // ===============================
-
-        cityName.textContent = location.name;
-
-        currentTemperatureCelsius = current.temperature_2m;
-
-        temperature.textContent =
-            `${Math.round(currentTemperatureCelsius)}°C`;
-
-        isCelsius = true;
-
-        unitBtn.textContent = "Switch to °F";
-
-        humidity.textContent =
-            `${current.relative_humidity_2m}%`;
-
-        wind.textContent =
-            `${Math.round(current.wind_speed_10m)} km/h`;
+        // Display current weather
+        displayWeather(current, location.name);
 
 
-        // ===============================
-        // CURRENT WEATHER ICON
-        // ===============================
-
-        const weatherCode = current.weather_code;
-
-        if (weatherCode === 0) {
-
-            condition.textContent = "Clear Sky";
-            weatherIcon.textContent = "☀️";
-
-        } else if (weatherCode <= 3) {
-
-            condition.textContent = "Partly Cloudy";
-            weatherIcon.textContent = "⛅";
-
-        } else if (weatherCode <= 48) {
-
-            condition.textContent = "Foggy";
-            weatherIcon.textContent = "🌫️";
-
-        } else if (weatherCode <= 67) {
-
-            condition.textContent = "Rainy";
-            weatherIcon.textContent = "🌧️";
-
-        } else if (weatherCode <= 77) {
-
-            condition.textContent = "Snowy";
-            weatherIcon.textContent = "❄️";
-
-        } else if (weatherCode <= 82) {
-
-            condition.textContent = "Rain Showers";
-            weatherIcon.textContent = "🌦️";
-
-        } else {
-
-            condition.textContent = "Thunderstorm";
-            weatherIcon.textContent = "⛈️";
-        }
-
-
-        // ===============================
-        // 5-DAY FORECAST
-        // ===============================
-
+        // Display 5-day forecast
         displayForecast(weatherData.daily);
 
     } catch (error) {
@@ -275,4 +277,64 @@ unitBtn.addEventListener("click", function () {
     }
 
 });
+
+
+// ===============================
+// MY LOCATION WEATHER
+// ===============================
+
+locationBtn.addEventListener("click", function () {
+
+    if (!navigator.geolocation) {
+
+        alert("Geolocation is not supported by your browser.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        async function (position) {
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            try {
+
+                const response = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
+                );
+
+                const data = await response.json();
+
+                // Display current weather
+                displayWeather(
+                    data.current,
+                    "Your Location"
+                );
+
+                // Display forecast
+                displayForecast(data.daily);
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Unable to get weather data."
+                );
+            }
+        },
+
+        function () {
+
+            alert(
+                "Please allow location access."
+            );
+
+        }
+
+    );
+
+});
+
 
