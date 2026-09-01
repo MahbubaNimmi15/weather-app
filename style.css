@@ -8,7 +8,7 @@ body {
 font-family: Arial, sans-serif;
 min-height: 100vh;
 padding: 40px 20px;
-background: linear-gradient(135deg, #7bd8c7, #9face6);
+background: linear-gradient(135deg, #74ebd5, #9face6);
 }
 
 .weather-container {
@@ -130,25 +130,31 @@ color: #666;
 font-size: 17px;
 }
 
+/* Favorite Cities */
+
 .favorites-section,
+.history-section,
 .forecast-section {
 margin-top: 25px;
 }
 
 .favorites-section h2,
+.history-section h2,
 .forecast-section h2 {
 color: white;
 margin-bottom: 15px;
 }
 
-.favorites-container {
+.favorites-container,
+.history-container {
 display: flex;
 justify-content: center;
 gap: 10px;
 flex-wrap: wrap;
 }
 
-.favorite-city {
+.favorite-city,
+.history-city {
 background: white;
 padding: 10px 15px;
 border-radius: 10px;
@@ -157,14 +163,25 @@ align-items: center;
 gap: 8px;
 }
 
-.favorite-city button {
+.favorite-city button,
+.history-city button {
 padding: 5px 8px;
 background: transparent;
 }
 
-#noFavorites {
+#noFavorites,
+#noHistory {
 color: white;
 }
+
+/* Clear History */
+
+#clearHistoryBtn {
+margin-top: 15px;
+background: #ffffff;
+}
+
+/* Forecast */
 
 .forecast-container {
 display: grid;
@@ -197,6 +214,8 @@ margin: 8px 0;
 font-size: 13px;
 color: #555;
 }
+
+/* Mobile */
 
 @media (max-width: 700px) {
 

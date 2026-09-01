@@ -2,20 +2,9 @@
 
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-<title>Weather App</title>
-
-<link rel="stylesheet" href="style.css">
-
-
-</head>
+<head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Weather App</title> <link rel="stylesheet" href="style.css"> </head>
 
 <body>
-
 
 <div class="weather-container">
 
@@ -43,6 +32,8 @@
         ⏳ Loading weather...
     </p>
 
+    <!-- Current Weather -->
+
     <div class="weather-card">
 
         <div class="city-title">
@@ -51,7 +42,7 @@
                 Dhaka
             </h2>
 
-            <button id="favoriteBtn" title="Add to favorites">
+            <button id="favoriteBtn">
                 ☆
             </button>
 
@@ -103,6 +94,9 @@
 
     </div>
 
+
+    <!-- Favorite Cities -->
+
     <div class="favorites-section">
 
         <h2>⭐ Favorite Cities</h2>
@@ -111,12 +105,41 @@
             class="favorites-container"
             id="favoritesContainer"
         >
+
             <p id="noFavorites">
                 No favorite cities yet.
             </p>
+
         </div>
 
     </div>
+
+
+    <!-- Search History -->
+
+    <div class="history-section">
+
+        <h2>🕘 Search History</h2>
+
+        <div
+            class="history-container"
+            id="historyContainer"
+        >
+
+            <p id="noHistory">
+                No search history yet.
+            </p>
+
+        </div>
+
+        <button id="clearHistoryBtn">
+            🗑️ Clear History
+        </button>
+
+    </div>
+
+
+    <!-- Forecast -->
 
     <div class="forecast-section">
 
@@ -133,7 +156,6 @@
 </div>
 
 <script src="script.js"></script>
-
 
 </body>
 

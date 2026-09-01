@@ -1,4 +1,3 @@
-
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
 const locationBtn = document.getElementById("locationBtn");
@@ -20,6 +19,10 @@ const sunset = document.getElementById("sunset");
 const favoriteBtn = document.getElementById("favoriteBtn");
 const favoritesContainer = document.getElementById("favoritesContainer");
 const noFavorites = document.getElementById("noFavorites");
+
+const historyContainer = document.getElementById("historyContainer");
+const noHistory = document.getElementById("noHistory");
+const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
 let currentTemperatureCelsius = null;
 let isCelsius = true;
@@ -121,11 +124,14 @@ if (!time) {
 
 const date = new Date(time);
 
-return date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true
-});
+return date.toLocaleTimeString(
+    "en-US",
+    {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    }
+);
 
 }
 
@@ -133,79 +139,87 @@ return date.toLocaleTimeString("en-US", {
 // SEARCH WEATHER
 // ===============================
 
-searchBtn.addEventListener("click", async function () {
+searchBtn.addEventListener(
+"click",
+async function () {
 
-const city = cityInput.value.trim();
+    const city =
+        cityInput.value.trim();
 
-if (city === "") {
+    if (city === "") {
 
-    alert("Please enter a city name.");
-    return;
-}
-
-loading.style.display = "block";
-
-try {
-
-    const locationResponse = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
-    );
-
-    const locationData =
-        await locationResponse.json();
-
-    if (
-        !locationData.results ||
-        locationData.results.length === 0
-    ) {
-
-        loading.style.display = "none";
-
-        alert("City not found.");
+        alert("Please enter a city name.");
         return;
     }
 
-    const location =
-        locationData.results[0];
+    loading.style.display = "block";
 
-    const weatherResponse = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
-    );
+    try {
 
-    const weatherData =
-        await weatherResponse.json();
+        const locationResponse =
+            await fetch(
+                `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
+            );
 
-    displayWeather(
-        weatherData.current,
-        location.name,
-        weatherData.daily
-    );
+        const locationData =
+            await locationResponse.json();
 
-    displayForecast(
-        weatherData.daily
-    );
+        if (
+            !locationData.results ||
+            locationData.results.length === 0
+        ) {
 
-    addToSearchHistory(location.name);
+            loading.style.display = "none";
 
-    cityInput.value = "";
+            alert("City not found.");
+            return;
+        }
 
-    loading.style.display = "none";
+        const location =
+            locationData.results[0];
 
-} catch (error) {
+        const weatherResponse =
+            await fetch(
+                `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+            );
 
-    console.error(error);
+        const weatherData =
+            await weatherResponse.json();
 
-    loading.style.display = "none";
+        displayWeather(
+            weatherData.current,
+            location.name,
+            weatherData.daily
+        );
 
-    alert(
-        "Something went wrong. Please try again."
-    );
+        displayForecast(
+            weatherData.daily
+        );
+
+        addToSearchHistory(
+            location.name
+        );
+
+        cityInput.value = "";
+
+        loading.style.display = "none";
+
+    } catch (error) {
+
+        console.error(error);
+
+        loading.style.display = "none";
+
+        alert(
+            "Something went wrong. Please try again."
+        );
+    }
 }
 
-});
+);
 
 // ===============================
-// DISPLAY 5-DAY FORECAST
+// DISPLAY FORECAST
 // ===============================
 
 function displayForecast(daily) {
@@ -214,7 +228,8 @@ forecastContainer.innerHTML = "";
 
 for (let i = 0; i < 5; i++) {
 
-    const date = new Date(daily.time[i]);
+    const date =
+        new Date(daily.time[i]);
 
     const dayName =
         date.toLocaleDateString(
@@ -279,7 +294,8 @@ for (let i = 0; i < 5; i++) {
     const card =
         document.createElement("div");
 
-    card.className = "forecast-card";
+    card.className =
+        "forecast-card";
 
     card.innerHTML = `
         <h3>${dayName}</h3>
@@ -388,9 +404,10 @@ function () {
 
             try {
 
-                const response = await fetch(
-                    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
-                );
+                const response =
+                    await fetch(
+                        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+                    );
 
                 const data =
                     await response.json();
@@ -438,7 +455,9 @@ function () {
 
 let favoriteCities =
 JSON.parse(
-localStorage.getItem("favoriteCities")
+localStorage.getItem(
+"favoriteCities"
+)
 ) || [];
 
 function saveFavorites() {
@@ -452,15 +471,17 @@ localStorage.setItem(
 
 function updateFavoriteButton() {
 
-if (favoriteCities.includes(currentCity)) {
+if (
+    favoriteCities.includes(
+        currentCity
+    )
+) {
 
     favoriteBtn.textContent = "★";
-    favoriteBtn.title = "Remove from favorites";
 
 } else {
 
     favoriteBtn.textContent = "☆";
-    favoriteBtn.title = "Add to favorites";
 }
 
 }
@@ -473,16 +494,23 @@ function () {
         return;
     }
 
-    if (favoriteCities.includes(currentCity)) {
+    if (
+        favoriteCities.includes(
+            currentCity
+        )
+    ) {
 
         favoriteCities =
             favoriteCities.filter(
-                city => city !== currentCity
+                city =>
+                    city !== currentCity
             );
 
     } else {
 
-        favoriteCities.push(currentCity);
+        favoriteCities.push(
+            currentCity
+        );
     }
 
     saveFavorites();
@@ -500,8 +528,16 @@ favoritesContainer.innerHTML = "";
 
 if (favoriteCities.length === 0) {
 
+    const message =
+        document.createElement("p");
+
+    message.id = "noFavorites";
+
+    message.textContent =
+        "No favorite cities yet.";
+
     favoritesContainer.appendChild(
-        noFavorites
+        message
     );
 
     return;
@@ -526,42 +562,41 @@ favoriteCities.forEach(
             </button>
         `;
 
-        const cityButton =
-            favorite.querySelector(
+        favorite
+            .querySelector(
                 ".favorite-name"
+            )
+            .addEventListener(
+                "click",
+                function () {
+
+                    cityInput.value = city;
+
+                    searchBtn.click();
+                }
             );
 
-        cityButton.addEventListener(
-            "click",
-            function () {
-
-                cityInput.value = city;
-
-                searchBtn.click();
-            }
-        );
-
-        const removeButton =
-            favorite.querySelector(
+        favorite
+            .querySelector(
                 ".remove-favorite"
+            )
+            .addEventListener(
+                "click",
+                function () {
+
+                    favoriteCities =
+                        favoriteCities.filter(
+                            item =>
+                                item !== city
+                        );
+
+                    saveFavorites();
+
+                    displayFavorites();
+
+                    updateFavoriteButton();
+                }
             );
-
-        removeButton.addEventListener(
-            "click",
-            function () {
-
-                favoriteCities =
-                    favoriteCities.filter(
-                        item => item !== city
-                    );
-
-                saveFavorites();
-
-                displayFavorites();
-
-                updateFavoriteButton();
-            }
-        );
 
         favoritesContainer.appendChild(
             favorite
@@ -577,7 +612,9 @@ favoriteCities.forEach(
 
 let searchHistory =
 JSON.parse(
-localStorage.getItem("searchHistory")
+localStorage.getItem(
+"searchHistory"
+)
 ) || [];
 
 function addToSearchHistory(city) {
@@ -597,11 +634,119 @@ localStorage.setItem(
     JSON.stringify(searchHistory)
 );
 
+displaySearchHistory();
+
 }
+
+function displaySearchHistory() {
+
+historyContainer.innerHTML = "";
+
+if (searchHistory.length === 0) {
+
+    const message =
+        document.createElement("p");
+
+    message.id = "noHistory";
+
+    message.textContent =
+        "No search history yet.";
+
+    historyContainer.appendChild(
+        message
+    );
+
+    return;
+}
+
+searchHistory.forEach(
+    function (city, index) {
+
+        const history =
+            document.createElement("div");
+
+        history.className =
+            "history-city";
+
+        history.innerHTML = `
+            <button class="history-name">
+                🕘 ${city}
+            </button>
+
+            <button class="remove-history">
+                ❌
+            </button>
+        `;
+
+        history
+            .querySelector(
+                ".history-name"
+            )
+            .addEventListener(
+                "click",
+                function () {
+
+                    cityInput.value = city;
+
+                    searchBtn.click();
+                }
+            );
+
+        history
+            .querySelector(
+                ".remove-history"
+            )
+            .addEventListener(
+                "click",
+                function () {
+
+                    searchHistory.splice(
+                        index,
+                        1
+                    );
+
+                    localStorage.setItem(
+                        "searchHistory",
+                        JSON.stringify(
+                            searchHistory
+                        )
+                    );
+
+                    displaySearchHistory();
+                }
+            );
+
+        historyContainer.appendChild(
+            history
+        );
+    }
+);
+
+}
+
+// ===============================
+// CLEAR SEARCH HISTORY
+// ===============================
+
+clearHistoryBtn.addEventListener(
+"click",
+function () {
+
+    searchHistory = [];
+
+    localStorage.removeItem(
+        "searchHistory"
+    );
+
+    displaySearchHistory();
+}
+
+);
 
 // ===============================
 // INITIALIZE
 // ===============================
 
 displayFavorites();
+displaySearchHistory();
 updateFavoriteButton();
