@@ -1,4 +1,3 @@
-
 * {
   margin: 0;
   padding: 0;
@@ -74,20 +73,6 @@ font-size: 30px;
 margin-bottom: 12px;
 }
 
-#favoriteBtn {
-padding: 10px 16px;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-font-size: 14px;
-font-weight: bold;
-margin-bottom: 15px;
-}
-
-#favoriteBtn:hover {
-opacity: 0.85;
-}
-
 .weather-icon {
 font-size: 70px;
 margin: 10px 0;
@@ -118,13 +103,16 @@ margin-bottom: 25px;
 
 .weather-info {
 display: flex;
-justify-content: space-around;
+justify-content: center;
+flex-wrap: wrap;
+gap: 25px;
 border-top: 1px solid #ddd;
 padding-top: 20px;
 }
 
 .weather-info div {
 text-align: center;
+min-width: 100px;
 }
 
 .weather-info span {
@@ -138,87 +126,6 @@ color: #666;
 
 .weather-info strong {
 font-size: 18px;
-}
-
-/* ===============================
-FAVORITES
-================================ */
-
-.favorites-section {
-margin-top: 25px;
-background: rgba(255, 255, 255, 0.92);
-padding: 20px;
-border-radius: 15px;
-}
-
-.favorites-section h2 {
-margin-bottom: 15px;
-}
-
-#favoritesContainer {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-justify-content: center;
-}
-
-#favoritesContainer button {
-padding: 10px 14px;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-font-weight: bold;
-}
-
-#favoritesContainer button:hover {
-opacity: 0.8;
-}
-
-/* ===============================
-SEARCH HISTORY
-================================ */
-
-.history-section {
-margin-top: 25px;
-background: rgba(255, 255, 255, 0.92);
-padding: 20px;
-border-radius: 15px;
-}
-
-.history-section h2 {
-margin-bottom: 15px;
-}
-
-#historyContainer {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-justify-content: center;
-margin-bottom: 15px;
-}
-
-#historyContainer button {
-padding: 10px 14px;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-font-weight: bold;
-}
-
-#historyContainer button:hover {
-opacity: 0.8;
-}
-
-#clearHistoryBtn {
-padding: 10px 16px;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-font-weight: bold;
-}
-
-#clearHistoryBtn:hover {
-opacity: 0.8;
 }
 
 /* ===============================
@@ -271,11 +178,10 @@ color: #555;
 }
 
 /* ===============================
-MOBILE RESPONSIVE
+MOBILE
 ================================ */
 
 @media (max-width: 700px) {
-
 
 body {
     padding: 25px 12px;
@@ -321,5 +227,6 @@ h1 {
 .weather-info {
     gap: 20px;
 }
+
 
 }

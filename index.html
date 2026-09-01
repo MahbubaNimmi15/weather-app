@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -5,8 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
-    <link rel="stylesheet" href="style.css">
+
+
+<title>Weather App</title>
+
+<link rel="stylesheet" href="style.css">
+
+
 </head>
 
 <body>
@@ -16,6 +22,7 @@
 
     <h1>Weather App</h1>
 
+    <!-- Search Box -->
     <div class="search-box">
 
         <input
@@ -34,19 +41,19 @@
 
     </div>
 
+
+    <!-- Loading -->
     <p id="loading" style="display: none;">
         ⏳ Loading weather...
     </p>
 
+
+    <!-- Current Weather -->
     <div class="weather-card">
 
         <h2 id="cityName">
             Dhaka
         </h2>
-
-        <button id="favoriteBtn">
-            ⭐ Add to Favorites
-        </button>
 
         <div class="weather-icon" id="weatherIcon">
             ☀️
@@ -64,51 +71,65 @@
             Sunny
         </p>
 
+
+        <!-- Weather Information -->
         <div class="weather-info">
 
             <div>
                 <span>💧</span>
                 <p>Humidity</p>
-                <strong id="humidity">65%</strong>
+                <strong id="humidity">
+                    65%
+                </strong>
             </div>
+
 
             <div>
                 <span>💨</span>
                 <p>Wind</p>
-                <strong id="wind">12 km/h</strong>
+                <strong id="wind">
+                    12 km/h
+                </strong>
+            </div>
+
+
+            <div>
+                <span>🌡️</span>
+                <p>Feels Like</p>
+                <strong id="feelsLike">
+                    --°C
+                </strong>
+            </div>
+
+
+            <div>
+                <span>🌅</span>
+                <p>Sunrise</p>
+                <strong id="sunrise">
+                    --
+                </strong>
+            </div>
+
+
+            <div>
+                <span>🌇</span>
+                <p>Sunset</p>
+                <strong id="sunset">
+                    --
+                </strong>
             </div>
 
         </div>
 
     </div>
 
-    <div class="favorites-section">
 
-        <h2>⭐ Favorite Cities</h2>
-
-        <div id="favoritesContainer">
-            <p>No favorite cities yet.</p>
-        </div>
-
-    </div>
-
-    <div class="history-section">
-
-        <h2>🕘 Search History</h2>
-
-        <div id="historyContainer">
-            <p>No search history yet.</p>
-        </div>
-
-        <button id="clearHistoryBtn">
-            Clear History
-        </button>
-
-    </div>
-
+    <!-- 5-Day Forecast -->
     <div class="forecast-section">
 
-        <h2>5-Day Forecast</h2>
+        <h2>
+            5-Day Forecast
+        </h2>
 
         <div
             class="forecast-container"
@@ -119,6 +140,7 @@
     </div>
 
 </div>
+
 
 <script src="script.js"></script>
 
