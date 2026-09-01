@@ -1,6 +1,5 @@
 /* =====================================================
    🌤️ WEATHER APP
-   BLUE + PURPLE + SKY GRADIENT
 ===================================================== */
 
 * {
@@ -115,7 +114,8 @@ body {
         5px 0 25px
         rgba(0, 0, 0, 0.3);
 
-    transition: left 0.3s ease;
+    transition:
+        left 0.3s ease;
 
     overflow-y: auto;
 }
@@ -232,7 +232,6 @@ body {
 
 .overlay.active {
     opacity: 1;
-
     visibility: visible;
 }
 
@@ -270,7 +269,6 @@ body {
     position: relative;
 
     width: 100%;
-
     max-width: 650px;
 
     height: 52px;
@@ -295,14 +293,11 @@ body {
     flex: 1;
 
     width: 100%;
-
     height: 52px;
 
-    padding:
-        0 105px 0 18px;
+    padding: 0 105px 0 18px;
 
     border: none;
-
     outline: none;
 
     border-radius: 12px;
@@ -328,18 +323,16 @@ body {
 
 
 /* =====================================================
-   CLEAR
+   CLEAR BUTTON
 ===================================================== */
 
 .clear-search-btn {
     position: absolute;
 
     right: 55px;
-
     top: 0;
 
     width: 45px;
-
     height: 52px;
 
     border: none;
@@ -378,11 +371,9 @@ body {
     position: absolute;
 
     right: 0;
-
     top: 0;
 
     width: 55px;
-
     height: 52px;
 
     border: none;
@@ -420,7 +411,6 @@ body {
     top: 57px;
 
     left: 0;
-
     right: 0;
 
     z-index: 5000;
@@ -728,6 +718,121 @@ body {
 
 
 /* =====================================================
+   ⚠️ WEATHER ALERTS
+===================================================== */
+
+.alerts-section {
+    margin-top: 35px;
+}
+
+
+.alerts-section h2 {
+    margin-bottom: 20px;
+}
+
+
+.alerts-container {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+.alert {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 18px 20px;
+
+    border-radius: 16px;
+
+    text-align: left;
+
+    background:
+        rgba(255, 255, 255, 0.16);
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0, 0, 0, 0.12);
+
+    animation:
+        alertIn 0.4s ease;
+}
+
+
+.alert-icon {
+    font-size: 30px;
+
+    flex-shrink: 0;
+}
+
+
+.alert-content {
+    flex: 1;
+}
+
+
+.alert-title {
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+
+.alert-message {
+    font-size: 14px;
+
+    opacity: 0.9;
+
+    line-height: 1.5;
+}
+
+
+.alert-normal {
+    background:
+        rgba(34, 197, 94, 0.18);
+}
+
+
+.alert-warning {
+    background:
+        rgba(245, 158, 11, 0.22);
+}
+
+
+.alert-danger {
+    background:
+        rgba(239, 68, 68, 0.25);
+}
+
+
+@keyframes alertIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =====================================================
    ☀️ UV INDEX
 ===================================================== */
 
@@ -773,12 +878,7 @@ body {
 
 
 .uv-icon {
-    font-size: 58px;
-}
-
-
-.uv-content {
-    text-align: left;
+    font-size: 55px;
 }
 
 
@@ -806,42 +906,15 @@ body {
 }
 
 
-.uv-scale-labels {
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 8px;
-
-    font-size: 11px;
-
-    opacity: 0.9;
-}
-
-
 .uv-progress {
     width: 100%;
 
-    height: 14px;
-
-    margin-top: 8px;
+    height: 12px;
 
     border-radius: 20px;
 
     background:
-        linear-gradient(
-            90deg,
-            #22c55e 0%,
-            #22c55e 27%,
-            #eab308 27%,
-            #eab308 55%,
-            #f97316 55%,
-            #f97316 73%,
-            #ef4444 73%,
-            #ef4444 91%,
-            #7c3aed 91%,
-            #7c3aed 100%
-        );
+        rgba(255, 255, 255, 0.25);
 
     overflow: hidden;
 }
@@ -855,21 +928,28 @@ body {
     border-radius: 20px;
 
     background:
-        rgba(255, 255, 255, 0.75);
+        linear-gradient(
+            90deg,
+            #22c55e,
+            #eab308,
+            #f97316,
+            #ef4444,
+            #7c3aed
+        );
 
     transition:
-        width 0.6s ease;
+        width 0.5s ease;
 }
 
 
-.uv-scale-numbers {
+.uv-scale-labels {
     display: flex;
 
     justify-content: space-between;
 
-    margin-top: 5px;
+    margin-top: 7px;
 
-    font-size: 11px;
+    font-size: 12px;
 
     opacity: 0.8;
 }
@@ -878,7 +958,7 @@ body {
 .uv-advice {
     margin-top: 20px;
 
-    padding: 12px 15px;
+    padding: 14px;
 
     border-radius: 12px;
 
@@ -1252,7 +1332,9 @@ body.dark-mode .no-suggestion {
 }
 
 
-body.dark-mode .weather-card {
+body.dark-mode .weather-card,
+body.dark-mode .alert,
+body.dark-mode .uv-card {
     background:
         rgba(15, 23, 42, 0.45);
 }
@@ -1265,7 +1347,7 @@ body.dark-mode .forecast-card,
 body.dark-mode .graph-card,
 body.dark-mode .air-quality-card,
 body.dark-mode .aqi-box,
-body.dark-mode .uv-card {
+body.dark-mode .uv-advice {
     background:
         rgba(30, 41, 59, 0.65);
 }
@@ -1286,12 +1368,6 @@ body.dark-mode #unitBtn {
     background: #e2e8f0;
 
     color: #0f172a;
-}
-
-
-body.dark-mode .uv-advice {
-    background:
-        rgba(15, 23, 42, 0.5);
 }
 
 
@@ -1321,11 +1397,6 @@ body.dark-mode .uv-advice {
 
     #temperature {
         font-size: 42px;
-    }
-
-
-    .uv-scale-labels {
-        font-size: 9px;
     }
 
 }
@@ -1390,38 +1461,13 @@ body.dark-mode .uv-advice {
     }
 
 
-    .uv-card {
-        padding: 20px 15px;
+    .alert {
+        padding: 15px;
     }
 
 
-    .uv-main {
-        gap: 12px;
-    }
-
-
-    .uv-icon {
-        font-size: 45px;
-    }
-
-
-    #uvValue {
-        font-size: 34px;
-    }
-
-
-    .uv-scale-labels {
-        display: none;
-    }
-
-
-    .uv-scale-numbers {
-        font-size: 10px;
-    }
-
-
-    .uv-advice {
-        font-size: 13px;
+    .alert-icon {
+        font-size: 25px;
     }
 
 }

@@ -1,5 +1,7 @@
+
 /* =====================================================
    🌤️ WEATHER APP JAVASCRIPT
+   Feature 6: Weather Alerts
 ===================================================== */
 
 
@@ -115,11 +117,6 @@ const pm25 =
 const pm10 =
     document.getElementById("pm10");
 
-
-/* =====================================================
-   ☀️ UV INDEX ELEMENTS
-===================================================== */
-
 const uvValue =
     document.getElementById("uvValue");
 
@@ -131,6 +128,9 @@ const uvProgress =
 
 const uvAdvice =
     document.getElementById("uvAdvice");
+
+const alertsContainer =
+    document.getElementById("alertsContainer");
 
 
 /* =====================================================
@@ -267,7 +267,6 @@ function getWeatherInfo(code) {
     return weather[code] || {
 
         icon: "🌤️",
-
         text: "Unknown"
 
     };
@@ -276,21 +275,17 @@ function getWeatherInfo(code) {
 
 
 /* =====================================================
-   FORMAT TIME
+   TIME
 ===================================================== */
 
 function formatTime(timeString) {
 
     if (!timeString) {
-
         return "--:--";
-
     }
-
 
     const date =
         new Date(timeString);
-
 
     return date.toLocaleTimeString(
         [],
@@ -304,7 +299,7 @@ function formatTime(timeString) {
 
 
 /* =====================================================
-   FORMAT DATE
+   DATE
 ===================================================== */
 
 function formatDate(dateString) {
@@ -313,7 +308,6 @@ function formatDate(dateString) {
         new Date(
             dateString + "T00:00:00"
         );
-
 
     return date.toLocaleDateString(
         [],
@@ -331,8 +325,14 @@ function formatDate(dateString) {
 
 function getWindDirection(degrees) {
 
-    const directions = [
+    if (
+        degrees === undefined ||
+        degrees === null
+    ) {
+        return "--";
+    }
 
+    const directions = [
         "N",
         "NE",
         "E",
@@ -341,15 +341,39 @@ function getWindDirection(degrees) {
         "SW",
         "W",
         "NW"
-
     ];
-
 
     const index =
         Math.round(degrees / 45) % 8;
 
-
     return directions[index];
+
+}
+
+
+/* =====================================================
+   TEMPERATURE
+===================================================== */
+
+function formatTemperature(celsius) {
+
+    if (
+        celsius === undefined ||
+        celsius === null
+    ) {
+        return "--";
+    }
+
+    if (currentUnit === "C") {
+
+        return `${Math.round(celsius)}°C`;
+
+    }
+
+    const fahrenheit =
+        (celsius * 9 / 5) + 32;
+
+    return `${Math.round(fahrenheit)}°F`;
 
 }
 
@@ -360,61 +384,18 @@ function getWindDirection(degrees) {
 
 function showLoading() {
 
-    loading.style.display = "block";
+    loading.style.display =
+        "block";
 
 }
 
 
 function hideLoading() {
 
-    loading.style.display = "none";
+    loading.style.display =
+        "none";
 
 }
-
-
-/* =====================================================
-   CLEAR SEARCH
-===================================================== */
-
-function updateClearButton() {
-
-    if (
-        cityInput.value.trim() !== ""
-    ) {
-
-        clearSearchBtn.classList.add(
-            "show"
-        );
-
-    } else {
-
-        clearSearchBtn.classList.remove(
-            "show"
-        );
-
-    }
-
-}
-
-
-clearSearchBtn.addEventListener(
-    "click",
-    () => {
-
-        cityInput.value = "";
-
-        searchSuggestions.innerHTML = "";
-
-        searchSuggestions.classList.remove(
-            "show"
-        );
-
-        updateClearButton();
-
-        cityInput.focus();
-
-    }
-);
 
 
 /* =====================================================
@@ -427,11 +408,8 @@ async function searchCity(city) {
         !city ||
         city.trim() === ""
     ) {
-
         return;
-
     }
-
 
     showLoading();
 
@@ -445,9 +423,7 @@ async function searchCity(city) {
         const url =
             "https://geocoding-api.open-meteo.com/v1/search" +
             "?name=" +
-            encodeURIComponent(
-                city.trim()
-            ) +
+            encodeURIComponent(city.trim()) +
             "&count=1" +
             "&language=en" +
             "&format=json";
@@ -479,8 +455,6 @@ async function searchCity(city) {
                 "❌ City not found. Please try another city."
             );
 
-            hideLoading();
-
             return;
 
         }
@@ -506,10 +480,11 @@ async function searchCity(city) {
             "❌ Unable to search city. Please try again."
         );
 
+    } finally {
+
+        hideLoading();
+
     }
-
-
-    hideLoading();
 
 }
 
@@ -532,7 +507,9 @@ async function loadWeather(
 
         const url =
             "https://api.open-meteo.com/v1/forecast" +
+
             "?latitude=" + latitude +
+
             "&longitude=" + longitude +
 
             "&current=" +
@@ -586,9 +563,11 @@ async function loadWeather(
             await response.json();
 
 
-        currentWeatherData = data;
+        currentWeatherData =
+            data;
 
-        currentCity = name;
+        currentCity =
+            name;
 
 
         displayCurrentWeather(
@@ -618,13 +597,21 @@ async function loadWeather(
         );
 
 
+        generateWeatherAlerts(
+            data
+        );
+
+
         await loadAirQuality(
             latitude,
             longitude
         );
 
 
-        addToHistory(name);
+        addToHistory(
+            name
+        );
+
 
         updateFavoriteButton();
 
@@ -639,16 +626,17 @@ async function loadWeather(
             "❌ Unable to load weather data."
         );
 
+    } finally {
+
+        hideLoading();
+
     }
-
-
-    hideLoading();
 
 }
 
 
 /* =====================================================
-   DISPLAY CURRENT WEATHER
+   CURRENT WEATHER
 ===================================================== */
 
 function displayCurrentWeather(
@@ -681,9 +669,16 @@ function displayCurrentWeather(
         weather.text;
 
 
-    updateTemperatureDisplay(
-        current.temperature_2m
-    );
+    temperature.textContent =
+        formatTemperature(
+            current.temperature_2m
+        );
+
+
+    unitBtn.textContent =
+        currentUnit === "C"
+            ? "Switch to °F"
+            : "Switch to °C";
 
 
     humidity.textContent =
@@ -748,11 +743,13 @@ function displayCurrentWeather(
 
     if (
         data.daily &&
-        data.daily.precipitation_probability_max
+        data.daily
+            .precipitation_probability_max
     ) {
 
         rainProbability.textContent =
-            `${data.daily.precipitation_probability_max[0]}%`;
+            `${data.daily
+                .precipitation_probability_max[0]}%`;
 
     }
 
@@ -762,68 +759,28 @@ function displayCurrentWeather(
         data.hourly.visibility
     ) {
 
-        const nowVisibility =
-            data.hourly.visibility[0];
+        const index =
+            findCurrentHourIndex(
+                data.hourly.time
+            );
 
 
-        visibility.textContent =
-            `${Math.round(
-                nowVisibility / 1000
-            )} km`;
-
-    }
-
-}
+        const visibilityValue =
+            data.hourly.visibility[index];
 
 
-/* =====================================================
-   TEMPERATURE FORMAT
-===================================================== */
+        if (
+            visibilityValue !== undefined
+        ) {
 
-function formatTemperature(
-    celsius
-) {
+            visibility.textContent =
+                `${Math.round(
+                    visibilityValue / 1000
+                )} km`;
 
-    if (
-        currentUnit === "C"
-    ) {
-
-        return `${Math.round(
-            celsius
-        )}°C`;
+        }
 
     }
-
-
-    const fahrenheit =
-        (
-            celsius * 9 / 5
-        ) + 32;
-
-
-    return `${Math.round(
-        fahrenheit
-    )}°F`;
-
-}
-
-
-/* =====================================================
-   UPDATE TEMPERATURE
-===================================================== */
-
-function updateTemperatureDisplay(
-    celsius
-) {
-
-    temperature.textContent =
-        formatTemperature(celsius);
-
-
-    unitBtn.textContent =
-        currentUnit === "C"
-            ? "Switch to °F"
-            : "Switch to °C";
 
 }
 
@@ -843,18 +800,14 @@ unitBtn.addEventListener(
 
 
         if (
-            currentWeatherData &&
-            currentWeatherData.current
+            currentWeatherData
         ) {
 
-            updateTemperatureDisplay(
-                currentWeatherData
-                    .current
-                    .temperature_2m
+            displayCurrentWeather(
+                currentWeatherData,
+                currentCity,
+                ""
             );
-
-
-            updateExtraTemperature();
 
 
             displayHourlyWeather(
@@ -878,29 +831,6 @@ unitBtn.addEventListener(
 
 
 /* =====================================================
-   EXTRA TEMPERATURE
-===================================================== */
-
-function updateExtraTemperature() {
-
-    if (
-        currentWeatherData &&
-        currentWeatherData.current
-    ) {
-
-        feelsLike.textContent =
-            formatTemperature(
-                currentWeatherData
-                    .current
-                    .apparent_temperature
-            );
-
-    }
-
-}
-
-
-/* =====================================================
    HOURLY FORECAST
 ===================================================== */
 
@@ -908,13 +838,12 @@ function displayHourlyWeather(
     data
 ) {
 
-    hourlyContainer.innerHTML = "";
+    hourlyContainer.innerHTML =
+        "";
 
 
     if (!data.hourly) {
-
         return;
-
     }
 
 
@@ -922,36 +851,10 @@ function displayHourlyWeather(
         data.hourly;
 
 
-    let startIndex = 0;
-
-
-    const now =
-        new Date();
-
-
-    for (
-        let i = 0;
-        i < hourly.time.length;
-        i++
-    ) {
-
-        const forecastTime =
-            new Date(
-                hourly.time[i]
-            );
-
-
-        if (
-            forecastTime >= now
-        ) {
-
-            startIndex = i;
-
-            break;
-
-        }
-
-    }
+    const startIndex =
+        findCurrentHourIndex(
+            hourly.time
+        );
 
 
     const endIndex =
@@ -991,7 +894,8 @@ function displayHourlyWeather(
 
         const rain =
             hourly.precipitation_probability
-                ? hourly.precipitation_probability[i]
+                ? hourly
+                    .precipitation_probability[i]
                 : 0;
 
 
@@ -1035,13 +939,12 @@ function displayFiveDayForecast(
     data
 ) {
 
-    forecastContainer.innerHTML = "";
+    forecastContainer.innerHTML =
+        "";
 
 
     if (!data.daily) {
-
         return;
-
     }
 
 
@@ -1091,8 +994,10 @@ function displayFiveDayForecast(
 
 
         const rain =
-            daily.precipitation_probability_max
-                ? daily.precipitation_probability_max[i]
+            daily
+                .precipitation_probability_max
+                ? daily
+                    .precipitation_probability_max[i]
                 : 0;
 
 
@@ -1133,160 +1038,35 @@ function displayFiveDayForecast(
 
 
 /* =====================================================
-   ☀️ UV INDEX
+   FIND CURRENT HOUR
 ===================================================== */
 
-function displayUVIndex(
-    data
+function findCurrentHourIndex(
+    times
 ) {
 
-    if (
-        !data.daily ||
-        !data.daily.uv_index_max
+    const now =
+        new Date();
+
+
+    for (
+        let i = 0;
+        i < times.length;
+        i++
     ) {
 
-        uvValue.textContent = "--";
+        if (
+            new Date(times[i]) >= now
+        ) {
 
-        uvStatus.textContent =
-            "Unavailable";
+            return i;
 
-        uvAdvice.textContent =
-            "UV information is unavailable.";
-
-        uvProgress.style.width = "0%";
-
-        return;
+        }
 
     }
 
 
-    const uv =
-        data.daily.uv_index_max[0];
-
-
-    if (
-        uv === undefined ||
-        uv === null
-    ) {
-
-        uvValue.textContent = "--";
-
-        uvStatus.textContent =
-            "Unavailable";
-
-        uvAdvice.textContent =
-            "UV information is unavailable.";
-
-        uvProgress.style.width = "0%";
-
-        return;
-
-    }
-
-
-    uvValue.textContent =
-        Number(uv).toFixed(1);
-
-
-    const uvInfo =
-        getUVStatus(
-            Number(uv)
-        );
-
-
-    uvStatus.textContent =
-        uvInfo.status;
-
-
-    uvAdvice.textContent =
-        uvInfo.advice;
-
-
-    const percentage =
-        Math.min(
-            (Number(uv) / 11) * 100,
-            100
-        );
-
-
-    uvProgress.style.width =
-        `${percentage}%`;
-
-}
-
-
-/* =====================================================
-   UV STATUS
-===================================================== */
-
-function getUVStatus(
-    uv
-) {
-
-    if (uv < 3) {
-
-        return {
-
-            status: "🟢 Low",
-
-            advice:
-                "Low UV level. Normal outdoor activities are generally fine."
-
-        };
-
-    }
-
-
-    if (uv < 6) {
-
-        return {
-
-            status: "🟡 Moderate",
-
-            advice:
-                "Moderate UV level. Consider protection during longer outdoor activities."
-
-        };
-
-    }
-
-
-    if (uv < 8) {
-
-        return {
-
-            status: "🟠 High",
-
-            advice:
-                "High UV level. Take extra care and consider sun protection."
-
-        };
-
-    }
-
-
-    if (uv < 11) {
-
-        return {
-
-            status: "🔴 Very High",
-
-            advice:
-                "Very high UV level. Limit prolonged exposure and use appropriate sun protection."
-
-        };
-
-    }
-
-
-    return {
-
-        status: "🟣 Extreme",
-
-        advice:
-            "Extreme UV level. Avoid prolonged direct sun exposure and use appropriate protection."
-
-    };
+    return 0;
 
 }
 
@@ -1303,9 +1083,7 @@ function drawTemperatureGraph(
         !temperatureChart ||
         !data.hourly
     ) {
-
         return;
-
     }
 
 
@@ -1316,7 +1094,8 @@ function drawTemperatureGraph(
 
 
     const rect =
-        temperatureChart.getBoundingClientRect();
+        temperatureChart
+            .getBoundingClientRect();
 
 
     const width =
@@ -1367,7 +1146,8 @@ function drawTemperatureGraph(
         );
 
 
-    const count = 12;
+    const count =
+        12;
 
 
     const endIndex =
@@ -1394,13 +1174,12 @@ function drawTemperatureGraph(
     if (
         temperatures.length === 0
     ) {
-
         return;
-
     }
 
 
-    const padding = 45;
+    const padding =
+        45;
 
 
     const graphWidth =
@@ -1446,22 +1225,25 @@ function drawTemperatureGraph(
 
         ctx.beginPath();
 
+
         ctx.moveTo(
             padding,
             y
         );
+
 
         ctx.lineTo(
             width - padding,
             y
         );
 
+
         ctx.stroke();
 
     }
 
 
-    /* TEMPERATURE LINE */
+    /* LINE */
 
     ctx.beginPath();
 
@@ -1556,6 +1338,7 @@ function drawTemperatureGraph(
 
             ctx.beginPath();
 
+
             ctx.arc(
                 x,
                 y,
@@ -1571,28 +1354,24 @@ function drawTemperatureGraph(
             ctx.fill();
 
 
-            /* TEMP TEXT */
-
             ctx.font =
                 "12px Arial";
 
+
             ctx.fillStyle =
                 "#ffffff";
+
 
             ctx.textAlign =
                 "center";
 
 
             ctx.fillText(
-                formatTemperature(
-                    temp
-                ),
+                formatTemperature(temp),
                 x,
                 y - 10
             );
 
-
-            /* TIME */
 
             ctx.font =
                 "11px Arial";
@@ -1613,41 +1392,7 @@ function drawTemperatureGraph(
 
 
 /* =====================================================
-   FIND CURRENT HOUR
-===================================================== */
-
-function findCurrentHourIndex(
-    times
-) {
-
-    const now =
-        new Date();
-
-
-    for (
-        let i = 0;
-        i < times.length;
-        i++
-    ) {
-
-        if (
-            new Date(times[i]) >= now
-        ) {
-
-            return i;
-
-        }
-
-    }
-
-
-    return 0;
-
-}
-
-
-/* =====================================================
-   WINDOW RESIZE GRAPH
+   WINDOW RESIZE
 ===================================================== */
 
 window.addEventListener(
@@ -1666,6 +1411,423 @@ window.addEventListener(
 
     }
 );
+
+
+/* =====================================================
+   ☀️ UV INDEX
+===================================================== */
+
+function displayUVIndex(
+    data
+) {
+
+    if (
+        !data.daily ||
+        !data.daily.uv_index_max
+    ) {
+
+        uvValue.textContent =
+            "--";
+
+        uvStatus.textContent =
+            "Unavailable";
+
+        uvProgress.style.width =
+            "0%";
+
+        return;
+
+    }
+
+
+    const uv =
+        data.daily.uv_index_max[0];
+
+
+    if (
+        uv === undefined ||
+        uv === null
+    ) {
+
+        return;
+
+    }
+
+
+    uvValue.textContent =
+        Math.round(uv * 10) / 10;
+
+
+    const status =
+        getUVStatus(uv);
+
+
+    uvStatus.textContent =
+        status.text;
+
+
+    uvAdvice.textContent =
+        status.advice;
+
+
+    const percentage =
+        Math.min(
+            (uv / 12) * 100,
+            100
+        );
+
+
+    uvProgress.style.width =
+        `${percentage}%`;
+
+}
+
+
+/* =====================================================
+   UV STATUS
+===================================================== */
+
+function getUVStatus(
+    uv
+) {
+
+    if (uv < 3) {
+
+        return {
+            text: "🟢 Low",
+            advice:
+                "Low UV. Normal outdoor protection is generally enough."
+        };
+
+    }
+
+
+    if (uv < 6) {
+
+        return {
+            text: "🟡 Moderate",
+            advice:
+                "Moderate UV. Consider shade and sun protection during longer outdoor activities."
+        };
+
+    }
+
+
+    if (uv < 8) {
+
+        return {
+            text: "🟠 High",
+            advice:
+                "High UV. Use sun protection and seek shade when possible."
+        };
+
+    }
+
+
+    if (uv < 11) {
+
+        return {
+            text: "🔴 Very High",
+            advice:
+                "Very high UV. Extra care and sun protection are recommended."
+        };
+
+    }
+
+
+    return {
+        text: "🟣 Extreme",
+        advice:
+            "Extreme UV. Avoid prolonged direct sunlight and use strong sun protection."
+    };
+
+}
+
+
+/* =====================================================
+   ⚠️ WEATHER ALERTS
+===================================================== */
+
+function generateWeatherAlerts(
+    data
+) {
+
+    alertsContainer.innerHTML =
+        "";
+
+
+    if (
+        !data ||
+        !data.current ||
+        !data.daily
+    ) {
+
+        return;
+
+    }
+
+
+    const current =
+        data.current;
+
+
+    const daily =
+        data.daily;
+
+
+    const alerts = [];
+
+
+    const weatherCode =
+        current.weather_code;
+
+
+    const rain =
+        daily
+            .precipitation_probability_max
+            ? daily
+                .precipitation_probability_max[0]
+            : 0;
+
+
+    const windSpeed =
+        current.wind_speed_10m || 0;
+
+
+    const windGust =
+        current.wind_gusts_10m || 0;
+
+
+    const uv =
+        daily.uv_index_max
+            ? daily.uv_index_max[0]
+            : 0;
+
+
+    const maxTemp =
+        daily.temperature_2m_max
+            ? daily.temperature_2m_max[0]
+            : null;
+
+
+    const minTemp =
+        daily.temperature_2m_min
+            ? daily.temperature_2m_min[0]
+            : null;
+
+
+    /* THUNDERSTORM */
+
+    if (
+        [95, 96, 99].includes(
+            weatherCode
+        )
+    ) {
+
+        alerts.push({
+
+            icon: "⛈️",
+
+            title: "Thunderstorm Alert",
+
+            message:
+                "Thunderstorm conditions are currently reported. Take appropriate precautions.",
+
+            type: "danger"
+
+        });
+
+    }
+
+
+    /* HEAVY RAIN */
+
+    if (
+        [65, 82].includes(
+            weatherCode
+        ) ||
+        rain >= 70
+    ) {
+
+        alerts.push({
+
+            icon: "🌧️",
+
+            title: "Heavy Rain Alert",
+
+            message:
+                `Rain probability is ${rain}%. Wet conditions may occur.`,
+
+            type: "warning"
+
+        });
+
+    }
+
+
+    /* STRONG WIND */
+
+    if (
+        windSpeed >= 40 ||
+        windGust >= 55
+    ) {
+
+        alerts.push({
+
+            icon: "💨",
+
+            title: "Strong Wind Alert",
+
+            message:
+                `Wind speed is ${Math.round(
+                    windSpeed
+                )} km/h with gusts up to ${Math.round(
+                    windGust
+                )} km/h.`,
+
+            type: "warning"
+
+        });
+
+    }
+
+
+    /* HIGH UV */
+
+    if (
+        uv >= 8
+    ) {
+
+        alerts.push({
+
+            icon: "☀️",
+
+            title: "High UV Alert",
+
+            message:
+                `Today's maximum UV Index is ${Math.round(
+                    uv * 10
+                ) / 10}. Extra sun protection is recommended.`,
+
+            type: "warning"
+
+        });
+
+    }
+
+
+    /* EXTREME TEMPERATURE */
+
+    if (
+        maxTemp !== null &&
+        maxTemp >= 40
+    ) {
+
+        alerts.push({
+
+            icon: "🌡️",
+
+            title: "High Temperature Alert",
+
+            message:
+                `Today's forecast maximum is ${Math.round(
+                    maxTemp
+                )}°C.`,
+
+            type: "danger"
+
+        });
+
+    }
+
+
+    if (
+        minTemp !== null &&
+        minTemp <= 5
+    ) {
+
+        alerts.push({
+
+            icon: "🥶",
+
+            title: "Low Temperature Alert",
+
+            message:
+                `Today's forecast minimum is ${Math.round(
+                    minTemp
+                )}°C.`,
+
+            type: "warning"
+
+        });
+
+    }
+
+
+    /* NO ALERT */
+
+    if (
+        alerts.length === 0
+    ) {
+
+        alerts.push({
+
+            icon: "✅",
+
+            title: "No Major Weather Alerts",
+
+            message:
+                "No major weather warnings were detected from the current forecast data.",
+
+            type: "normal"
+
+        });
+
+    }
+
+
+    alerts.forEach(
+        alertData => {
+
+            const alert =
+                document.createElement(
+                    "div"
+                );
+
+
+            alert.className =
+                `alert alert-${alertData.type}`;
+
+
+            alert.innerHTML = `
+
+                <div class="alert-icon">
+                    ${alertData.icon}
+                </div>
+
+                <div class="alert-content">
+
+                    <div class="alert-title">
+                        ${alertData.title}
+                    </div>
+
+                    <div class="alert-message">
+                        ${alertData.message}
+                    </div>
+
+                </div>
+
+            `;
+
+
+            alertsContainer.appendChild(
+                alert
+            );
+
+        }
+    );
+
+}
 
 
 /* =====================================================
@@ -1724,9 +1886,7 @@ async function loadAirQuality(
 
     } catch (error) {
 
-        console.error(
-            error
-        );
+        console.error(error);
 
 
         aqiValue.textContent =
@@ -1760,9 +1920,7 @@ function displayAirQuality(
     if (
         !data.current
     ) {
-
         return;
-
     }
 
 
@@ -1830,43 +1988,79 @@ function getAQIStatus(
 
 
     if (aqi <= 20) {
-
         return "🟢 Good";
-
     }
 
 
     if (aqi <= 40) {
-
         return "🟡 Fair";
-
     }
 
 
     if (aqi <= 60) {
-
         return "🟠 Moderate";
-
     }
 
 
     if (aqi <= 80) {
-
         return "🔴 Poor";
-
     }
 
 
     if (aqi <= 100) {
-
         return "🟣 Very Poor";
-
     }
 
 
     return "⚠️ Extremely Poor";
 
 }
+
+
+/* =====================================================
+   CLEAR SEARCH
+===================================================== */
+
+function updateClearButton() {
+
+    if (
+        cityInput.value.trim() !== ""
+    ) {
+
+        clearSearchBtn.classList.add(
+            "show"
+        );
+
+    } else {
+
+        clearSearchBtn.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+clearSearchBtn.addEventListener(
+    "click",
+    () => {
+
+        cityInput.value = "";
+
+        searchSuggestions.innerHTML =
+            "";
+
+        searchSuggestions.classList.remove(
+            "show"
+        );
+
+        updateClearButton();
+
+        cityInput.focus();
+
+    }
+);
 
 
 /* =====================================================
@@ -1881,9 +2075,7 @@ searchBtn.addEventListener(
             cityInput.value.trim();
 
 
-        if (
-            city !== ""
-        ) {
+        if (city !== "") {
 
             searchCity(
                 city
@@ -1901,7 +2093,7 @@ searchBtn.addEventListener(
 
 cityInput.addEventListener(
     "keydown",
-    (event) => {
+    event => {
 
         if (
             event.key === "Enter"
@@ -1914,9 +2106,7 @@ cityInput.addEventListener(
                 cityInput.value.trim();
 
 
-            if (
-                city !== ""
-            ) {
+            if (city !== "") {
 
                 searchCity(
                     city
@@ -2008,12 +2198,14 @@ async function getCitySuggestions(
 
         const url =
             "https://geocoding-api.open-meteo.com/v1/search" +
+
             "?name=" +
-            encodeURIComponent(
-                query
-            ) +
+            encodeURIComponent(query) +
+
             "&count=8" +
+
             "&language=en" +
+
             "&format=json";
 
 
@@ -2057,7 +2249,7 @@ async function getCitySuggestions(
 
 
         data.results.forEach(
-            (location) => {
+            location => {
 
                 const item =
                     document.createElement(
@@ -2147,9 +2339,7 @@ async function getCitySuggestions(
 
     } catch (error) {
 
-        console.error(
-            error
-        );
+        console.error(error);
 
 
         searchSuggestions.innerHTML = `
@@ -2171,7 +2361,7 @@ async function getCitySuggestions(
 
 document.addEventListener(
     "click",
-    (event) => {
+    event => {
 
         if (
             !event.target.closest(
@@ -2190,7 +2380,7 @@ document.addEventListener(
 
 
 /* =====================================================
-   LOCATION
+   📍 MY LOCATION
 ===================================================== */
 
 locationBtn.addEventListener(
@@ -2214,7 +2404,8 @@ locationBtn.addEventListener(
 
 
         navigator.geolocation.getCurrentPosition(
-            async (position) => {
+
+            async position => {
 
                 const latitude =
                     position.coords.latitude;
@@ -2224,79 +2415,12 @@ locationBtn.addEventListener(
                     position.coords.longitude;
 
 
-                try {
-
-                    const url =
-                        "https://geocoding-api.open-meteo.com/v1/search" +
-
-                        "?latitude=" +
-                        latitude +
-
-                        "&longitude=" +
-                        longitude +
-
-                        "&count=1" +
-
-                        "&language=en" +
-
-                        "&format=json";
-
-
-                    const response =
-                        await fetch(url);
-
-
-                    const data =
-                        await response.json();
-
-
-                    let name =
-                        "My Location";
-
-
-                    let country =
-                        "";
-
-
-                    if (
-                        data.results &&
-                        data.results.length
-                    ) {
-
-                        name =
-                            data.results[0].name;
-
-
-                        country =
-                            data.results[0].country ||
-                            "";
-
-                    }
-
-
-                    await loadWeather(
-                        latitude,
-                        longitude,
-                        name,
-                        country
-                    );
-
-
-                } catch (error) {
-
-                    console.error(
-                        error
-                    );
-
-
-                    alert(
-                        "❌ Could not detect your city."
-                    );
-
-
-                    hideLoading();
-
-                }
+                await loadWeather(
+                    latitude,
+                    longitude,
+                    "My Location",
+                    ""
+                );
 
             },
 
@@ -2306,7 +2430,6 @@ locationBtn.addEventListener(
                 alert(
                     "❌ Location permission denied."
                 );
-
 
                 hideLoading();
 
@@ -2376,9 +2499,7 @@ favoriteBtn.addEventListener(
         if (
             !currentCity
         ) {
-
             return;
-
         }
 
 
@@ -2480,7 +2601,7 @@ function renderFavorites() {
 
 
             cityButton.textContent =
-                `📍 ${city}`;
+                `⭐ ${city}`;
 
 
             cityButton.addEventListener(
@@ -2540,6 +2661,7 @@ function renderFavorites() {
 
                     renderFavorites();
 
+
                     updateFavoriteButton();
 
                 }
@@ -2567,7 +2689,7 @@ function renderFavorites() {
 
 
 /* =====================================================
-   SEARCH HISTORY
+   HISTORY
 ===================================================== */
 
 function getHistory() {
@@ -2598,6 +2720,11 @@ function saveHistory(
 function addToHistory(
     city
 ) {
+
+    if (!city) {
+        return;
+    }
+
 
     let history =
         getHistory();
@@ -2632,10 +2759,6 @@ function addToHistory(
 
 }
 
-
-/* =====================================================
-   RENDER HISTORY
-===================================================== */
 
 function renderHistory() {
 
@@ -2889,7 +3012,7 @@ function loadDarkMode() {
 
 
 /* =====================================================
-   INITIALIZE APP
+   INITIALIZE
 ===================================================== */
 
 function initializeApp() {
