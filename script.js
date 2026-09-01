@@ -41,7 +41,10 @@ searchBtn.addEventListener("click", async function () {
         const current = weatherData.current;
 
         cityName.textContent = location.name;
-        temperature.textContent = `${Math.round(current.temperature_2m)}°C`;
+        currentTemperatureCelsius = current.temperature_2m;
+temperature.textContent = `${Math.round(currentTemperatureCelsius)}°C`;
+isCelsius = true;
+unitBtn.textContent = "Switch to °F";
         humidity.textContent = `${current.relative_humidity_2m}%`;
         wind.textContent = `${Math.round(current.wind_speed_10m)} km/h`;
 
@@ -83,4 +86,19 @@ cityInput.addEventListener("keypress", function (event) {
         searchBtn.click();
     }
 });
+unitBtn.addEventListener("click", function () {
+    if (currentTemperatureCelsius === null) {
+        return;
+    }
 
+    if (isCelsius) {
+        const fahrenheit = (currentTemperatureCelsius * 9 / 5) + 32;
+        temperature.textContent = `${Math.round(fahrenheit)}°F`;
+        unitBtn.textContent = "Switch to °C";
+        isCelsius = false;
+    } else {
+        temperature.textContent = `${Math.round(currentTemperatureCelsius)}°C`;
+        unitBtn.textContent = "Switch to °F";
+        isCelsius = true;
+    }
+});
