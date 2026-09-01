@@ -1,359 +1,285 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Weather App</title>
 
-    <link rel="stylesheet" href="style.css">
+<title>🌤️ Weather App</title>
+
+<link rel="stylesheet" href="style.css">
+
+
 </head>
 
 <body>
 
-    <!-- =========================
-         TOP NAVBAR
-    ========================== -->
 
-    <header class="navbar">
+<!-- =========================
+     TOP NAVBAR
+========================== -->
 
-        <button id="menuBtn" class="menu-btn" type="button">
-            ☰
+<header class="navbar">
+
+    <button id="menuBtn" class="menu-btn" type="button">
+        ☰
+    </button>
+
+    <div class="logo">
+        🌤️ Weather App
+    </div>
+
+    <button id="themeBtn" class="theme-btn" type="button">
+        🌙
+    </button>
+
+</header>
+
+
+<!-- =========================
+     OVERLAY
+========================== -->
+
+<div id="overlay" class="overlay"></div>
+
+
+<!-- =========================
+     SIDEBAR
+========================== -->
+
+<aside id="sidebar" class="sidebar">
+
+    <div class="sidebar-header">
+
+        <h2>🌤️ Weather</h2>
+
+        <button id="closeBtn" class="close-btn" type="button">
+            ✕
         </button>
 
-        <div class="logo">
-            🌤️ Weather App
+    </div>
+
+
+    <div class="sidebar-section">
+
+        <h3>⭐ Favorite Cities</h3>
+
+        <div id="favoriteList">
+
+            <p class="empty-message">
+                No favorite cities
+            </p>
+
         </div>
 
-        <button id="themeBtn" class="theme-btn" type="button">
-            🌙
-        </button>
-
-    </header>
+    </div>
 
 
-    <!-- =========================
-         OVERLAY
-    ========================== -->
+    <div class="sidebar-section">
 
-    <div id="overlay" class="overlay"></div>
+        <h3>🕘 Search History</h3>
+
+        <div id="historyList">
+
+            <p class="empty-message">
+                No search history
+            </p>
+
+        </div>
+
+    </div>
+
+</aside>
 
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
+<!-- =========================
+     MAIN CONTENT
+========================== -->
 
-    <aside id="sidebar" class="sidebar">
+<main class="main-content">
 
-        <div class="sidebar-header">
+    <div class="weather-container">
 
-            <h2>🌤️ Weather</h2>
+        <h1>🌤️ Weather App</h1>
 
-            <button
-                id="closeBtn"
-                class="close-btn"
-                type="button"
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="cityInput"
+                placeholder="Enter city name"
+                autocomplete="off"
             >
-                ✕
+
+            <button id="searchBtn" type="button">
+                🔍 Search
+            </button>
+
+            <button id="locationBtn" type="button">
+                📍 My Location
             </button>
 
         </div>
 
 
-        <!-- Favorite Cities -->
+        <!-- LOADING -->
 
-        <div class="sidebar-section">
-
-            <h3>⭐ Favorite Cities</h3>
-
-            <div id="favoriteList">
-
-                <p class="empty-message">
-                    No favorite cities
-                </p>
-
-            </div>
-
-        </div>
+        <p id="loading">
+            ⏳ Loading weather...
+        </p>
 
 
-        <!-- Search History -->
+        <!-- CURRENT WEATHER -->
 
-        <div class="sidebar-section">
+        <div class="weather-card">
 
-            <h3>🕘 Search History</h3>
+            <div class="city-title">
 
-            <div id="historyList">
-
-                <p class="empty-message">
-                    No search history
-                </p>
-
-            </div>
-
-        </div>
-
-    </aside>
-
-
-    <!-- =========================
-         MAIN CONTENT
-    ========================== -->
-
-    <main class="main-content">
-
-        <div class="weather-container">
-
-            <h1>Weather App</h1>
-
-
-            <!-- =========================
-                 SEARCH BOX
-            ========================== -->
-
-            <div class="search-box">
-
-                <input
-                    type="text"
-                    id="cityInput"
-                    placeholder="Enter city name"
-                    autocomplete="off"
-                >
+                <h2 id="cityName">
+                    Dhaka
+                </h2>
 
                 <button
-                    id="searchBtn"
+                    id="favoriteBtn"
                     type="button"
+                    title="Add to favorites"
                 >
-                    🔍 Search
-                </button>
-
-                <button
-                    id="locationBtn"
-                    type="button"
-                >
-                    📍 My Location
+                    ☆
                 </button>
 
             </div>
 
 
-            <!-- =========================
-                 LOADING
-            ========================== -->
+            <div class="weather-icon" id="weatherIcon">
+                ☀️
+            </div>
 
-            <p id="loading">
-                ⏳ Loading weather...
+
+            <h3 id="temperature">
+                28°C
+            </h3>
+
+
+            <button id="unitBtn" type="button">
+                Switch to °F
+            </button>
+
+
+            <p id="condition">
+                Sunny
             </p>
 
 
-            <!-- =========================
-                 CURRENT WEATHER
-            ========================== -->
+            <!-- BASIC WEATHER INFO -->
 
-            <div class="weather-card">
+            <div class="weather-info">
 
-                <div class="city-title">
-
-                    <h2 id="cityName">
-                        Dhaka
-                    </h2>
-
-                    <button
-                        id="favoriteBtn"
-                        type="button"
-                        title="Add to favorites"
-                    >
-                        ☆
-                    </button>
-
+                <div>
+                    <span>💧</span>
+                    <p>Humidity</p>
+                    <strong id="humidity">65%</strong>
                 </div>
 
 
-                <div
-                    class="weather-icon"
-                    id="weatherIcon"
-                >
-                    ☀️
+                <div>
+                    <span>💨</span>
+                    <p>Wind</p>
+                    <strong id="wind">12 km/h</strong>
                 </div>
 
 
-                <h3 id="temperature">
-                    28°C
-                </h3>
-
-
-                <button
-                    id="unitBtn"
-                    type="button"
-                >
-                    Switch to °F
-                </button>
-
-
-                <p id="condition">
-                    Sunny
-                </p>
-
-
-                <!-- =========================
-                     BASIC WEATHER INFO
-                ========================== -->
-
-                <div class="weather-info">
-
-                    <div>
-                        <span>💧</span>
-                        <p>Humidity</p>
-                        <strong id="humidity">
-                            65%
-                        </strong>
-                    </div>
-
-
-                    <div>
-                        <span>💨</span>
-                        <p>Wind</p>
-                        <strong id="wind">
-                            12 km/h
-                        </strong>
-                    </div>
-
-
-                    <div>
-                        <span>🌅</span>
-                        <p>Sunrise</p>
-                        <strong id="sunrise">
-                            --:--
-                        </strong>
-                    </div>
-
-
-                    <div>
-                        <span>🌇</span>
-                        <p>Sunset</p>
-                        <strong id="sunset">
-                            --:--
-                        </strong>
-                    </div>
-
+                <div>
+                    <span>🌅</span>
+                    <p>Sunrise</p>
+                    <strong id="sunrise">--:--</strong>
                 </div>
 
 
-                <!-- =========================
-                     EXTRA WEATHER DETAILS
-                ========================== -->
-
-                <div class="extra-weather-info">
-
-                    <div class="detail-box">
-
-                        <span>🌡️</span>
-
-                        <p>Feels Like</p>
-
-                        <strong id="feelsLike">
-                            --°C
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <span>👁️</span>
-
-                        <p>Visibility</p>
-
-                        <strong id="visibility">
-                            -- km
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <span>🌧️</span>
-
-                        <p>Rain Probability</p>
-
-                        <strong id="rainProbability">
-                            --%
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <span>🧭</span>
-
-                        <p>Wind Direction</p>
-
-                        <strong id="windDirection">
-                            --°
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <span>🔽</span>
-
-                        <p>Pressure</p>
-
-                        <strong id="pressure">
-                            -- hPa
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail-box">
-
-                        <span>🌬️</span>
-
-                        <p>Wind Gusts</p>
-
-                        <strong id="windGusts">
-                            -- km/h
-                        </strong>
-
-                    </div>
-
+                <div>
+                    <span>🌇</span>
+                    <p>Sunset</p>
+                    <strong id="sunset">--:--</strong>
                 </div>
 
             </div>
 
 
-            <!-- =========================
-                 5-DAY FORECAST
-            ========================== -->
+            <!-- EXTRA DETAILS -->
 
-            <div class="forecast-section">
+            <div class="extra-weather-info">
 
-                <h2>5-Day Forecast</h2>
+                <div class="detail-box">
+                    <span>🌡️</span>
+                    <p>Feels Like</p>
+                    <strong id="feelsLike">--°C</strong>
+                </div>
 
-                <div
-                    class="forecast-container"
-                    id="forecastContainer"
-                >
+
+                <div class="detail-box">
+                    <span>👁️</span>
+                    <p>Visibility</p>
+                    <strong id="visibility">-- km</strong>
+                </div>
+
+
+                <div class="detail-box">
+                    <span>🌧️</span>
+                    <p>Rain Probability</p>
+                    <strong id="rainProbability">--%</strong>
+                </div>
+
+
+                <div class="detail-box">
+                    <span>🧭</span>
+                    <p>Wind Direction</p>
+                    <strong id="windDirection">--</strong>
+                </div>
+
+
+                <div class="detail-box">
+                    <span>🔽</span>
+                    <p>Pressure</p>
+                    <strong id="pressure">-- hPa</strong>
+                </div>
+
+
+                <div class="detail-box">
+                    <span>🌬️</span>
+                    <p>Wind Gusts</p>
+                    <strong id="windGusts">-- km/h</strong>
                 </div>
 
             </div>
 
         </div>
 
-    </main>
+
+        <!-- 5 DAY FORECAST -->
+
+        <div class="forecast-section">
+
+            <h2>📅 5-Day Forecast</h2>
+
+            <div
+                class="forecast-container"
+                id="forecastContainer"
+            >
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================== -->
+<script src="script.js"></script>
 
-    <script src="script.js"></script>
 
 </body>
 
