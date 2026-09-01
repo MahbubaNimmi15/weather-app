@@ -6,6 +6,7 @@ const temperature = document.getElementById("temperature");
 const condition = document.getElementById("condition");
 const humidity = document.getElementById("humidity");
 const wind = document.getElementById("wind");
+const weatherIcon = document.getElementById("weatherIcon");
 
 searchBtn.addEventListener("click", async function () {
     const city = cityInput.value.trim();
