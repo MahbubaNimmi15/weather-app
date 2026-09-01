@@ -1147,3 +1147,129 @@ locationBtn.addEventListener(
 ========================= */
 
 displaySidebar();
+// ===============================
+// MY LOCATION
+// ===============================
+
+locationBtn.addEventListener(
+    "click",
+    function () {
+
+        if (!navigator.geolocation) {
+
+            alert(
+                "Geolocation is not supported by your browser."
+            );
+
+            return;
+        }
+
+        loading.style.display = "block";
+
+        navigator.geolocation.getCurrentPosition(
+
+            async function (position) {
+
+                const latitude =
+                    position.coords.latitude;
+
+                const longitude =
+                    position.coords.longitude;
+
+                try {
+
+                    // Get weather data
+                    const weatherResponse =
+                        await fetch(
+                            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+                        );
+
+                    const weatherData =
+                        await weatherResponse.json();
+
+
+                    // Get city name from coordinates
+                    const locationResponse =
+                        await fetch(
+                            `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${latitude}&longitude=${longitude}&language=en&format=json`
+                        );
+
+
+                    const locationData =
+                        await locationResponse.json();
+
+
+                    let locationName = "Your Location";
+
+
+                    if (
+                        locationData &&
+                        locationData.results &&
+                        locationData.results.length > 0
+                    ) {
+
+                        const location =
+                            locationData.results[0];
+
+                        locationName =
+                            location.name ||
+                            location.city ||
+                            location.town ||
+                            location.village ||
+                            "Your Location";
+
+                    }
+
+
+                    // Display weather
+                    displayWeather(
+                        weatherData.current,
+                        locationName,
+                        weatherData.daily
+                    );
+
+
+                    // Display forecast
+                    displayForecast(
+                        weatherData.daily
+                    );
+
+
+                    // Add to search history
+                    addToHistory(
+                        locationName
+                    );
+
+
+                    loading.style.display = "none";
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    loading.style.display = "none";
+
+                    alert(
+                        "Unable to get weather data."
+                    );
+
+                }
+
+            },
+
+
+            function () {
+
+                loading.style.display = "none";
+
+                alert(
+                    "Please allow location access."
+                );
+
+            }
+
+        );
+
+    }
+);
