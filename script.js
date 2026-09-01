@@ -1,3 +1,8 @@
+/* =====================================================
+   WEATHER APP - COMPLETE JAVASCRIPT
+===================================================== */
+
+
 /* ===============================
    ELEMENTS
 =============================== */
@@ -39,12 +44,35 @@ const loading =
     document.getElementById("loading");
 
 
+/* Extra Weather Details */
+
+const feelsLike =
+    document.getElementById("feelsLike");
+
+const visibility =
+    document.getElementById("visibility");
+
+const rainProbability =
+    document.getElementById("rainProbability");
+
+const windDirection =
+    document.getElementById("windDirection");
+
+const pressure =
+    document.getElementById("pressure");
+
+const windGusts =
+    document.getElementById("windGusts");
+
+
 /* ===============================
    VARIABLES
 =============================== */
 
 let currentTemperatureCelsius = null;
+
 let isCelsius = true;
+
 let currentCity = "";
 
 
@@ -57,6 +85,7 @@ let favorites =
         localStorage.getItem("favoriteCities")
     ) || [];
 
+
 let history =
     JSON.parse(
         localStorage.getItem("searchHistory")
@@ -64,24 +93,51 @@ let history =
 
 
 /* ===============================
-   SIDEBAR
+   SIDEBAR OPEN
 =============================== */
 
 function openSidebar() {
+
     sidebar.classList.add("active");
+
     overlay.classList.add("active");
 }
 
+
+/* ===============================
+   SIDEBAR CLOSE
+=============================== */
+
 function closeSidebar() {
+
     sidebar.classList.remove("active");
+
     overlay.classList.remove("active");
 }
 
-menuBtn.addEventListener("click", openSidebar);
 
-closeBtn.addEventListener("click", closeSidebar);
+/* Menu Button */
 
-overlay.addEventListener("click", closeSidebar);
+menuBtn.addEventListener(
+    "click",
+    openSidebar
+);
+
+
+/* Close Button */
+
+closeBtn.addEventListener(
+    "click",
+    closeSidebar
+);
+
+
+/* Overlay */
+
+overlay.addEventListener(
+    "click",
+    closeSidebar
+);
 
 
 /* ===============================
@@ -91,39 +147,58 @@ overlay.addEventListener("click", closeSidebar);
 const savedTheme =
     localStorage.getItem("weatherTheme");
 
+
 if (savedTheme === "dark") {
-    document.body.classList.add("dark-mode");
+
+    document.body.classList.add(
+        "dark-mode"
+    );
+
     themeBtn.textContent = "☀️";
+
 } else {
+
     themeBtn.textContent = "🌙";
 }
 
-themeBtn.addEventListener("click", function () {
 
-    document.body.classList.toggle("dark-mode");
+/* Theme Button */
 
-    const isDark =
-        document.body.classList.contains("dark-mode");
+themeBtn.addEventListener(
+    "click",
+    function () {
 
-    if (isDark) {
-
-        themeBtn.textContent = "☀️";
-
-        localStorage.setItem(
-            "weatherTheme",
-            "dark"
+        document.body.classList.toggle(
+            "dark-mode"
         );
 
-    } else {
 
-        themeBtn.textContent = "🌙";
+        const isDark =
+            document.body.classList.contains(
+                "dark-mode"
+            );
 
-        localStorage.setItem(
-            "weatherTheme",
-            "light"
-        );
+
+        if (isDark) {
+
+            themeBtn.textContent = "☀️";
+
+            localStorage.setItem(
+                "weatherTheme",
+                "dark"
+            );
+
+        } else {
+
+            themeBtn.textContent = "🌙";
+
+            localStorage.setItem(
+                "weatherTheme",
+                "light"
+            );
+        }
     }
-});
+);
 
 
 /* ===============================
@@ -133,133 +208,203 @@ themeBtn.addEventListener("click", function () {
 function displaySidebar() {
 
     favoriteList.innerHTML = "";
+
     historyList.innerHTML = "";
 
 
-    /* FAVORITES */
+    /* =========================
+       FAVORITES
+    ========================= */
 
     if (favorites.length === 0) {
 
         favoriteList.innerHTML =
-            `<p class="empty-message">
+            `
+            <p class="empty-message">
                 No favorite cities
-            </p>`;
+            </p>
+            `;
 
     } else {
 
-        favorites.forEach(function (city, index) {
+        favorites.forEach(
+            function (city, index) {
 
-            const item =
-                document.createElement("div");
+                const item =
+                    document.createElement("div");
 
-            item.className = "sidebar-item";
-
-            item.innerHTML = `
-                <button class="city-button">
-                    ⭐ ${city}
-                </button>
-
-                <button
-                    class="delete-btn"
-                    title="Delete favorite"
-                >
-                    🗑️
-                </button>
-            `;
-
-            item.querySelector(
-                ".city-button"
-            ).addEventListener("click", function () {
-
-                cityInput.value = city;
-
-                closeSidebar();
-
-                searchWeather(city);
-            });
+                item.className =
+                    "sidebar-item";
 
 
-            item.querySelector(
-                ".delete-btn"
-            ).addEventListener("click", function () {
+                item.innerHTML =
+                    `
+                    <button
+                        class="city-button"
+                        type="button"
+                    >
+                        ⭐ ${city}
+                    </button>
 
-                favorites.splice(index, 1);
+                    <button
+                        class="delete-btn"
+                        type="button"
+                        title="Delete favorite"
+                    >
+                        🗑️
+                    </button>
+                    `;
 
-                localStorage.setItem(
-                    "favoriteCities",
-                    JSON.stringify(favorites)
+
+                /* Load Favorite */
+
+                item.querySelector(
+                    ".city-button"
+                ).addEventListener(
+                    "click",
+                    function () {
+
+                        cityInput.value =
+                            city;
+
+                        closeSidebar();
+
+                        searchWeather(city);
+                    }
                 );
 
-                displaySidebar();
 
-                updateFavoriteButton();
-            });
+                /* Delete Favorite */
 
-            favoriteList.appendChild(item);
-        });
+                item.querySelector(
+                    ".delete-btn"
+                ).addEventListener(
+                    "click",
+                    function () {
+
+                        favorites.splice(
+                            index,
+                            1
+                        );
+
+
+                        localStorage.setItem(
+                            "favoriteCities",
+                            JSON.stringify(
+                                favorites
+                            )
+                        );
+
+
+                        displaySidebar();
+
+                        updateFavoriteButton();
+                    }
+                );
+
+
+                favoriteList.appendChild(
+                    item
+                );
+            }
+        );
     }
 
 
-    /* SEARCH HISTORY */
+    /* =========================
+       SEARCH HISTORY
+    ========================= */
 
     if (history.length === 0) {
 
         historyList.innerHTML =
-            `<p class="empty-message">
+            `
+            <p class="empty-message">
                 No search history
-            </p>`;
+            </p>
+            `;
 
     } else {
 
-        history.forEach(function (city, index) {
+        history.forEach(
+            function (city, index) {
 
-            const item =
-                document.createElement("div");
+                const item =
+                    document.createElement("div");
 
-            item.className = "sidebar-item";
-
-            item.innerHTML = `
-                <button class="city-button">
-                    🕘 ${city}
-                </button>
-
-                <button
-                    class="delete-btn"
-                    title="Delete history"
-                >
-                    🗑️
-                </button>
-            `;
+                item.className =
+                    "sidebar-item";
 
 
-            item.querySelector(
-                ".city-button"
-            ).addEventListener("click", function () {
+                item.innerHTML =
+                    `
+                    <button
+                        class="city-button"
+                        type="button"
+                    >
+                        🕘 ${city}
+                    </button>
 
-                cityInput.value = city;
+                    <button
+                        class="delete-btn"
+                        type="button"
+                        title="Delete history"
+                    >
+                        🗑️
+                    </button>
+                    `;
 
-                closeSidebar();
 
-                searchWeather(city);
-            });
+                /* Load History */
 
+                item.querySelector(
+                    ".city-button"
+                ).addEventListener(
+                    "click",
+                    function () {
 
-            item.querySelector(
-                ".delete-btn"
-            ).addEventListener("click", function () {
+                        cityInput.value =
+                            city;
 
-                history.splice(index, 1);
+                        closeSidebar();
 
-                localStorage.setItem(
-                    "searchHistory",
-                    JSON.stringify(history)
+                        searchWeather(city);
+                    }
                 );
 
-                displaySidebar();
-            });
 
-            historyList.appendChild(item);
-        });
+                /* Delete History */
+
+                item.querySelector(
+                    ".delete-btn"
+                ).addEventListener(
+                    "click",
+                    function () {
+
+                        history.splice(
+                            index,
+                            1
+                        );
+
+
+                        localStorage.setItem(
+                            "searchHistory",
+                            JSON.stringify(
+                                history
+                            )
+                        );
+
+
+                        displaySidebar();
+                    }
+                );
+
+
+                historyList.appendChild(
+                    item
+                );
+            }
+        );
     }
 }
 
@@ -271,22 +416,29 @@ function displaySidebar() {
 function addToHistory(city) {
 
     history =
-        history.filter(function (item) {
+        history.filter(
+            function (item) {
 
-            return (
-                item.toLowerCase() !==
-                city.toLowerCase()
-            );
-        });
+                return (
+                    item.toLowerCase() !==
+                    city.toLowerCase()
+                );
+            }
+        );
+
 
     history.unshift(city);
 
-    history = history.slice(0, 10);
+
+    history =
+        history.slice(0, 10);
+
 
     localStorage.setItem(
         "searchHistory",
         JSON.stringify(history)
     );
+
 
     displaySidebar();
 }
@@ -304,14 +456,17 @@ favoriteBtn.addEventListener(
             return;
         }
 
-        const index =
-            favorites.findIndex(function (city) {
 
-                return (
-                    city.toLowerCase() ===
-                    currentCity.toLowerCase()
-                );
-            });
+        const index =
+            favorites.findIndex(
+                function (city) {
+
+                    return (
+                        city.toLowerCase() ===
+                        currentCity.toLowerCase()
+                    );
+                }
+            );
 
 
         if (index === -1) {
@@ -320,7 +475,10 @@ favoriteBtn.addEventListener(
 
         } else {
 
-            favorites.splice(index, 1);
+            favorites.splice(
+                index,
+                1
+            );
         }
 
 
@@ -328,6 +486,7 @@ favoriteBtn.addEventListener(
             "favoriteCities",
             JSON.stringify(favorites)
         );
+
 
         displaySidebar();
 
@@ -343,13 +502,15 @@ favoriteBtn.addEventListener(
 function updateFavoriteButton() {
 
     const exists =
-        favorites.some(function (city) {
+        favorites.some(
+            function (city) {
 
-            return (
-                city.toLowerCase() ===
-                currentCity.toLowerCase()
-            );
-        });
+                return (
+                    city.toLowerCase() ===
+                    currentCity.toLowerCase()
+                );
+            }
+        );
 
 
     if (exists) {
@@ -370,7 +531,7 @@ function updateFavoriteButton() {
 
 
 /* ===============================
-   WEATHER INFORMATION
+   WEATHER CONDITION
 =============================== */
 
 function getWeatherInfo(weatherCode) {
@@ -437,6 +598,37 @@ function getWeatherInfo(weatherCode) {
 
 
 /* ===============================
+   WIND DIRECTION
+=============================== */
+
+function getWindDirection(degrees) {
+
+    if (degrees === null || degrees === undefined) {
+        return "--";
+    }
+
+
+    const directions = [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SW",
+        "W",
+        "NW"
+    ];
+
+
+    const index =
+        Math.round(degrees / 45) % 8;
+
+
+    return directions[index];
+}
+
+
+/* ===============================
    DISPLAY WEATHER
 =============================== */
 
@@ -451,30 +643,32 @@ function displayWeather(
     cityName.textContent = city;
 
 
-    /* IMPORTANT:
-       Always save Celsius temperature
-    */
+    /* Temperature */
 
     currentTemperatureCelsius =
-        Number(current.temperature_2m);
+        current.temperature_2m;
 
-
-    /* Start in Celsius */
-
-    isCelsius = true;
 
     temperature.textContent =
         `${Math.round(
             currentTemperatureCelsius
         )}°C`;
 
+
+    isCelsius = true;
+
+
     unitBtn.textContent =
         "Switch to °F";
 
 
+    /* Humidity */
+
     humidity.textContent =
         `${current.relative_humidity_2m}%`;
 
+
+    /* Wind */
 
     wind.textContent =
         `${Math.round(
@@ -482,16 +676,27 @@ function displayWeather(
         )} km/h`;
 
 
-    /* SUNRISE */
+    /* =========================
+       SUNRISE / SUNSET
+    ========================= */
 
     if (
         daily &&
         daily.sunrise &&
-        daily.sunrise.length > 0
+        daily.sunset
     ) {
 
         const sunriseTime =
-            new Date(daily.sunrise[0]);
+            new Date(
+                daily.sunrise[0]
+            );
+
+
+        const sunsetTime =
+            new Date(
+                daily.sunset[0]
+            );
+
 
         sunrise.textContent =
             sunriseTime.toLocaleTimeString(
@@ -501,19 +706,7 @@ function displayWeather(
                     minute: "2-digit"
                 }
             );
-    }
 
-
-    /* SUNSET */
-
-    if (
-        daily &&
-        daily.sunset &&
-        daily.sunset.length > 0
-    ) {
-
-        const sunsetTime =
-            new Date(daily.sunset[0]);
 
         sunset.textContent =
             sunsetTime.toLocaleTimeString(
@@ -526,18 +719,105 @@ function displayWeather(
     }
 
 
-    /* WEATHER CONDITION */
+    /* =========================
+       WEATHER CONDITION
+    ========================= */
 
     const weatherInfo =
         getWeatherInfo(
             current.weather_code
         );
 
+
     condition.textContent =
         weatherInfo.text;
 
+
     weatherIcon.textContent =
         weatherInfo.icon;
+
+
+    /* =========================
+       EXTRA DETAILS
+    ========================= */
+
+    if (
+        current.apparent_temperature !==
+        undefined
+    ) {
+
+        feelsLike.textContent =
+            `${Math.round(
+                current.apparent_temperature
+            )}°C`;
+    }
+
+
+    if (
+        current.visibility !==
+        undefined
+    ) {
+
+        visibility.textContent =
+            `${(
+                current.visibility / 1000
+            ).toFixed(1)} km`;
+    }
+
+
+    if (
+        current.surface_pressure !==
+        undefined
+    ) {
+
+        pressure.textContent =
+            `${Math.round(
+                current.surface_pressure
+            )} hPa`;
+    }
+
+
+    if (
+        current.wind_direction_10m !==
+        undefined
+    ) {
+
+        windDirection.textContent =
+            `${getWindDirection(
+                current.wind_direction_10m
+            )} (${Math.round(
+                current.wind_direction_10m
+            )}°)`;
+    }
+
+
+    if (
+        current.wind_gusts_10m !==
+        undefined
+    ) {
+
+        windGusts.textContent =
+            `${Math.round(
+                current.wind_gusts_10m
+            )} km/h`;
+    }
+
+
+    /* Rain Probability */
+
+    if (
+        daily &&
+        daily.precipitation_probability_max
+    ) {
+
+        rainProbability.textContent =
+            `${daily.precipitation_probability_max[0]}%`;
+
+    } else {
+
+        rainProbability.textContent =
+            "0%";
+    }
 
 
     updateFavoriteButton();
@@ -565,11 +845,15 @@ async function searchWeather(city) {
 
     try {
 
-        /* GET LOCATION */
+        /* =========================
+           GET CITY COORDINATES
+        ========================= */
 
         const locationResponse =
             await fetch(
-                `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
+                `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
+                    city
+                )}&count=1&language=en&format=json`
             );
 
 
@@ -600,11 +884,13 @@ async function searchWeather(city) {
             locationData.results[0];
 
 
-        /* GET WEATHER */
+        /* =========================
+           GET WEATHER
+        ========================= */
 
         const weatherResponse =
             await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+                `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility,surface_pressure&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&timezone=auto`
             );
 
 
@@ -620,7 +906,9 @@ async function searchWeather(city) {
             await weatherResponse.json();
 
 
-        /* DISPLAY */
+        /* =========================
+           DISPLAY
+        ========================= */
 
         displayWeather(
             weatherData.current,
@@ -643,6 +931,7 @@ async function searchWeather(city) {
 
         console.error(error);
 
+
         if (
             error.message ===
             "City not found"
@@ -658,6 +947,7 @@ async function searchWeather(city) {
                 "Something went wrong. Please try again."
             );
         }
+
 
     } finally {
 
@@ -699,7 +989,7 @@ cityInput.addEventListener(
 
 
 /* ===============================
-   5 DAY FORECAST
+   5-DAY FORECAST
 =============================== */
 
 function displayForecast(daily) {
@@ -766,12 +1056,16 @@ function displayForecast(daily) {
         const card =
             document.createElement("div");
 
+
         card.className =
             "forecast-card";
 
 
-        card.innerHTML = `
-            <h3>${dayName}</h3>
+        card.innerHTML =
+            `
+            <h3>
+                ${dayName}
+            </h3>
 
             <div class="forecast-icon">
                 ${weatherInfo.icon}
@@ -784,10 +1078,12 @@ function displayForecast(daily) {
             <div class="forecast-condition">
                 ${weatherInfo.text}
             </div>
-        `;
+            `;
 
 
-        forecastContainer.appendChild(card);
+        forecastContainer.appendChild(
+            card
+        );
     }
 }
 
@@ -800,20 +1096,13 @@ unitBtn.addEventListener(
     "click",
     function () {
 
-        /* No weather loaded */
-
         if (
             currentTemperatureCelsius === null
         ) {
-            alert(
-                "Please search for a city first."
-            );
 
             return;
         }
 
-
-        /* CELSIUS → FAHRENHEIT */
 
         if (isCelsius) {
 
@@ -836,12 +1125,7 @@ unitBtn.addEventListener(
 
             isCelsius = false;
 
-
-        }
-
-        /* FAHRENHEIT → CELSIUS */
-
-        else {
+        } else {
 
             temperature.textContent =
                 `${Math.round(
@@ -877,7 +1161,8 @@ locationBtn.addEventListener(
         }
 
 
-        loading.style.display = "block";
+        loading.style.display =
+            "block";
 
 
         navigator.geolocation.getCurrentPosition(
@@ -887,17 +1172,20 @@ locationBtn.addEventListener(
                 const latitude =
                     position.coords.latitude;
 
+
                 const longitude =
                     position.coords.longitude;
 
 
                 try {
 
-                    /* GET WEATHER */
+                    /* =========================
+                       GET WEATHER
+                    ========================= */
 
                     const weatherResponse =
                         await fetch(
-                            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+                            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility,surface_pressure&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&timezone=auto`
                         );
 
 
@@ -913,41 +1201,53 @@ locationBtn.addEventListener(
                         await weatherResponse.json();
 
 
-                    /* GET CITY NAME */
-
-                    const locationResponse =
-                        await fetch(
-                            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`
-                        );
-
+                    /* =========================
+                       GET CITY NAME
+                    ========================= */
 
                     let locationName =
                         "Your Location";
 
 
-                    if (
-                        locationResponse.ok
-                    ) {
+                    try {
 
-                        const locationData =
-                            await locationResponse.json();
-
-
-                        const address =
-                            locationData.address || {};
+                        const locationResponse =
+                            await fetch(
+                                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`
+                            );
 
 
-                        locationName =
-                            address.city ||
-                            address.town ||
-                            address.municipality ||
-                            address.village ||
-                            address.county ||
-                            "Your Location";
+                        if (locationResponse.ok) {
+
+                            const locationData =
+                                await locationResponse.json();
+
+
+                            const address =
+                                locationData.address ||
+                                {};
+
+
+                            locationName =
+                                address.city ||
+                                address.town ||
+                                address.municipality ||
+                                address.village ||
+                                address.county ||
+                                "Your Location";
+                        }
+
+                    } catch (locationError) {
+
+                        console.log(
+                            "Location name unavailable."
+                        );
                     }
 
 
-                    /* DISPLAY */
+                    /* =========================
+                       DISPLAY WEATHER
+                    ========================= */
 
                     displayWeather(
                         weatherData.current,
@@ -970,15 +1270,18 @@ locationBtn.addEventListener(
 
                     console.error(error);
 
+
                     alert(
                         "Unable to get weather data. Please try again."
                     );
+
 
                 } finally {
 
                     loading.style.display =
                         "none";
                 }
+
             },
 
 
@@ -1007,7 +1310,9 @@ locationBtn.addEventListener(
 
             {
                 enableHighAccuracy: true,
+
                 timeout: 10000,
+
                 maximumAge: 0
             }
         );
