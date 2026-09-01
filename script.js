@@ -1,4 +1,3 @@
-
 const cityInput = document.getElementById("cityInput");
 const searchBtn = document.getElementById("searchBtn");
 const locationBtn = document.getElementById("locationBtn");
@@ -14,24 +13,20 @@ const unitBtn = document.getElementById("unitBtn");
 const forecastContainer = document.getElementById("forecastContainer");
 const loading = document.getElementById("loading");
 
+const historyContainer =
+    document.getElementById("historyContainer");
 
-// Favorite elements
-const favoriteBtn =
-    document.getElementById("favoriteBtn");
-
-const favoriteContainer =
-    document.getElementById("favoriteContainer");
-
-
-// Temperature variables
 let currentTemperatureCelsius = null;
 let isCelsius = true;
 
 
-// Favorite cities
-let favoriteCities =
+// ===============================
+// SEARCH HISTORY DATA
+// ===============================
+
+let searchHistory =
     JSON.parse(
-        localStorage.getItem("favoriteCities")
+        localStorage.getItem("searchHistory")
     ) || [];
 
 
@@ -51,8 +46,7 @@ function displayWeather(current, city) {
 
     isCelsius = true;
 
-    unitBtn.textContent =
-        "Switch to °F";
+    unitBtn.textContent = "Switch to °F";
 
     humidity.textContent =
         `${current.relative_humidity_2m}%`;
@@ -61,20 +55,8 @@ function displayWeather(current, city) {
         `${Math.round(current.wind_speed_10m)} km/h`;
 
 
-    // Reset favorite button
-    if (favoriteCities.includes(city)) {
-
-        favoriteBtn.textContent =
-            "⭐ Added to Favorites";
-
-    } else {
-
-        favoriteBtn.textContent =
-            "⭐ Add to Favorites";
-    }
-
-
     // Weather condition and icon
+
     const weatherCode =
         current.weather_code;
 
@@ -161,6 +143,7 @@ searchBtn.addEventListener(
 
 
         // Show loading
+
         loading.style.display =
             "block";
 
@@ -168,6 +151,7 @@ searchBtn.addEventListener(
         try {
 
             // Find city coordinates
+
             const locationResponse =
                 await fetch(
                     `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
@@ -199,6 +183,7 @@ searchBtn.addEventListener(
 
 
             // Get current + daily weather
+
             const weatherResponse =
                 await fetch(
                     `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
@@ -214,19 +199,29 @@ searchBtn.addEventListener(
 
 
             // Display current weather
+
             displayWeather(
                 current,
                 location.name
             );
 
 
-            // Display 5-day forecast
+            // Display forecast
+
             displayForecast(
                 weatherData.daily
             );
 
 
+            // Add city to search history
+
+            addToHistory(
+                location.name
+            );
+
+
             // Hide loading
+
             loading.style.display =
                 "none";
 
@@ -252,8 +247,7 @@ searchBtn.addEventListener(
 
 function displayForecast(daily) {
 
-    forecastContainer.innerHTML =
-        "";
+    forecastContainer.innerHTML = "";
 
 
     for (let i = 0; i < 5; i++) {
@@ -371,6 +365,7 @@ cityInput.addEventListener(
         if (event.key === "Enter") {
 
             searchBtn.click();
+
         }
 
     }
@@ -397,8 +392,8 @@ unitBtn.addEventListener(
 
             const fahrenheit =
                 (
-                    currentTemperatureCelsius
-                    * 9 / 5
+                    currentTemperatureCelsius *
+                    9 / 5
                 ) + 32;
 
 
@@ -448,6 +443,7 @@ locationBtn.addEventListener(
 
 
         // Show loading
+
         loading.style.display =
             "block";
 
@@ -458,7 +454,6 @@ locationBtn.addEventListener(
 
                 const latitude =
                     position.coords.latitude;
-
 
                 const longitude =
                     position.coords.longitude;
@@ -477,6 +472,7 @@ locationBtn.addEventListener(
 
 
                     // Display current weather
+
                     displayWeather(
                         data.current,
                         "Your Location"
@@ -484,12 +480,14 @@ locationBtn.addEventListener(
 
 
                     // Display forecast
+
                     displayForecast(
                         data.daily
                     );
 
 
                     // Hide loading
+
                     loading.style.display =
                         "none";
 
@@ -529,72 +527,68 @@ locationBtn.addEventListener(
 
 
 // ===============================
-// ADD FAVORITE CITY
+// ADD TO SEARCH HISTORY
 // ===============================
 
-favoriteBtn.addEventListener(
-    "click",
-    function () {
+function addToHistory(city) {
 
-        const city =
-            cityName.textContent.trim();
+    // Remove duplicate city
 
+    searchHistory =
+        searchHistory.filter(
+            function (item) {
 
-        if (city === "") {
-            return;
-        }
+                return (
+                    item.toLowerCase() !==
+                    city.toLowerCase()
+                );
 
-
-        if (!favoriteCities.includes(city)) {
-
-            favoriteCities.push(city);
-
-
-            localStorage.setItem(
-                "favoriteCities",
-                JSON.stringify(
-                    favoriteCities
-                )
-            );
+            }
+        );
 
 
-            favoriteBtn.textContent =
-                "⭐ Added to Favorites";
+    // Add newest city first
+
+    searchHistory.unshift(city);
 
 
-            displayFavorites();
+    // Keep only last 5 searches
 
-        } else {
+    searchHistory =
+        searchHistory.slice(0, 5);
 
-            alert(
-                "This city is already in favorites."
-            );
-        }
 
-    }
-);
+    // Save history
+
+    localStorage.setItem(
+        "searchHistory",
+        JSON.stringify(searchHistory)
+    );
+
+
+    displayHistory();
+}
 
 
 // ===============================
-// DISPLAY FAVORITE CITIES
+// DISPLAY SEARCH HISTORY
 // ===============================
 
-function displayFavorites() {
+function displayHistory() {
 
-    favoriteContainer.innerHTML =
-        "";
+    historyContainer.innerHTML = "";
 
 
-    if (favoriteCities.length === 0) {
+    if (searchHistory.length === 0) {
 
-        favoriteContainer.innerHTML =
-            "<p>No favorite cities yet.</p>";
+        historyContainer.innerHTML =
+            "<p>No search history yet.</p>";
 
         return;
     }
 
 
-    favoriteCities.forEach(
+    searchHistory.forEach(
         function (city) {
 
             const button =
@@ -602,7 +596,7 @@ function displayFavorites() {
 
 
             button.textContent =
-                `⭐ ${city}`;
+                `🕘 ${city}`;
 
 
             button.addEventListener(
@@ -618,7 +612,7 @@ function displayFavorites() {
             );
 
 
-            favoriteContainer.appendChild(
+            historyContainer.appendChild(
                 button
             );
 
@@ -628,8 +622,8 @@ function displayFavorites() {
 
 
 // ===============================
-// LOAD FAVORITES WHEN PAGE OPENS
+// LOAD SEARCH HISTORY
 // ===============================
 
-displayFavorites();
+displayHistory();
 
