@@ -232,44 +232,12 @@
 
 
                 <!-- =========================
-                     🌦️ WEATHER ALERT / STATUS
-                ========================== -->
-
-                <div
-                    class="weather-alert"
-                    id="weatherAlert"
-                >
-
-                    <div
-                        class="alert-icon"
-                        id="alertIcon"
-                    >
-                        🌤️
-                    </div>
-
-                    <div class="alert-content">
-
-                        <h3 id="alertTitle">
-                            Weather Status
-                        </h3>
-
-                        <p id="alertMessage">
-                            Weather information will appear here.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =========================
                      BASIC WEATHER INFO
                 ========================== -->
 
                 <div class="weather-info">
 
                     <div>
-
                         <span>💧</span>
 
                         <p>Humidity</p>
@@ -277,12 +245,10 @@
                         <strong id="humidity">
                             65%
                         </strong>
-
                     </div>
 
 
                     <div>
-
                         <span>💨</span>
 
                         <p>Wind</p>
@@ -290,12 +256,10 @@
                         <strong id="wind">
                             12 km/h
                         </strong>
-
                     </div>
 
 
                     <div>
-
                         <span>🌅</span>
 
                         <p>Sunrise</p>
@@ -303,12 +267,10 @@
                         <strong id="sunrise">
                             --:--
                         </strong>
-
                     </div>
 
 
                     <div>
-
                         <span>🌇</span>
 
                         <p>Sunset</p>
@@ -316,7 +278,6 @@
                         <strong id="sunset">
                             --:--
                         </strong>
-
                     </div>
 
                 </div>
@@ -424,6 +385,100 @@
                     id="hourlyContainer"
                     class="hourly-container"
                 ></div>
+
+            </div>
+
+
+            <!-- =========================
+                 TEMPERATURE GRAPH
+            ========================== -->
+
+            <div class="temperature-graph-section">
+
+                <h2>
+                    📊 Temperature Graph
+                </h2>
+
+                <div class="temperature-graph-card">
+
+                    <div class="graph-header">
+
+                        <div>
+                            <strong>
+                                Next 12 Hours
+                            </strong>
+
+                            <p>
+                                Hourly temperature trend
+                            </p>
+                        </div>
+
+                        <div
+                            id="graphCurrentUnit"
+                            class="graph-unit"
+                        >
+                            °C
+                        </div>
+
+                    </div>
+
+
+                    <div class="graph-wrapper">
+
+                        <svg
+                            id="temperatureGraph"
+                            class="temperature-graph"
+                            viewBox="0 0 900 330"
+                            preserveAspectRatio="none"
+                        >
+
+                            <defs>
+
+                                <linearGradient
+                                    id="graphGradient"
+                                    x1="0"
+                                    y1="0"
+                                    x2="0"
+                                    y2="1"
+                                >
+
+                                    <stop
+                                        offset="0%"
+                                        stop-opacity="0.45"
+                                    />
+
+                                    <stop
+                                        offset="100%"
+                                        stop-opacity="0"
+                                    />
+
+                                </linearGradient>
+
+                            </defs>
+
+                            <g id="graphGrid"></g>
+
+                            <path
+                                id="graphArea"
+                                class="graph-area"
+                                d=""
+                            ></path>
+
+                            <polyline
+                                id="graphLine"
+                                class="graph-line"
+                                points=""
+                            ></polyline>
+
+                            <g id="graphPoints"></g>
+
+                            <g id="graphLabels"></g>
+
+                        </svg>
+
+                    </div>
+
+                </div>
 
             </div>
 

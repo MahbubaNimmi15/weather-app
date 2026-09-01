@@ -43,14 +43,12 @@ body {
 
     padding: 0 25px;
 
-    background:
-        rgba(15, 23, 42, 0.25);
+    background: rgba(15, 23, 42, 0.25);
 
     backdrop-filter: blur(12px);
 
     border-bottom:
-        1px solid
-        rgba(255, 255, 255, 0.2);
+        1px solid rgba(255, 255, 255, 0.2);
 
     position: sticky;
     top: 0;
@@ -69,11 +67,8 @@ body {
 .theme-btn,
 .close-btn {
     border: none;
-
     background: transparent;
-
     color: white;
-
     cursor: pointer;
 }
 
@@ -115,11 +110,9 @@ body {
         );
 
     box-shadow:
-        5px 0 25px
-        rgba(0, 0, 0, 0.3);
+        5px 0 25px rgba(0, 0, 0, 0.3);
 
-    transition:
-        left 0.3s ease;
+    transition: left 0.3s ease;
 
     overflow-y: auto;
 }
@@ -134,7 +127,6 @@ body {
     display: flex;
 
     justify-content: space-between;
-
     align-items: center;
 
     margin-bottom: 30px;
@@ -289,8 +281,7 @@ body {
     border-radius: 12px;
 
     box-shadow:
-        0 8px 25px
-        rgba(0, 0, 0, 0.2);
+        0 8px 25px rgba(0, 0, 0, 0.2);
 
     overflow: visible;
 }
@@ -463,8 +454,7 @@ body {
     border: none;
 
     border-bottom:
-        1px solid
-        #e2e8f0;
+        1px solid #e2e8f0;
 
     background: white;
 
@@ -548,8 +538,7 @@ body {
 
 
 .location-btn:hover {
-    transform:
-        translateY(-2px);
+    transform: translateY(-2px);
 }
 
 
@@ -658,131 +647,6 @@ body {
 
 
 /* =====================================================
-   🌦️ WEATHER ALERT / STATUS
-===================================================== */
-
-.weather-alert {
-    margin-top: 25px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    padding: 18px 20px;
-
-    border-radius: 16px;
-
-    text-align: left;
-
-    background:
-        rgba(255, 255, 255, 0.14);
-
-    backdrop-filter: blur(12px);
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.25);
-
-    box-shadow:
-        0 8px 25px
-        rgba(0, 0, 0, 0.12);
-
-    transition:
-        transform 0.2s ease,
-        background 0.3s ease;
-}
-
-
-.weather-alert:hover {
-    transform:
-        translateY(-3px);
-}
-
-
-.alert-icon {
-    min-width: 55px;
-
-    height: 55px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, 0.18);
-
-    font-size: 30px;
-}
-
-
-.alert-content {
-    flex: 1;
-}
-
-
-.alert-content h3 {
-    margin-bottom: 5px;
-
-    font-size: 18px;
-}
-
-
-.alert-content p {
-    font-size: 14px;
-
-    opacity: 0.9;
-
-    line-height: 1.5;
-}
-
-
-/* RAIN */
-
-.weather-alert.rain {
-    background:
-        rgba(37, 99, 235, 0.25);
-}
-
-
-/* STORM */
-
-.weather-alert.storm {
-    background:
-        rgba(124, 58, 237, 0.30);
-}
-
-
-/* FOG */
-
-.weather-alert.fog {
-    background:
-        rgba(100, 116, 139, 0.25);
-}
-
-
-/* SNOW */
-
-.weather-alert.snow {
-    background:
-        rgba(56, 189, 248, 0.25);
-}
-
-
-/* CLEAR */
-
-.weather-alert.clear {
-    background:
-        rgba(245, 158, 11, 0.20);
-}
-
-
-/* =====================================================
    BASIC INFO
 ===================================================== */
 
@@ -873,13 +737,15 @@ body {
 ===================================================== */
 
 .hourly-section,
-.forecast-section {
+.forecast-section,
+.temperature-graph-section {
     margin-top: 35px;
 }
 
 
 .hourly-section h2,
-.forecast-section h2 {
+.forecast-section h2,
+.temperature-graph-section h2 {
     margin-bottom: 20px;
 }
 
@@ -922,8 +788,7 @@ body {
 
 
 .hourly-card:hover {
-    transform:
-        translateY(-5px);
+    transform: translateY(-5px);
 }
 
 
@@ -952,6 +817,159 @@ body {
     margin-top: 8px;
 
     font-size: 13px;
+}
+
+
+/* =====================================================
+   📊 TEMPERATURE GRAPH
+===================================================== */
+
+.temperature-graph-card {
+    padding: 25px;
+
+    border-radius: 22px;
+
+    background:
+        rgba(255, 255, 255, 0.15);
+
+    backdrop-filter: blur(15px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.22);
+
+    box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.12);
+}
+
+
+.graph-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+
+    text-align: left;
+}
+
+
+.graph-header strong {
+    font-size: 18px;
+}
+
+
+.graph-header p {
+    margin-top: 5px;
+
+    font-size: 13px;
+
+    opacity: 0.8;
+}
+
+
+.graph-unit {
+    padding: 8px 12px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.18);
+
+    font-weight: bold;
+}
+
+
+.graph-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+
+.temperature-graph {
+    width: 100%;
+
+    min-width: 700px;
+
+    height: 330px;
+
+    overflow: visible;
+}
+
+
+.graph-grid-line {
+    stroke: rgba(255, 255, 255, 0.18);
+
+    stroke-width: 1;
+
+    stroke-dasharray: 5 5;
+}
+
+
+.graph-grid-label {
+    fill: rgba(255, 255, 255, 0.8);
+
+    font-size: 12px;
+
+    text-anchor: end;
+}
+
+
+.graph-line {
+    fill: none;
+
+    stroke: #ffffff;
+
+    stroke-width: 4;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+}
+
+
+.graph-area {
+    fill: url(#graphGradient);
+
+    opacity: 0.8;
+}
+
+
+.graph-point {
+    fill: #ffffff;
+
+    stroke: #2563eb;
+
+    stroke-width: 4;
+}
+
+
+.graph-point:hover {
+    r: 8;
+}
+
+
+.graph-temp-label {
+    fill: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    text-anchor: middle;
+}
+
+
+.graph-time-label {
+    fill: rgba(255, 255, 255, 0.9);
+
+    font-size: 12px;
+
+    text-anchor: middle;
 }
 
 
@@ -989,8 +1007,7 @@ body {
 
 
 .forecast-card:hover {
-    transform:
-        translateY(-5px);
+    transform: translateY(-5px);
 }
 
 
@@ -1114,47 +1131,10 @@ body.dark-mode .weather-card {
 body.dark-mode .weather-info > div,
 body.dark-mode .detail-box,
 body.dark-mode .hourly-card,
-body.dark-mode .forecast-card {
+body.dark-mode .forecast-card,
+body.dark-mode .temperature-graph-card {
     background:
         rgba(30, 41, 59, 0.65);
-}
-
-
-/* DARK MODE ALERT */
-
-body.dark-mode .weather-alert {
-    background:
-        rgba(15, 23, 42, 0.55);
-}
-
-
-body.dark-mode .weather-alert.rain {
-    background:
-        rgba(37, 99, 235, 0.30);
-}
-
-
-body.dark-mode .weather-alert.storm {
-    background:
-        rgba(124, 58, 237, 0.35);
-}
-
-
-body.dark-mode .weather-alert.fog {
-    background:
-        rgba(71, 85, 105, 0.35);
-}
-
-
-body.dark-mode .weather-alert.snow {
-    background:
-        rgba(14, 116, 144, 0.35);
-}
-
-
-body.dark-mode .weather-alert.clear {
-    background:
-        rgba(180, 83, 9, 0.30);
 }
 
 
@@ -1166,6 +1146,11 @@ body.dark-mode .sidebar {
             #1e1b4b,
             #164e63
         );
+}
+
+
+body.dark-mode .graph-grid-line {
+    stroke: rgba(255, 255, 255, 0.12);
 }
 
 
@@ -1195,6 +1180,11 @@ body.dark-mode .sidebar {
 
     #temperature {
         font-size: 42px;
+    }
+
+
+    .temperature-graph-card {
+        padding: 18px;
     }
 
 }
@@ -1249,27 +1239,8 @@ body.dark-mode .sidebar {
     }
 
 
-    .weather-alert {
-        padding: 15px;
-    }
-
-
-    .alert-icon {
-        min-width: 45px;
-
-        height: 45px;
-
-        font-size: 24px;
-    }
-
-
-    .alert-content h3 {
-        font-size: 16px;
-    }
-
-
-    .alert-content p {
-        font-size: 13px;
+    .temperature-graph {
+        min-width: 650px;
     }
 
 }

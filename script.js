@@ -102,20 +102,29 @@ const themeBtn =
 
 
 /* =====================================================
-   🌦️ WEATHER ALERT ELEMENTS
+   GRAPH ELEMENTS
 ===================================================== */
 
-const weatherAlert =
-    document.getElementById("weatherAlert");
+const temperatureGraph =
+    document.getElementById("temperatureGraph");
 
-const alertIcon =
-    document.getElementById("alertIcon");
+const graphGrid =
+    document.getElementById("graphGrid");
 
-const alertTitle =
-    document.getElementById("alertTitle");
+const graphArea =
+    document.getElementById("graphArea");
 
-const alertMessage =
-    document.getElementById("alertMessage");
+const graphLine =
+    document.getElementById("graphLine");
+
+const graphPoints =
+    document.getElementById("graphPoints");
+
+const graphLabels =
+    document.getElementById("graphLabels");
+
+const graphCurrentUnit =
+    document.getElementById("graphCurrentUnit");
 
 
 /* =====================================================
@@ -248,213 +257,9 @@ function getWeatherInfo(code) {
 
 
     return weather[code] || {
-
         icon: "🌤️",
-
         text: "Unknown"
-
     };
-
-}
-
-
-/* =====================================================
-   🌦️ WEATHER ALERT / STATUS
-===================================================== */
-
-function updateWeatherAlert(weatherCondition) {
-
-    if (
-        !weatherAlert ||
-        !alertIcon ||
-        !alertTitle ||
-        !alertMessage
-    ) {
-        return;
-    }
-
-
-    const conditionText =
-        String(weatherCondition || "")
-            .toLowerCase();
-
-
-    /* Remove old classes */
-
-    weatherAlert.classList.remove(
-        "rain",
-        "storm",
-        "fog",
-        "snow",
-        "clear"
-    );
-
-
-    /* =================================================
-       ⛈️ STORM
-    ================================================= */
-
-    if (
-        conditionText.includes("thunder") ||
-        conditionText.includes("storm")
-    ) {
-
-        alertIcon.textContent =
-            "⛈️";
-
-        alertTitle.textContent =
-            "Storm Alert";
-
-        alertMessage.textContent =
-            "Thunderstorm conditions may occur. Please stay aware of the weather.";
-
-        weatherAlert.classList.add(
-            "storm"
-        );
-
-    }
-
-
-    /* =================================================
-       🌧️ RAIN
-    ================================================= */
-
-    else if (
-        conditionText.includes("rain") ||
-        conditionText.includes("drizzle") ||
-        conditionText.includes("shower")
-    ) {
-
-        alertIcon.textContent =
-            "🌧️";
-
-        alertTitle.textContent =
-            "Rain Alert";
-
-        alertMessage.textContent =
-            "Rain is expected. You may want to carry an umbrella.";
-
-        weatherAlert.classList.add(
-            "rain"
-        );
-
-    }
-
-
-    /* =================================================
-       ❄️ SNOW
-    ================================================= */
-
-    else if (
-        conditionText.includes("snow") ||
-        conditionText.includes("sleet")
-    ) {
-
-        alertIcon.textContent =
-            "❄️";
-
-        alertTitle.textContent =
-            "Snow Alert";
-
-        alertMessage.textContent =
-            "Snowy weather conditions are expected.";
-
-        weatherAlert.classList.add(
-            "snow"
-        );
-
-    }
-
-
-    /* =================================================
-       🌫️ FOG
-    ================================================= */
-
-    else if (
-        conditionText.includes("fog") ||
-        conditionText.includes("mist") ||
-        conditionText.includes("haze")
-    ) {
-
-        alertIcon.textContent =
-            "🌫️";
-
-        alertTitle.textContent =
-            "Low Visibility";
-
-        alertMessage.textContent =
-            "Foggy or hazy conditions may reduce visibility.";
-
-        weatherAlert.classList.add(
-            "fog"
-        );
-
-    }
-
-
-    /* =================================================
-       ☁️ CLOUDY
-    ================================================= */
-
-    else if (
-        conditionText.includes("cloud") ||
-        conditionText.includes("overcast")
-    ) {
-
-        alertIcon.textContent =
-            "☁️";
-
-        alertTitle.textContent =
-            "Cloudy Weather";
-
-        alertMessage.textContent =
-            "The sky is mostly cloudy at the moment.";
-
-    }
-
-
-    /* =================================================
-       ☀️ CLEAR
-    ================================================= */
-
-    else if (
-        conditionText.includes("clear") ||
-        conditionText.includes("sunny")
-    ) {
-
-        alertIcon.textContent =
-            "☀️";
-
-        alertTitle.textContent =
-            "Clear Weather";
-
-        alertMessage.textContent =
-            "The weather is clear and pleasant right now.";
-
-        weatherAlert.classList.add(
-            "clear"
-        );
-
-    }
-
-
-    /* =================================================
-       🌤️ DEFAULT
-    ================================================= */
-
-    else {
-
-        alertIcon.textContent =
-            "🌤️";
-
-        alertTitle.textContent =
-            "Weather Status";
-
-        alertMessage.textContent =
-            "Current weather conditions are available above.";
-
-    }
-
 }
 
 
@@ -465,9 +270,7 @@ function updateWeatherAlert(weatherCondition) {
 function formatTime(timeString) {
 
     if (!timeString) {
-
         return "--:--";
-
     }
 
 
@@ -509,13 +312,12 @@ function formatDate(dateString) {
 
 
 /* =====================================================
-   GET WIND DIRECTION
+   WIND DIRECTION
 ===================================================== */
 
 function getWindDirection(degrees) {
 
     const directions = [
-
         "N",
         "NE",
         "E",
@@ -524,14 +326,11 @@ function getWindDirection(degrees) {
         "SW",
         "W",
         "NW"
-
     ];
 
 
     const index =
-        Math.round(
-            degrees / 45
-        ) % 8;
+        Math.round(degrees / 45) % 8;
 
 
     return directions[index];
@@ -545,16 +344,14 @@ function getWindDirection(degrees) {
 
 function showLoading() {
 
-    loading.style.display =
-        "block";
+    loading.style.display = "block";
 
 }
 
 
 function hideLoading() {
 
-    loading.style.display =
-        "none";
+    loading.style.display = "none";
 
 }
 
@@ -719,10 +516,8 @@ async function loadWeather(
 
         const url =
             "https://api.open-meteo.com/v1/forecast" +
-            "?latitude=" +
-            latitude +
-            "&longitude=" +
-            longitude +
+            "?latitude=" + latitude +
+            "&longitude=" + longitude +
             "&current=" +
             "temperature_2m," +
             "relative_humidity_2m," +
@@ -772,6 +567,7 @@ async function loadWeather(
         currentWeatherData =
             data;
 
+
         currentCity =
             name;
 
@@ -784,6 +580,11 @@ async function loadWeather(
 
 
         displayHourlyWeather(
+            data
+        );
+
+
+        displayTemperatureGraph(
             data
         );
 
@@ -853,13 +654,6 @@ function displayCurrentWeather(
         weather.text;
 
 
-    /* 🌦️ UPDATE WEATHER ALERT */
-
-    updateWeatherAlert(
-        weather.text
-    );
-
-
     updateTemperatureDisplay(
         current.temperature_2m
     );
@@ -899,8 +693,6 @@ function displayCurrentWeather(
         );
 
 
-    /* Sunrise */
-
     if (
         data.daily &&
         data.daily.sunrise
@@ -913,8 +705,6 @@ function displayCurrentWeather(
 
     }
 
-
-    /* Sunset */
 
     if (
         data.daily &&
@@ -929,20 +719,18 @@ function displayCurrentWeather(
     }
 
 
-    /* Rain probability */
-
     if (
         data.daily &&
-        data.daily.precipitation_probability_max
+        data.daily
+            .precipitation_probability_max
     ) {
 
         rainProbability.textContent =
-            `${data.daily.precipitation_probability_max[0]}%`;
+            `${data.daily
+                .precipitation_probability_max[0]}%`;
 
     }
 
-
-    /* Visibility */
 
     if (
         data.hourly &&
@@ -1049,6 +837,11 @@ unitBtn.addEventListener(
             );
 
 
+            displayTemperatureGraph(
+                currentWeatherData
+            );
+
+
             displayFiveDayForecast(
                 currentWeatherData
             );
@@ -1090,8 +883,7 @@ function displayHourlyWeather(
     data
 ) {
 
-    hourlyContainer.innerHTML =
-        "";
+    hourlyContainer.innerHTML = "";
 
 
     if (!data.hourly) {
@@ -1105,11 +897,11 @@ function displayHourlyWeather(
         data.hourly;
 
 
-    const currentHour =
-        new Date().getHours();
-
-
     let startIndex = 0;
+
+
+    const currentTime =
+        new Date();
 
 
     for (
@@ -1118,14 +910,14 @@ function displayHourlyWeather(
         i++
     ) {
 
-        const hour =
+        const time =
             new Date(
                 hourly.time[i]
-            ).getHours();
+            );
 
 
         if (
-            hour >= currentHour
+            time >= currentTime
         ) {
 
             startIndex = i;
@@ -1174,7 +966,8 @@ function displayHourlyWeather(
 
         const rain =
             hourly.precipitation_probability
-                ? hourly.precipitation_probability[i]
+                ? hourly
+                    .precipitation_probability[i]
                 : 0;
 
 
@@ -1211,6 +1004,497 @@ function displayHourlyWeather(
 
 
 /* =====================================================
+   📊 TEMPERATURE GRAPH
+===================================================== */
+
+function displayTemperatureGraph(
+    data
+) {
+
+    if (
+        !data ||
+        !data.hourly ||
+        !temperatureGraph
+    ) {
+
+        return;
+
+    }
+
+
+    const hourly =
+        data.hourly;
+
+
+    let startIndex = 0;
+
+
+    const now =
+        new Date();
+
+
+    for (
+        let i = 0;
+        i < hourly.time.length;
+        i++
+    ) {
+
+        const time =
+            new Date(
+                hourly.time[i]
+            );
+
+
+        if (
+            time >= now
+        ) {
+
+            startIndex = i;
+
+            break;
+
+        }
+
+    }
+
+
+    const endIndex =
+        Math.min(
+            startIndex + 12,
+            hourly.time.length
+        );
+
+
+    const temperatures =
+        hourly.temperature_2m
+            .slice(
+                startIndex,
+                endIndex
+            );
+
+
+    const times =
+        hourly.time
+            .slice(
+                startIndex,
+                endIndex
+            );
+
+
+    if (
+        temperatures.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const width = 900;
+
+    const height = 330;
+
+    const paddingLeft = 55;
+
+    const paddingRight = 25;
+
+    const paddingTop = 35;
+
+    const paddingBottom = 50;
+
+
+    const graphWidth =
+        width -
+        paddingLeft -
+        paddingRight;
+
+
+    const graphHeight =
+        height -
+        paddingTop -
+        paddingBottom;
+
+
+    const convertedTemperatures =
+        temperatures.map(
+            temp => {
+
+                if (
+                    currentUnit === "F"
+                ) {
+
+                    return (
+                        temp * 9 / 5
+                    ) + 32;
+
+                }
+
+                return temp;
+
+            }
+        );
+
+
+    let minTemp =
+        Math.floor(
+            Math.min(
+                ...convertedTemperatures
+            ) - 2
+        );
+
+
+    let maxTemp =
+        Math.ceil(
+            Math.max(
+                ...convertedTemperatures
+            ) + 2
+        );
+
+
+    if (
+        minTemp === maxTemp
+    ) {
+
+        minTemp -= 2;
+
+        maxTemp += 2;
+
+    }
+
+
+    const tempRange =
+        maxTemp - minTemp;
+
+
+    const points =
+        convertedTemperatures.map(
+            (temp, index) => {
+
+                const x =
+                    paddingLeft +
+                    (
+                        index /
+                        Math.max(
+                            convertedTemperatures.length - 1,
+                            1
+                        )
+                    ) *
+                    graphWidth;
+
+
+                const y =
+                    paddingTop +
+                    (
+                        (maxTemp - temp) /
+                        tempRange
+                    ) *
+                    graphHeight;
+
+
+                return {
+                    x,
+                    y,
+                    temp,
+                    time: times[index]
+                };
+
+            }
+        );
+
+
+    /* =================================================
+       CLEAR OLD GRAPH
+    ================================================= */
+
+    graphGrid.innerHTML = "";
+
+    graphPoints.innerHTML = "";
+
+    graphLabels.innerHTML = "";
+
+
+    /* =================================================
+       GRID
+    ================================================= */
+
+    const gridCount = 5;
+
+
+    for (
+        let i = 0;
+        i <= gridCount;
+        i++
+    ) {
+
+        const y =
+            paddingTop +
+            (
+                i / gridCount
+            ) *
+            graphHeight;
+
+
+        const value =
+            maxTemp -
+            (
+                i / gridCount
+            ) *
+            tempRange;
+
+
+        const line =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "line"
+            );
+
+
+        line.setAttribute(
+            "x1",
+            paddingLeft
+        );
+
+
+        line.setAttribute(
+            "y1",
+            y
+        );
+
+
+        line.setAttribute(
+            "x2",
+            width - paddingRight
+        );
+
+
+        line.setAttribute(
+            "y2",
+            y
+        );
+
+
+        line.classList.add(
+            "graph-grid-line"
+        );
+
+
+        graphGrid.appendChild(
+            line
+        );
+
+
+        const label =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "text"
+            );
+
+
+        label.setAttribute(
+            "x",
+            paddingLeft - 10
+        );
+
+
+        label.setAttribute(
+            "y",
+            y + 4
+        );
+
+
+        label.classList.add(
+            "graph-grid-label"
+        );
+
+
+        label.textContent =
+            `${Math.round(
+                value
+            )}°`;
+
+
+        graphGrid.appendChild(
+            label
+        );
+
+    }
+
+
+    /* =================================================
+       LINE POINTS
+    ================================================= */
+
+    const pointString =
+        points
+            .map(
+                point =>
+                    `${point.x},${point.y}`
+            )
+            .join(" ");
+
+
+    graphLine.setAttribute(
+        "points",
+        pointString
+    );
+
+
+    /* =================================================
+       GRAPH AREA
+    ================================================= */
+
+    const firstPoint =
+        points[0];
+
+
+    const lastPoint =
+        points[points.length - 1];
+
+
+    const areaPath =
+        `M ${firstPoint.x} ${firstPoint.y}
+         L ${lastPoint.x} ${lastPoint.y}
+         L ${lastPoint.x} ${height - paddingBottom}
+         L ${firstPoint.x} ${height - paddingBottom}
+         Z`;
+
+
+    graphArea.setAttribute(
+        "d",
+        areaPath
+    );
+
+
+    /* =================================================
+       POINTS + LABELS
+    ================================================= */
+
+    points.forEach(
+        (point, index) => {
+
+            const circle =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "circle"
+                );
+
+
+            circle.setAttribute(
+                "cx",
+                point.x
+            );
+
+
+            circle.setAttribute(
+                "cy",
+                point.y
+            );
+
+
+            circle.setAttribute(
+                "r",
+                6
+            );
+
+
+            circle.classList.add(
+                "graph-point"
+            );
+
+
+            circle.setAttribute(
+                "title",
+                `${Math.round(
+                    point.temp
+                )}°${currentUnit}`
+            );
+
+
+            graphPoints.appendChild(
+                circle
+            );
+
+
+            const tempLabel =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "text"
+                );
+
+
+            tempLabel.setAttribute(
+                "x",
+                point.x
+            );
+
+
+            tempLabel.setAttribute(
+                "y",
+                point.y - 14
+            );
+
+
+            tempLabel.classList.add(
+                "graph-temp-label"
+            );
+
+
+            tempLabel.textContent =
+                `${Math.round(
+                    point.temp
+                )}°`;
+
+
+            graphLabels.appendChild(
+                tempLabel
+            );
+
+
+            const timeLabel =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "text"
+                );
+
+
+            timeLabel.setAttribute(
+                "x",
+                point.x
+            );
+
+
+            timeLabel.setAttribute(
+                "y",
+                height - 20
+            );
+
+
+            timeLabel.classList.add(
+                "graph-time-label"
+            );
+
+
+            timeLabel.textContent =
+                formatTime(
+                    point.time
+                );
+
+
+            graphLabels.appendChild(
+                timeLabel
+            );
+
+        }
+    );
+
+
+    graphCurrentUnit.textContent =
+        `°${currentUnit}`;
+
+}
+
+
+/* =====================================================
    5 DAY FORECAST
 ===================================================== */
 
@@ -1218,8 +1502,7 @@ function displayFiveDayForecast(
     data
 ) {
 
-    forecastContainer.innerHTML =
-        "";
+    forecastContainer.innerHTML = "";
 
 
     if (!data.daily) {
@@ -1275,8 +1558,10 @@ function displayFiveDayForecast(
 
 
         const rain =
-            daily.precipitation_probability_max
-                ? daily.precipitation_probability_max[i]
+            daily
+                .precipitation_probability_max
+                ? daily
+                    .precipitation_probability_max[i]
                 : 0;
 
 
@@ -1328,9 +1613,13 @@ searchBtn.addEventListener(
             cityInput.value.trim();
 
 
-        if (city !== "") {
+        if (
+            city !== ""
+        ) {
 
-            searchCity(city);
+            searchCity(
+                city
+            );
 
         }
 
@@ -1344,7 +1633,7 @@ searchBtn.addEventListener(
 
 cityInput.addEventListener(
     "keydown",
-    (event) => {
+    event => {
 
         if (
             event.key === "Enter"
@@ -1357,9 +1646,13 @@ cityInput.addEventListener(
                 cityInput.value.trim();
 
 
-            if (city !== "") {
+            if (
+                city !== ""
+            ) {
 
-                searchCity(city);
+                searchCity(
+                    city
+                );
 
             }
 
@@ -1396,9 +1689,11 @@ cityInput.addEventListener(
             searchSuggestions.innerHTML =
                 "";
 
+
             searchSuggestions.classList.remove(
                 "show"
             );
+
 
             return;
 
@@ -1446,7 +1741,9 @@ async function getCitySuggestions(
         const url =
             "https://geocoding-api.open-meteo.com/v1/search" +
             "?name=" +
-            encodeURIComponent(query) +
+            encodeURIComponent(
+                query
+            ) +
             "&count=8" +
             "&language=en" +
             "&format=json";
@@ -1490,7 +1787,7 @@ async function getCitySuggestions(
 
 
         data.results.forEach(
-            (location) => {
+            location => {
 
                 const item =
                     document.createElement(
@@ -1583,7 +1880,10 @@ async function getCitySuggestions(
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         searchSuggestions.innerHTML = `
             <div class="no-suggestion">
@@ -1602,7 +1902,7 @@ async function getCitySuggestions(
 
 document.addEventListener(
     "click",
-    (event) => {
+    event => {
 
         if (
             !event.target.closest(
@@ -1646,8 +1946,7 @@ locationBtn.addEventListener(
 
 
         navigator.geolocation.getCurrentPosition(
-
-            async (position) => {
+            async position => {
 
                 const latitude =
                     position.coords.latitude;
@@ -1713,11 +2012,15 @@ locationBtn.addEventListener(
 
                 } catch (error) {
 
-                    console.error(error);
+                    console.error(
+                        error
+                    );
+
 
                     alert(
                         "❌ Could not detect your city."
                     );
+
 
                     hideLoading();
 
@@ -1725,12 +2028,12 @@ locationBtn.addEventListener(
 
             },
 
-
             () => {
 
                 alert(
                     "❌ Location permission denied."
                 );
+
 
                 hideLoading();
 
@@ -1797,7 +2100,9 @@ favoriteBtn.addEventListener(
     "click",
     () => {
 
-        if (!currentCity) {
+        if (
+            !currentCity
+        ) {
 
             return;
 
@@ -1816,7 +2121,9 @@ favoriteBtn.addEventListener(
             );
 
 
-        if (exists) {
+        if (
+            exists
+        ) {
 
             favorites =
                 favorites.filter(
@@ -1913,9 +2220,11 @@ function renderFavorites() {
 
                     updateClearButton();
 
+
                     searchCity(
                         city
                     );
+
 
                     closeSidebar();
 
@@ -2117,9 +2426,11 @@ function renderHistory() {
 
                     updateClearButton();
 
+
                     searchCity(
                         city
                     );
+
 
                     closeSidebar();
 
