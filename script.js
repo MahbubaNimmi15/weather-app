@@ -9,14 +9,14 @@ const humidity = document.getElementById("humidity");
 const wind = document.getElementById("wind");
 const weatherIcon = document.getElementById("weatherIcon");
 
+const sunrise = document.getElementById("sunrise");
+const sunset = document.getElementById("sunset");
+
 const unitBtn = document.getElementById("unitBtn");
 const favoriteBtn = document.getElementById("favoriteBtn");
 
 const forecastContainer =
 document.getElementById("forecastContainer");
-
-const loading =
-document.getElementById("loading");
 
 const favoriteList =
 document.getElementById("favoriteList");
@@ -24,25 +24,380 @@ document.getElementById("favoriteList");
 const historyList =
 document.getElementById("historyList");
 
-const sunrise =
-document.getElementById("sunrise");
+const loading =
+document.getElementById("loading");
 
-const sunset =
-document.getElementById("sunset");
+const sidebar =
+document.getElementById("sidebar");
+
+const mainContent =
+document.getElementById("mainContent");
+
+const menuBtn =
+document.getElementById("menuBtn");
 
 let currentTemperatureCelsius = null;
+
 let isCelsius = true;
-let currentCity = "Dhaka";
+
+let currentCity = "";
 
 // ===============================
-// LOAD SAVED DATA
+// SIDEBAR TOGGLE
 // ===============================
 
-let favoriteCities =
-JSON.parse(localStorage.getItem("favoriteCities")) || [];
+menuBtn.addEventListener("click", function () {
 
-let searchHistory =
-JSON.parse(localStorage.getItem("searchHistory")) || [];
+sidebar.classList.toggle("collapsed");
+
+mainContent.classList.toggle("expanded");
+
+});
+
+// ===============================
+// STORAGE
+// ===============================
+
+let favorites =
+JSON.parse(
+localStorage.getItem("favoriteCities")
+) || [];
+
+let history =
+JSON.parse(
+localStorage.getItem("searchHistory")
+) || [];
+
+// ===============================
+// DISPLAY SIDEBAR
+// ===============================
+
+function displaySidebar() {
+
+favoriteList.innerHTML = "";
+
+historyList.innerHTML = "";
+
+
+// =========================
+// FAVORITES
+// =========================
+
+if (favorites.length === 0) {
+
+    favoriteList.innerHTML =
+        `<p class="empty-message sidebar-text">
+            No favorite cities
+        </p>`;
+
+} else {
+
+    favorites.forEach(function (city, index) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "sidebar-item";
+
+
+        item.innerHTML = `
+            <button class="city-button">
+                ⭐ ${city}
+            </button>
+
+            <button
+                class="delete-btn"
+                title="Delete favorite"
+            >
+                🗑️
+            </button>
+        `;
+
+
+        item.querySelector(".city-button")
+            .addEventListener(
+                "click",
+                function () {
+
+                    cityInput.value = city;
+
+                    searchBtn.click();
+
+                }
+            );
+
+
+        item.querySelector(".delete-btn")
+            .addEventListener(
+                "click",
+                function () {
+
+                    favorites.splice(index, 1);
+
+                    localStorage.setItem(
+                        "favoriteCities",
+                        JSON.stringify(favorites)
+                    );
+
+                    displaySidebar();
+
+                    updateFavoriteButton();
+
+                }
+            );
+
+
+        favoriteList.appendChild(item);
+
+    });
+
+}
+
+
+// =========================
+// SEARCH HISTORY
+// =========================
+
+if (history.length === 0) {
+
+    historyList.innerHTML =
+        `<p class="empty-message sidebar-text">
+            No search history
+        </p>`;
+
+} else {
+
+    history.forEach(function (city, index) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "sidebar-item";
+
+
+        item.innerHTML = `
+            <button class="city-button">
+                🕘 ${city}
+            </button>
+
+            <button
+                class="delete-btn"
+                title="Delete history"
+            >
+                🗑️
+            </button>
+        `;
+
+
+        item.querySelector(".city-button")
+            .addEventListener(
+                "click",
+                function () {
+
+                    cityInput.value = city;
+
+                    searchBtn.click();
+
+                }
+            );
+
+
+        item.querySelector(".delete-btn")
+            .addEventListener(
+                "click",
+                function () {
+
+                    history.splice(index, 1);
+
+                    localStorage.setItem(
+                        "searchHistory",
+                        JSON.stringify(history)
+                    );
+
+                    displaySidebar();
+
+                }
+            );
+
+
+        historyList.appendChild(item);
+
+    });
+
+}
+
+}
+
+// ===============================
+// ADD SEARCH HISTORY
+// ===============================
+
+function addToHistory(city) {
+
+history =
+    history.filter(function (item) {
+
+        return item.toLowerCase() !==
+            city.toLowerCase();
+
+    });
+
+
+history.unshift(city);
+
+
+history =
+    history.slice(0, 10);
+
+
+localStorage.setItem(
+    "searchHistory",
+    JSON.stringify(history)
+);
+
+
+displaySidebar();
+
+}
+
+// ===============================
+// FAVORITE BUTTON
+// ===============================
+
+favoriteBtn.addEventListener(
+"click",
+function () {
+
+    if (!currentCity) {
+        return;
+    }
+
+
+    const index =
+        favorites.findIndex(
+            function (city) {
+
+                return city.toLowerCase() ===
+                    currentCity.toLowerCase();
+
+            }
+        );
+
+
+    if (index === -1) {
+
+        favorites.push(currentCity);
+
+    } else {
+
+        favorites.splice(index, 1);
+
+    }
+
+
+    localStorage.setItem(
+        "favoriteCities",
+        JSON.stringify(favorites)
+    );
+
+
+    displaySidebar();
+
+    updateFavoriteButton();
+
+}
+
+);
+
+// ===============================
+// UPDATE FAVORITE ICON
+// ===============================
+
+function updateFavoriteButton() {
+
+const exists =
+    favorites.some(
+        function (city) {
+
+            return city.toLowerCase() ===
+                currentCity.toLowerCase();
+
+        }
+    );
+
+
+if (exists) {
+
+    favoriteBtn.textContent = "★";
+
+} else {
+
+    favoriteBtn.textContent = "☆";
+
+}
+
+}
+
+// ===============================
+// WEATHER CONDITION
+// ===============================
+
+function getWeatherInfo(weatherCode) {
+
+if (weatherCode === 0) {
+
+    return {
+        text: "Clear Sky",
+        icon: "☀️"
+    };
+
+} else if (weatherCode <= 3) {
+
+    return {
+        text: "Partly Cloudy",
+        icon: "⛅"
+    };
+
+} else if (weatherCode <= 48) {
+
+    return {
+        text: "Foggy",
+        icon: "🌫️"
+    };
+
+} else if (weatherCode <= 67) {
+
+    return {
+        text: "Rainy",
+        icon: "🌧️"
+    };
+
+} else if (weatherCode <= 77) {
+
+    return {
+        text: "Snowy",
+        icon: "❄️"
+    };
+
+} else if (weatherCode <= 82) {
+
+    return {
+        text: "Rain Showers",
+        icon: "🌦️"
+    };
+
+} else {
+
+    return {
+        text: "Thunderstorm",
+        icon: "⛈️"
+    };
+
+}
+
+}
 
 // ===============================
 // DISPLAY WEATHER
@@ -54,96 +409,79 @@ currentCity = city;
 
 cityName.textContent = city;
 
+
 currentTemperatureCelsius =
     current.temperature_2m;
 
+
 temperature.textContent =
     `${Math.round(currentTemperatureCelsius)}°C`;
+
 
 isCelsius = true;
 
 unitBtn.textContent =
     "Switch to °F";
 
+
 humidity.textContent =
     `${current.relative_humidity_2m}%`;
+
 
 wind.textContent =
     `${Math.round(current.wind_speed_10m)} km/h`;
 
 
-// Sunrise and Sunset
+// =========================
+// SUNRISE / SUNSET
+// =========================
+
 if (daily) {
 
+    const sunriseTime =
+        new Date(daily.sunrise[0]);
+
+
+    const sunsetTime =
+        new Date(daily.sunset[0]);
+
+
     sunrise.textContent =
-        formatTime(daily.sunrise[0]);
+        sunriseTime.toLocaleTimeString(
+            "en-US",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
 
     sunset.textContent =
-        formatTime(daily.sunset[0]);
+        sunsetTime.toLocaleTimeString(
+            "en-US",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
 }
 
 
-// Weather condition
-const weatherCode =
-    current.weather_code;
+// =========================
+// WEATHER CONDITION
+// =========================
+
+const weatherInfo =
+    getWeatherInfo(current.weather_code);
 
 
-if (weatherCode === 0) {
+condition.textContent =
+    weatherInfo.text;
 
-    condition.textContent =
-        "Clear Sky";
 
-    weatherIcon.textContent =
-        "☀️";
-
-} else if (weatherCode <= 3) {
-
-    condition.textContent =
-        "Partly Cloudy";
-
-    weatherIcon.textContent =
-        "⛅";
-
-} else if (weatherCode <= 48) {
-
-    condition.textContent =
-        "Foggy";
-
-    weatherIcon.textContent =
-        "🌫️";
-
-} else if (weatherCode <= 67) {
-
-    condition.textContent =
-        "Rainy";
-
-    weatherIcon.textContent =
-        "🌧️";
-
-} else if (weatherCode <= 77) {
-
-    condition.textContent =
-        "Snowy";
-
-    weatherIcon.textContent =
-        "❄️";
-
-} else if (weatherCode <= 82) {
-
-    condition.textContent =
-        "Rain Showers";
-
-    weatherIcon.textContent =
-        "🌦️";
-
-} else {
-
-    condition.textContent =
-        "Thunderstorm";
-
-    weatherIcon.textContent =
-        "⛈️";
-}
+weatherIcon.textContent =
+    weatherInfo.icon;
 
 
 updateFavoriteButton();
@@ -151,127 +489,16 @@ updateFavoriteButton();
 }
 
 // ===============================
-// FORMAT TIME
-// ===============================
-
-function formatTime(time) {
-
-if (!time) {
-    return "--";
-}
-
-const date = new Date(time);
-
-return date.toLocaleTimeString(
-    "en-US",
-    {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true
-    }
-);
-
-}
-
-// ===============================
 // SEARCH WEATHER
-// ===============================
-
-async function searchWeather(city) {
-
-if (!city) {
-    return;
-}
-
-loading.style.display =
-    "block";
-
-try {
-
-    const locationResponse =
-        await fetch(
-            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
-        );
-
-
-    const locationData =
-        await locationResponse.json();
-
-
-    if (
-        !locationData.results ||
-        locationData.results.length === 0
-    ) {
-
-        alert("City not found.");
-
-        loading.style.display =
-            "none";
-
-        return;
-    }
-
-
-    const location =
-        locationData.results[0];
-
-
-    const weatherResponse =
-        await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
-        );
-
-
-    const weatherData =
-        await weatherResponse.json();
-
-
-    displayWeather(
-        weatherData.current,
-        location.name,
-        weatherData.daily
-    );
-
-
-    displayForecast(
-        weatherData.daily
-    );
-
-
-    // Add to history
-    addToHistory(location.name);
-
-
-    cityInput.value =
-        location.name;
-
-
-} catch (error) {
-
-    console.error(error);
-
-    alert(
-        "Something went wrong. Please try again."
-    );
-
-} finally {
-
-    loading.style.display =
-        "none";
-}
-
-}
-
-// ===============================
-// SEARCH BUTTON
 // ===============================
 
 searchBtn.addEventListener(
 "click",
-function () {
+async function () {
 
     const city =
         cityInput.value.trim();
+
 
     if (city === "") {
 
@@ -282,29 +509,98 @@ function () {
         return;
     }
 
-    searchWeather(city);
-}
 
-);
+    loading.style.display =
+        "block";
 
-// ===============================
-// ENTER KEY
-// ===============================
 
-cityInput.addEventListener(
-"keypress",
-function (event) {
+    try {
 
-    if (event.key === "Enter") {
+        // =========================
+        // GET CITY LOCATION
+        // =========================
 
-        searchBtn.click();
+        const locationResponse =
+            await fetch(
+                `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`
+            );
+
+
+        const locationData =
+            await locationResponse.json();
+
+
+        if (
+            !locationData.results ||
+            locationData.results.length === 0
+        ) {
+
+            loading.style.display =
+                "none";
+
+            alert("City not found.");
+
+            return;
+        }
+
+
+        const location =
+            locationData.results[0];
+
+
+        // =========================
+        // GET WEATHER
+        // =========================
+
+        const weatherResponse =
+            await fetch(
+                `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`
+            );
+
+
+        const weatherData =
+            await weatherResponse.json();
+
+
+        displayWeather(
+            weatherData.current,
+            location.name,
+            weatherData.daily
+        );
+
+
+        displayForecast(
+            weatherData.daily
+        );
+
+
+        addToHistory(
+            location.name
+        );
+
+
+        loading.style.display =
+            "none";
+
+    } catch (error) {
+
+        console.error(error);
+
+        loading.style.display =
+            "none";
+
+        alert(
+            "Something went wrong. Please try again."
+        );
+
     }
+
 }
 
 );
 
 // ===============================
-// DISPLAY 5-DAY FORECAST
+// 5-DAY FORECAST
 // ===============================
 
 function displayForecast(daily) {
@@ -339,49 +635,10 @@ for (let i = 0; i < 5; i++) {
         );
 
 
-    const weatherCode =
-        daily.weather_code[i];
-
-
-    let icon = "☀️";
-    let text = "Clear Sky";
-
-
-    if (weatherCode === 0) {
-
-        icon = "☀️";
-        text = "Clear Sky";
-
-    } else if (weatherCode <= 3) {
-
-        icon = "⛅";
-        text = "Cloudy";
-
-    } else if (weatherCode <= 48) {
-
-        icon = "🌫️";
-        text = "Foggy";
-
-    } else if (weatherCode <= 67) {
-
-        icon = "🌧️";
-        text = "Rainy";
-
-    } else if (weatherCode <= 77) {
-
-        icon = "❄️";
-        text = "Snowy";
-
-    } else if (weatherCode <= 82) {
-
-        icon = "🌦️";
-        text = "Rain Showers";
-
-    } else {
-
-        icon = "⛈️";
-        text = "Thunderstorm";
-    }
+    const weatherInfo =
+        getWeatherInfo(
+            daily.weather_code[i]
+        );
 
 
     const card =
@@ -396,7 +653,7 @@ for (let i = 0; i < 5; i++) {
         <h3>${dayName}</h3>
 
         <div class="forecast-icon">
-            ${icon}
+            ${weatherInfo.icon}
         </div>
 
         <div class="forecast-temperature">
@@ -404,17 +661,34 @@ for (let i = 0; i < 5; i++) {
         </div>
 
         <div class="forecast-condition">
-            ${text}
+            ${weatherInfo.text}
         </div>
     `;
 
 
-    forecastContainer.appendChild(
-        card
-    );
+    forecastContainer.appendChild(card);
+
 }
 
 }
+
+// ===============================
+// ENTER KEY SEARCH
+// ===============================
+
+cityInput.addEventListener(
+"keypress",
+function (event) {
+
+    if (event.key === "Enter") {
+
+        searchBtn.click();
+
+    }
+
+}
+
+);
 
 // ===============================
 // CELSIUS / FAHRENHEIT
@@ -425,10 +699,11 @@ unitBtn.addEventListener(
 function () {
 
     if (
-        currentTemperatureCelsius ===
-        null
+        currentTemperatureCelsius === null
     ) {
+
         return;
+
     }
 
 
@@ -454,7 +729,9 @@ function () {
     } else {
 
         temperature.textContent =
-            `${Math.round(currentTemperatureCelsius)}°C`;
+            `${Math.round(
+                currentTemperatureCelsius
+            )}°C`;
 
 
         unitBtn.textContent =
@@ -462,311 +739,12 @@ function () {
 
 
         isCelsius = true;
-    }
-}
 
-);
-
-// ===============================
-// FAVORITE BUTTON
-// ===============================
-
-favoriteBtn.addEventListener(
-"click",
-function () {
-
-    if (!currentCity) {
-        return;
     }
 
-
-    if (
-        favoriteCities.includes(
-            currentCity
-        )
-    ) {
-
-        favoriteCities =
-            favoriteCities.filter(
-                city =>
-                    city !== currentCity
-            );
-
-    } else {
-
-        favoriteCities.push(
-            currentCity
-        );
-    }
-
-
-    localStorage.setItem(
-        "favoriteCities",
-        JSON.stringify(favoriteCities)
-    );
-
-
-    displayFavorites();
-    updateFavoriteButton();
 }
 
 );
-
-// ===============================
-// UPDATE FAVORITE ICON
-// ===============================
-
-function updateFavoriteButton() {
-
-if (
-    favoriteCities.includes(
-        currentCity
-    )
-) {
-
-    favoriteBtn.textContent =
-        "★";
-
-    favoriteBtn.title =
-        "Remove from favorites";
-
-} else {
-
-    favoriteBtn.textContent =
-        "☆";
-
-    favoriteBtn.title =
-        "Add to favorites";
-}
-
-}
-
-// ===============================
-// ADD SEARCH HISTORY
-// ===============================
-
-function addToHistory(city) {
-
-searchHistory =
-    searchHistory.filter(
-        item =>
-            item.toLowerCase() !==
-            city.toLowerCase()
-    );
-
-
-searchHistory.unshift(city);
-
-
-// Keep latest 10
-searchHistory =
-    searchHistory.slice(0, 10);
-
-
-localStorage.setItem(
-    "searchHistory",
-    JSON.stringify(searchHistory)
-);
-
-
-displayHistory();
-
-}
-
-// ===============================
-// DISPLAY FAVORITES
-// ===============================
-
-function displayFavorites() {
-
-favoriteList.innerHTML = "";
-
-
-if (favoriteCities.length === 0) {
-
-    favoriteList.innerHTML =
-        `<p class="empty-message">
-            No favorite cities yet.
-        </p>`;
-
-    return;
-}
-
-
-favoriteCities.forEach(
-    function (city) {
-
-        const item =
-            document.createElement("div");
-
-
-        item.className =
-            "saved-city";
-
-
-        item.innerHTML = `
-            <button class="city-button">
-                ⭐ ${city}
-            </button>
-
-            <button
-                class="delete-button"
-                title="Delete"
-            >
-                🗑️
-            </button>
-        `;
-
-
-        item.querySelector(
-            ".city-button"
-        ).addEventListener(
-            "click",
-            function () {
-
-                searchWeather(city);
-            }
-        );
-
-
-        item.querySelector(
-            ".delete-button"
-        ).addEventListener(
-            "click",
-            function () {
-
-                deleteFavorite(city);
-            }
-        );
-
-
-        favoriteList.appendChild(
-            item
-        );
-    }
-);
-
-}
-
-// ===============================
-// DELETE FAVORITE
-// ===============================
-
-function deleteFavorite(city) {
-
-favoriteCities =
-    favoriteCities.filter(
-        item => item !== city
-    );
-
-
-localStorage.setItem(
-    "favoriteCities",
-    JSON.stringify(favoriteCities)
-);
-
-
-displayFavorites();
-updateFavoriteButton();
-
-}
-
-// ===============================
-// DISPLAY SEARCH HISTORY
-// ===============================
-
-function displayHistory() {
-
-historyList.innerHTML = "";
-
-
-if (searchHistory.length === 0) {
-
-    historyList.innerHTML =
-        `<p class="empty-message">
-            No search history yet.
-        </p>`;
-
-    return;
-}
-
-
-searchHistory.forEach(
-    function (city) {
-
-        const item =
-            document.createElement("div");
-
-
-        item.className =
-            "saved-city";
-
-
-        item.innerHTML = `
-            <button class="city-button">
-                🕘 ${city}
-            </button>
-
-            <button
-                class="delete-button"
-                title="Delete"
-            >
-                🗑️
-            </button>
-        `;
-
-
-        item.querySelector(
-            ".city-button"
-        ).addEventListener(
-            "click",
-            function () {
-
-                searchWeather(city);
-            }
-        );
-
-
-        item.querySelector(
-            ".delete-button"
-        ).addEventListener(
-            "click",
-            function () {
-
-                deleteHistory(city);
-            }
-        );
-
-
-        historyList.appendChild(
-            item
-        );
-    }
-);
-
-}
-
-// ===============================
-// DELETE HISTORY
-// ===============================
-
-function deleteHistory(city) {
-
-searchHistory =
-    searchHistory.filter(
-        item => item !== city
-    );
-
-
-localStorage.setItem(
-    "searchHistory",
-    JSON.stringify(searchHistory)
-);
-
-
-displayHistory();
-
-}
 
 // ===============================
 // MY LOCATION
@@ -779,7 +757,7 @@ function () {
     if (!navigator.geolocation) {
 
         alert(
-            "Geolocation is not supported."
+            "Geolocation is not supported by your browser."
         );
 
         return;
@@ -796,6 +774,7 @@ function () {
 
             const latitude =
                 position.coords.latitude;
+
 
             const longitude =
                 position.coords.longitude;
@@ -825,19 +804,22 @@ function () {
                 );
 
 
+                loading.style.display =
+                    "none";
+
             } catch (error) {
 
                 console.error(error);
+
+                loading.style.display =
+                    "none";
 
                 alert(
                     "Unable to get weather data."
                 );
 
-            } finally {
-
-                loading.style.display =
-                    "none";
             }
+
         },
 
 
@@ -846,20 +828,20 @@ function () {
             loading.style.display =
                 "none";
 
-
             alert(
                 "Please allow location access."
             );
+
         }
+
     );
+
 }
 
 );
 
 // ===============================
-// INITIAL DISPLAY
+// INITIAL SIDEBAR
 // ===============================
 
-displayFavorites();
-displayHistory();
-updateFavoriteButton();
+displaySidebar();
