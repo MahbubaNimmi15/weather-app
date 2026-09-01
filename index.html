@@ -57,6 +57,8 @@
         </div>
 
 
+        <!-- FAVORITES -->
+
         <div class="sidebar-section">
 
             <h3>⭐ Favorite Cities</h3>
@@ -71,6 +73,8 @@
 
         </div>
 
+
+        <!-- HISTORY -->
 
         <div class="sidebar-section">
 
@@ -97,52 +101,71 @@
 
         <div class="weather-container">
 
-            <h1>🌤️ Weather App</h1>
+            <h1>
+                🌤️ Weather App
+            </h1>
 
 
             <!-- =========================
-                 SEARCH BOX
+                 SEARCH AREA
             ========================== -->
 
-            <div class="search-area">
+            <div class="search-wrapper">
 
-                <div class="search-wrapper">
+                <input
+                    type="text"
+                    id="cityInput"
+                    placeholder="Search city..."
+                    autocomplete="off"
+                >
 
-                    <input
-                        type="text"
-                        id="cityInput"
-                        placeholder="Search city..."
-                        autocomplete="off"
-                    >
 
-                    <button id="searchBtn" type="button">
-                        🔍
-                    </button>
-
-                    <!-- SUGGESTIONS -->
-
-                    <div
-                        id="searchSuggestions"
-                        class="search-suggestions"
-                    ></div>
-
-                </div>
-
+                <!-- CLEAR BUTTON -->
 
                 <button
-                    id="locationBtn"
-                    class="location-btn"
+                    id="clearSearchBtn"
+                    class="clear-search-btn"
                     type="button"
+                    title="Clear search"
                 >
-                    📍 My Location
+                    ✕
                 </button>
+
+
+                <!-- SEARCH BUTTON -->
+
+                <button
+                    id="searchBtn"
+                    class="search-btn"
+                    type="button"
+                    title="Search"
+                >
+                    🔍
+                </button>
+
+
+                <!-- SEARCH SUGGESTIONS -->
+
+                <div
+                    id="searchSuggestions"
+                    class="search-suggestions"
+                ></div>
 
             </div>
 
 
-            <!-- =========================
-                 LOADING
-            ========================== -->
+            <!-- LOCATION BUTTON -->
+
+            <button
+                id="locationBtn"
+                type="button"
+                class="location-btn"
+            >
+                📍 My Location
+            </button>
+
+
+            <!-- LOADING -->
 
             <p id="loading">
                 ⏳ Loading weather...
@@ -154,6 +177,8 @@
             ========================== -->
 
             <div class="weather-card">
+
+                <!-- CITY -->
 
                 <div class="city-title">
 
@@ -172,6 +197,8 @@
                 </div>
 
 
+                <!-- WEATHER ICON -->
+
                 <div
                     class="weather-icon"
                     id="weatherIcon"
@@ -180,10 +207,14 @@
                 </div>
 
 
+                <!-- TEMPERATURE -->
+
                 <h3 id="temperature">
                     28°C
                 </h3>
 
+
+                <!-- UNIT BUTTON -->
 
                 <button
                     id="unitBtn"
@@ -193,12 +224,16 @@
                 </button>
 
 
+                <!-- CONDITION -->
+
                 <p id="condition">
                     Sunny
                 </p>
 
 
-                <!-- BASIC WEATHER INFO -->
+                <!-- =========================
+                     BASIC WEATHER INFO
+                ========================== -->
 
                 <div class="weather-info">
 
@@ -240,61 +275,87 @@
                 </div>
 
 
-                <!-- EXTRA DETAILS -->
+                <!-- =========================
+                     EXTRA DETAILS
+                ========================== -->
 
                 <div class="extra-weather-info">
 
                     <div class="detail-box">
+
                         <span>🌡️</span>
+
                         <p>Feels Like</p>
+
                         <strong id="feelsLike">
                             --°C
                         </strong>
+
                     </div>
 
 
                     <div class="detail-box">
+
                         <span>👁️</span>
+
                         <p>Visibility</p>
+
                         <strong id="visibility">
                             -- km
                         </strong>
+
                     </div>
 
 
                     <div class="detail-box">
+
                         <span>🌧️</span>
+
                         <p>Rain Probability</p>
+
                         <strong id="rainProbability">
                             --%
                         </strong>
+
                     </div>
 
 
                     <div class="detail-box">
+
                         <span>🧭</span>
+
                         <p>Wind Direction</p>
+
                         <strong id="windDirection">
                             --
                         </strong>
+
                     </div>
 
 
                     <div class="detail-box">
+
                         <span>🔽</span>
+
                         <p>Pressure</p>
+
                         <strong id="pressure">
                             -- hPa
                         </strong>
+
                     </div>
 
 
                     <div class="detail-box">
+
                         <span>🌬️</span>
+
                         <p>Wind Gusts</p>
+
                         <strong id="windGusts">
                             -- km/h
                         </strong>
+
                     </div>
 
                 </div>
@@ -306,13 +367,15 @@
                  HOURLY FORECAST
             ========================== -->
 
-            <div class="forecast-section">
+            <div class="hourly-section">
 
-                <h2>🕐 Hourly Forecast</h2>
+                <h2>
+                    🕐 Hourly Forecast
+                </h2>
 
                 <div
-                    class="hourly-container"
                     id="hourlyContainer"
+                    class="hourly-container"
                 ></div>
 
             </div>
@@ -324,11 +387,13 @@
 
             <div class="forecast-section">
 
-                <h2>📅 5-Day Forecast</h2>
+                <h2>
+                    📅 5-Day Forecast
+                </h2>
 
                 <div
-                    class="forecast-container"
                     id="forecastContainer"
+                    class="forecast-container"
                 ></div>
 
             </div>
