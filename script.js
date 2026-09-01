@@ -45,28 +45,42 @@ searchBtn.addEventListener("click", async function () {
         humidity.textContent = `${current.relative_humidity_2m}%`;
         wind.textContent = `${Math.round(current.wind_speed_10m)} km/h`;
 
-        // Convert weather code to condition
+        // Convert weather code to condition and icon
         const weatherCode = current.weather_code;
 
         if (weatherCode === 0) {
-            condition.textContent = "Clear Sky ☀️";
+            condition.textContent = "Clear Sky";
+            weatherIcon.textContent = "☀️";
         } else if (weatherCode <= 3) {
-            condition.textContent = "Partly Cloudy ⛅";
+            condition.textContent = "Partly Cloudy";
+            weatherIcon.textContent = "⛅";
         } else if (weatherCode <= 48) {
-            condition.textContent = "Foggy 🌫️";
+            condition.textContent = "Foggy";
+            weatherIcon.textContent = "🌫️";
         } else if (weatherCode <= 67) {
-            condition.textContent = "Rainy 🌧️";
+            condition.textContent = "Rainy";
+            weatherIcon.textContent = "🌧️";
         } else if (weatherCode <= 77) {
-            condition.textContent = "Snowy ❄️";
+            condition.textContent = "Snowy";
+            weatherIcon.textContent = "❄️";
         } else if (weatherCode <= 82) {
-            condition.textContent = "Rain Showers 🌦️";
+            condition.textContent = "Rain Showers";
+            weatherIcon.textContent = "🌦️";
         } else {
-            condition.textContent = "Thunderstorm ⛈️";
+            condition.textContent = "Thunderstorm";
+            weatherIcon.textContent = "⛈️";
         }
 
     } catch (error) {
         console.error(error);
         alert("Something went wrong. Please try again.");
+    }
+});
+
+// Search weather when Enter key is pressed
+cityInput.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        searchBtn.click();
     }
 });
 
