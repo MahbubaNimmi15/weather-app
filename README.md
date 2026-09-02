@@ -55,9 +55,9 @@ weather-app/
 └── README.md
 
 
-## 🔗 Live Demo
+## 🌐 Live Demo
 
-[🌤️ Weather App](weather-app-sage-nine-96.vercel.app)
+👉 [Weather App Live Demo](https://weather-app-sage-nine-96.vercel.app/)
 
 ## 👩‍💻 Developer
 
