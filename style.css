@@ -1,6 +1,6 @@
+
 /* =====================================================
-   🌤️ WEATHER APP
-   BLUE + PURPLE + SKY GRADIENT
+   GLOBAL
 ===================================================== */
 
 * {
@@ -9,10 +9,8 @@
     box-sizing: border-box;
 }
 
-
 body {
     font-family: Arial, sans-serif;
-
     min-height: 100vh;
 
     background:
@@ -24,7 +22,6 @@ body {
         );
 
     color: #ffffff;
-
     transition: 0.3s ease;
 }
 
@@ -58,12 +55,10 @@ body {
     z-index: 1000;
 }
 
-
 .logo {
     font-size: 24px;
     font-weight: bold;
 }
-
 
 .menu-btn,
 .theme-btn,
@@ -71,16 +66,13 @@ body {
     border: none;
     background: transparent;
     color: white;
-
     cursor: pointer;
 }
-
 
 .menu-btn,
 .theme-btn {
     font-size: 25px;
 }
-
 
 .close-btn {
     font-size: 22px;
@@ -121,46 +113,36 @@ body {
     overflow-y: auto;
 }
 
-
 .sidebar.active {
     left: 0;
 }
 
-
 .sidebar-header {
     display: flex;
-
     justify-content: space-between;
     align-items: center;
 
     margin-bottom: 30px;
 }
 
-
 .sidebar-section {
     margin-bottom: 30px;
 }
-
 
 .sidebar-section h3 {
     margin-bottom: 15px;
 }
 
-
 .sidebar-item {
     display: flex;
-
     gap: 8px;
-
     margin-bottom: 10px;
 }
-
 
 .city-button {
     flex: 1;
 
     border: none;
-
     border-radius: 10px;
 
     padding: 10px;
@@ -175,16 +157,13 @@ body {
     cursor: pointer;
 }
 
-
 .city-button:hover {
     background:
         rgba(255, 255, 255, 0.25);
 }
 
-
 .delete-btn {
     border: none;
-
     border-radius: 10px;
 
     padding: 8px;
@@ -197,12 +176,10 @@ body {
     color: white;
 }
 
-
 .delete-btn:hover {
     background:
         rgba(239, 68, 68, 0.7);
 }
-
 
 .empty-message {
     opacity: 0.8;
@@ -224,12 +201,10 @@ body {
         rgba(0, 0, 0, 0.45);
 
     opacity: 0;
-
     visibility: hidden;
 
     transition: 0.3s;
 }
-
 
 .overlay.active {
     opacity: 1;
@@ -245,19 +220,14 @@ body {
     padding: 40px 20px;
 }
 
-
 .weather-container {
     max-width: 1000px;
-
     margin: auto;
-
     text-align: center;
 }
 
-
 .weather-container > h1 {
     margin-bottom: 25px;
-
     font-size: 36px;
 }
 
@@ -289,7 +259,6 @@ body {
     overflow: visible;
 }
 
-
 .search-wrapper input {
     flex: 1;
 
@@ -300,7 +269,6 @@ body {
         0 105px 0 18px;
 
     border: none;
-
     outline: none;
 
     border-radius: 12px;
@@ -312,11 +280,9 @@ body {
     background: white;
 }
 
-
 .search-wrapper input::placeholder {
     color: #64748b;
 }
-
 
 .search-wrapper input:focus {
     box-shadow:
@@ -353,15 +319,12 @@ body {
     z-index: 10;
 }
 
-
 .clear-search-btn.show {
     display: block;
 }
 
-
 .clear-search-btn:hover {
     color: #ef4444;
-
     transform: scale(1.1);
 }
 
@@ -398,7 +361,6 @@ body {
     font-size: 20px;
 }
 
-
 .search-btn:hover {
     opacity: 0.9;
 }
@@ -433,11 +395,9 @@ body {
         rgba(0, 0, 0, 0.25);
 }
 
-
 .search-suggestions.show {
     display: block;
 }
-
 
 .search-suggestion {
     width: 100%;
@@ -460,7 +420,6 @@ body {
     font-size: 15px;
 }
 
-
 .search-suggestion:hover {
     background:
         linear-gradient(
@@ -470,11 +429,9 @@ body {
         );
 }
 
-
 .suggestion-icon {
     margin-right: 8px;
 }
-
 
 .suggestion-loading,
 .no-suggestion {
@@ -524,9 +481,29 @@ body {
         transform 0.2s ease;
 }
 
-
 .location-btn:hover {
     transform: translateY(-2px);
+}
+
+.location-btn:disabled {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+}
+
+
+/* =====================================================
+   LOCATION STATUS
+===================================================== */
+
+.location-status {
+    min-height: 20px;
+
+    margin-top: 10px;
+
+    font-size: 13px;
+
+    opacity: 0.9;
 }
 
 
@@ -544,27 +521,22 @@ body {
 
 
 /* =====================================================
-   🌧️ WEATHER ALERTS
+   WEATHER ALERTS
 ===================================================== */
 
 .alerts-section {
     margin-top: 30px;
 }
 
-
 .alerts-section h2 {
     margin-bottom: 15px;
 }
 
-
 .weather-alerts {
     display: flex;
-
     flex-direction: column;
-
     gap: 12px;
 }
-
 
 .weather-alert {
     display: flex;
@@ -593,34 +565,25 @@ body {
         rgba(0, 0, 0, 0.12);
 }
 
-
 .alert-icon {
     font-size: 28px;
 }
-
 
 .alert-content {
     flex: 1;
 }
 
-
 .alert-title {
     font-size: 16px;
-
     font-weight: bold;
-
     margin-bottom: 4px;
 }
 
-
 .alert-description {
     font-size: 13px;
-
     opacity: 0.9;
-
     line-height: 1.5;
 }
-
 
 .no-alert {
     padding: 15px;
@@ -661,7 +624,6 @@ body {
         rgba(0, 0, 0, 0.15);
 }
 
-
 .city-title {
     display: flex;
 
@@ -672,11 +634,9 @@ body {
     gap: 15px;
 }
 
-
 .city-title h2 {
     font-size: 30px;
 }
-
 
 #favoriteBtn {
     border: none;
@@ -690,20 +650,15 @@ body {
     cursor: pointer;
 }
 
-
 .weather-icon {
     font-size: 75px;
-
     margin: 20px 0;
 }
 
-
 #temperature {
     font-size: 50px;
-
     margin-bottom: 15px;
 }
-
 
 #unitBtn {
     border: none;
@@ -719,10 +674,8 @@ body {
     color: #334155;
 }
 
-
 #condition {
     margin-top: 15px;
-
     font-size: 20px;
 }
 
@@ -742,7 +695,6 @@ body {
     margin-top: 30px;
 }
 
-
 .weather-info > div {
     padding: 18px;
 
@@ -752,18 +704,14 @@ body {
         rgba(255, 255, 255, 0.12);
 }
 
-
 .weather-info span {
     font-size: 25px;
 }
 
-
 .weather-info p {
     margin: 8px 0;
-
     font-size: 14px;
 }
-
 
 .weather-info strong {
     font-size: 17px;
@@ -785,7 +733,6 @@ body {
     margin-top: 20px;
 }
 
-
 .detail-box {
     padding: 18px;
 
@@ -795,18 +742,14 @@ body {
         rgba(255, 255, 255, 0.12);
 }
 
-
 .detail-box span {
     font-size: 24px;
 }
 
-
 .detail-box p {
     margin: 8px 0;
-
     font-size: 14px;
 }
-
 
 .detail-box strong {
     font-size: 16px;
@@ -814,18 +757,16 @@ body {
 
 
 /* =====================================================
-   ☀️ UV INDEX
+   UV INDEX
 ===================================================== */
 
 .uv-section {
     margin-top: 35px;
 }
 
-
 .uv-section h2 {
     margin-bottom: 20px;
 }
-
 
 .uv-card {
     padding: 25px;
@@ -846,7 +787,6 @@ body {
         rgba(0, 0, 0, 0.15);
 }
 
-
 .uv-main {
     display: flex;
 
@@ -857,35 +797,27 @@ body {
     gap: 20px;
 }
 
-
 .uv-icon {
     font-size: 55px;
 }
 
-
 .uv-label {
     font-size: 14px;
-
     opacity: 0.85;
 }
 
-
 #uvValue {
     font-size: 40px;
-
     margin: 5px 0;
 }
-
 
 #uvStatus {
     font-size: 16px;
 }
 
-
 .uv-progress-wrapper {
     margin-top: 25px;
 }
-
 
 .uv-scale {
     display: flex;
@@ -896,7 +828,6 @@ body {
 
     margin-bottom: 7px;
 }
-
 
 .uv-progress-bg {
     width: 100%;
@@ -910,7 +841,6 @@ body {
 
     overflow: hidden;
 }
-
 
 .uv-progress {
     width: 0%;
@@ -933,7 +863,6 @@ body {
         width 0.5s ease;
 }
 
-
 .uv-advice {
     margin-top: 15px;
 
@@ -953,11 +882,9 @@ body {
     margin-top: 35px;
 }
 
-
 .graph-section h2 {
     margin-bottom: 20px;
 }
-
 
 .graph-card {
     padding: 20px;
@@ -978,12 +905,9 @@ body {
         rgba(0, 0, 0, 0.15);
 }
 
-
 #temperatureChart {
     width: 100%;
-
     height: 300px;
-
     display: block;
 }
 
@@ -996,11 +920,9 @@ body {
     margin-top: 35px;
 }
 
-
 .air-quality-section h2 {
     margin-bottom: 20px;
 }
-
 
 .air-quality-card {
     padding: 25px;
@@ -1021,7 +943,6 @@ body {
         rgba(0, 0, 0, 0.15);
 }
 
-
 .aqi-main {
     display: flex;
 
@@ -1032,30 +953,23 @@ body {
     gap: 20px;
 }
 
-
 .aqi-icon {
     font-size: 55px;
 }
 
-
 .aqi-label {
     font-size: 14px;
-
     opacity: 0.85;
 }
 
-
 #aqiValue {
     font-size: 38px;
-
     margin: 5px 0;
 }
-
 
 #aqiStatus {
     font-size: 16px;
 }
-
 
 .aqi-details {
     display: grid;
@@ -1068,7 +982,6 @@ body {
     margin-top: 25px;
 }
 
-
 .aqi-box {
     padding: 18px;
 
@@ -1078,18 +991,14 @@ body {
         rgba(255, 255, 255, 0.12);
 }
 
-
 .aqi-box span {
     font-size: 25px;
 }
 
-
 .aqi-box p {
     margin: 8px 0;
-
     font-size: 14px;
 }
-
 
 .aqi-box strong {
     font-size: 17px;
@@ -1105,12 +1014,10 @@ body {
     margin-top: 35px;
 }
 
-
 .hourly-section h2,
 .forecast-section h2 {
     margin-bottom: 20px;
 }
-
 
 .hourly-container {
     display: flex;
@@ -1124,7 +1031,6 @@ body {
 
     scrollbar-width: thin;
 }
-
 
 .hourly-card {
     min-width: 120px;
@@ -1148,36 +1054,27 @@ body {
         transform 0.2s ease;
 }
 
-
 .hourly-card:hover {
     transform: translateY(-5px);
 }
 
-
 .hourly-time {
     font-size: 14px;
-
     font-weight: bold;
 }
-
 
 .hourly-icon {
     font-size: 32px;
-
     margin: 12px 0;
 }
 
-
 .hourly-temp {
     font-size: 20px;
-
     font-weight: bold;
 }
 
-
 .hourly-rain {
     margin-top: 8px;
-
     font-size: 13px;
 }
 
@@ -1194,7 +1091,6 @@ body {
 
     gap: 15px;
 }
-
 
 .forecast-card {
     padding: 20px 12px;
@@ -1214,29 +1110,22 @@ body {
         transform 0.2s ease;
 }
 
-
 .forecast-card:hover {
     transform: translateY(-5px);
 }
 
-
 .forecast-icon {
     font-size: 38px;
-
     margin: 15px 0;
 }
 
-
 .forecast-temperature {
     font-size: 17px;
-
     font-weight: bold;
 }
 
-
 .forecast-condition {
     margin-top: 8px;
-
     font-size: 13px;
 }
 
@@ -1257,54 +1146,42 @@ body.dark-mode {
     color: #ffffff;
 }
 
-
 body.dark-mode .navbar {
     background:
         rgba(15, 23, 42, 0.65);
 }
 
-
 body.dark-mode .search-wrapper {
     background: #1e293b;
 }
 
-
 body.dark-mode .search-wrapper input {
     background: #1e293b;
-
     color: white;
 }
-
 
 body.dark-mode .search-wrapper input::placeholder {
     color: #94a3b8;
 }
 
-
 body.dark-mode .search-suggestions {
     background: #1e293b;
 }
 
-
 body.dark-mode .search-suggestion {
     color: white;
-
     background: #1e293b;
-
     border-color: #334155;
 }
-
 
 body.dark-mode .search-suggestion:hover {
     background: #334155;
 }
 
-
 body.dark-mode .suggestion-loading,
 body.dark-mode .no-suggestion {
     color: #cbd5e1;
 }
-
 
 body.dark-mode .weather-card,
 body.dark-mode .uv-card,
@@ -1315,7 +1192,6 @@ body.dark-mode .weather-alert {
         rgba(15, 23, 42, 0.45);
 }
 
-
 body.dark-mode .weather-info > div,
 body.dark-mode .detail-box,
 body.dark-mode .hourly-card,
@@ -1324,7 +1200,6 @@ body.dark-mode .aqi-box {
     background:
         rgba(30, 41, 59, 0.65);
 }
-
 
 body.dark-mode .sidebar {
     background:
@@ -1336,10 +1211,8 @@ body.dark-mode .sidebar {
         );
 }
 
-
 body.dark-mode #unitBtn {
     background: #e2e8f0;
-
     color: #0f172a;
 }
 
@@ -1355,23 +1228,19 @@ body.dark-mode #unitBtn {
             repeat(2, 1fr);
     }
 
-
     .extra-weather-info {
         grid-template-columns:
             repeat(2, 1fr);
     }
-
 
     .forecast-container {
         grid-template-columns:
             repeat(2, 1fr);
     }
 
-
     #temperature {
         font-size: 42px;
     }
-
 }
 
 
@@ -1381,66 +1250,54 @@ body.dark-mode #unitBtn {
         padding: 0 15px;
     }
 
-
     .logo {
         font-size: 19px;
     }
-
 
     .main-content {
         padding: 25px 12px;
     }
 
-
     .weather-container > h1 {
         font-size: 28px;
     }
 
-
     .weather-card {
         padding: 20px 12px;
     }
-
 
     .weather-info,
     .extra-weather-info {
         grid-template-columns: 1fr;
     }
 
-
     .forecast-container {
         grid-template-columns:
             1fr 1fr;
     }
 
-
     .aqi-details {
         grid-template-columns: 1fr;
     }
-
 
     .sidebar {
         width: 290px;
     }
 
-
     .search-wrapper {
         max-width: 100%;
     }
-
 
     #temperatureChart {
         height: 240px;
     }
 
-
     .uv-main {
         flex-direction: column;
     }
 
-
     .alert-content {
         font-size: 13px;
     }
-
 }
+

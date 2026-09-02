@@ -1,3 +1,4 @@
+
 /* =====================================================
    🌤️ WEATHER APP JAVASCRIPT
 ===================================================== */
@@ -21,6 +22,9 @@ const searchSuggestions =
 
 const locationBtn =
     document.getElementById("locationBtn");
+
+const locationStatus =
+    document.getElementById("locationStatus");
 
 const loading =
     document.getElementById("loading");
@@ -115,9 +119,6 @@ const pm25 =
 const pm10 =
     document.getElementById("pm10");
 
-
-/* UV */
-
 const uvValue =
     document.getElementById("uvValue");
 
@@ -129,9 +130,6 @@ const uvProgress =
 
 const uvAdvice =
     document.getElementById("uvAdvice");
-
-
-/* WEATHER ALERTS */
 
 const weatherAlerts =
     document.getElementById("weatherAlerts");
@@ -267,11 +265,9 @@ function getWeatherInfo(code) {
 
     };
 
-
     return weather[code] || {
 
         icon: "🌤️",
-
         text: "Unknown"
 
     };
@@ -289,10 +285,8 @@ function formatTime(timeString) {
         return "--:--";
     }
 
-
     const date =
         new Date(timeString);
-
 
     return date.toLocaleTimeString(
         [],
@@ -301,7 +295,6 @@ function formatTime(timeString) {
             minute: "2-digit"
         }
     );
-
 }
 
 
@@ -316,14 +309,12 @@ function formatDate(dateString) {
             dateString + "T00:00:00"
         );
 
-
     return date.toLocaleDateString(
         [],
         {
             weekday: "short"
         }
     );
-
 }
 
 
@@ -340,9 +331,7 @@ function getWindDirection(degrees) {
         return "--";
     }
 
-
     const directions = [
-
         "N",
         "NE",
         "E",
@@ -351,16 +340,12 @@ function getWindDirection(degrees) {
         "SW",
         "W",
         "NW"
-
     ];
-
 
     const index =
         Math.round(degrees / 45) % 8;
 
-
     return directions[index];
-
 }
 
 
@@ -374,7 +359,6 @@ function showLoading() {
         "block";
 
 }
-
 
 function hideLoading() {
 
@@ -442,14 +426,13 @@ async function searchCity(city) {
         return;
     }
 
-
     showLoading();
-
 
     searchSuggestions.classList.remove(
         "show"
     );
 
+    locationStatus.textContent = "";
 
     try {
 
@@ -524,7 +507,6 @@ async function searchCity(city) {
 
     }
 
-
     hideLoading();
 
 }
@@ -542,7 +524,6 @@ async function loadWeather(
 ) {
 
     showLoading();
-
 
     try {
 
@@ -674,7 +655,6 @@ async function loadWeather(
         );
 
     }
-
 
     hideLoading();
 
@@ -820,9 +800,7 @@ function displayCurrentWeather(
    TEMPERATURE FORMAT
 ===================================================== */
 
-function formatTemperature(
-    celsius
-) {
+function formatTemperature(celsius) {
 
     if (
         currentUnit === "C"
@@ -946,18 +924,13 @@ function updateExtraTemperature() {
    HOURLY FORECAST
 ===================================================== */
 
-function displayHourlyWeather(
-    data
-) {
+function displayHourlyWeather(data) {
 
-    hourlyContainer.innerHTML =
-        "";
-
+    hourlyContainer.innerHTML = "";
 
     if (!data.hourly) {
         return;
     }
-
 
     const hourly =
         data.hourly;
@@ -1046,18 +1019,13 @@ function displayHourlyWeather(
    5 DAY FORECAST
 ===================================================== */
 
-function displayFiveDayForecast(
-    data
-) {
+function displayFiveDayForecast(data) {
 
-    forecastContainer.innerHTML =
-        "";
-
+    forecastContainer.innerHTML = "";
 
     if (!data.daily) {
         return;
     }
-
 
     const daily =
         data.daily;
@@ -1150,9 +1118,7 @@ function displayFiveDayForecast(
    🌡️ TEMPERATURE GRAPH
 ===================================================== */
 
-function drawTemperatureGraph(
-    data
-) {
+function drawTemperatureGraph(data) {
 
     if (
         !temperatureChart ||
@@ -1373,9 +1339,7 @@ function drawTemperatureGraph(
     ctx.strokeStyle =
         "#ffffff";
 
-
     ctx.lineWidth = 3;
-
 
     ctx.stroke();
 
@@ -1473,9 +1437,7 @@ function drawTemperatureGraph(
    FIND CURRENT HOUR
 ===================================================== */
 
-function findCurrentHourIndex(
-    times
-) {
+function findCurrentHourIndex(times) {
 
     const now =
         new Date();
@@ -1610,9 +1572,7 @@ async function loadAirQuality(
    DISPLAY AIR QUALITY
 ===================================================== */
 
-function displayAirQuality(
-    data
-) {
+function displayAirQuality(data) {
 
     if (
         !data.current
@@ -1670,9 +1630,7 @@ function displayAirQuality(
    AQI STATUS
 ===================================================== */
 
-function getAQIStatus(
-    aqi
-) {
+function getAQIStatus(aqi) {
 
     if (
         aqi === undefined ||
@@ -1718,9 +1676,7 @@ function getAQIStatus(
    ☀️ UV INDEX
 ===================================================== */
 
-function displayUVIndex(
-    data
-) {
+function displayUVIndex(data) {
 
     if (
         !data.daily ||
@@ -1793,9 +1749,7 @@ function displayUVIndex(
    UV STATUS
 ===================================================== */
 
-function getUVStatus(
-    uv
-) {
+function getUVStatus(uv) {
 
     if (uv < 3) {
 
@@ -1869,12 +1823,9 @@ function getUVStatus(
    🌧️ WEATHER ALERTS
 ===================================================== */
 
-function displayWeatherAlerts(
-    data
-) {
+function displayWeatherAlerts(data) {
 
-    weatherAlerts.innerHTML =
-        "";
+    weatherAlerts.innerHTML = "";
 
 
     if (
@@ -1929,8 +1880,6 @@ function displayWeatherAlerts(
             : 0;
 
 
-    /* THUNDERSTORM */
-
     if (
         weatherCode === 95 ||
         weatherCode === 96 ||
@@ -1951,8 +1900,6 @@ function displayWeatherAlerts(
 
     }
 
-
-    /* HEAVY RAIN */
 
     if (
         weatherCode === 65 ||
@@ -1977,8 +1924,6 @@ function displayWeatherAlerts(
     }
 
 
-    /* HIGH WIND */
-
     if (
         windSpeed >= 40 ||
         windGustsValue >= 50
@@ -1998,8 +1943,6 @@ function displayWeatherAlerts(
 
     }
 
-
-    /* HIGH UV */
 
     if (
         uv >= 6
@@ -2211,9 +2154,7 @@ cityInput.addEventListener(
    GET CITY SUGGESTIONS
 ===================================================== */
 
-async function getCitySuggestions(
-    query
-) {
+async function getCitySuggestions(query) {
 
     searchSuggestions.innerHTML = `
 
@@ -2422,7 +2363,7 @@ document.addEventListener(
 
 
 /* =====================================================
-   📍 MY LOCATION
+   📍 BETTER MY LOCATION — FEATURE 7
 ===================================================== */
 
 locationBtn.addEventListener(
@@ -2434,12 +2375,22 @@ locationBtn.addEventListener(
         ) {
 
             alert(
-                "❌ Geolocation is not supported."
+                "❌ Geolocation is not supported by your browser."
             );
 
             return;
 
         }
+
+
+        locationBtn.disabled = true;
+
+        locationBtn.textContent =
+            "📍 Finding location...";
+
+
+        locationStatus.textContent =
+            "🔎 Detecting your current location...";
 
 
         showLoading();
@@ -2457,19 +2408,67 @@ locationBtn.addEventListener(
                     position.coords.longitude;
 
 
+                locationStatus.textContent =
+                    "🌍 Location found. Identifying city...";
+
+
                 try {
 
                     /*
-                       Open-Meteo geocoding search
-                       is used as a best-effort city label.
+                       Reverse geocoding:
+                       latitude + longitude
+                       → city + country
                     */
 
+                    const location =
+                        await reverseGeocodeLocation(
+                            latitude,
+                            longitude
+                        );
+
+
                     let name =
-                        "My Location";
+                        location.name;
 
 
                     let country =
-                        "";
+                        location.country;
+
+
+                    /*
+                       If reverse geocoding does not
+                       return a city, use a safe fallback.
+                    */
+
+                    if (
+                        !name ||
+                        name === "Unknown Location"
+                    ) {
+
+                        name =
+                            "My Location";
+
+                    }
+
+
+                    if (!country) {
+
+                        country = "";
+
+                    }
+
+
+                    cityInput.value =
+                        name;
+
+
+                    updateClearButton();
+
+
+                    locationStatus.textContent =
+                        country
+                            ? `📍 Weather for ${name}, ${country}`
+                            : `📍 Weather for ${name}`;
 
 
                     await loadWeather(
@@ -2490,32 +2489,185 @@ locationBtn.addEventListener(
                     console.error(error);
 
 
-                    alert(
-                        "❌ Could not load your location weather."
+                    /*
+                       Even if city-name lookup fails,
+                       weather can still be loaded
+                       using GPS coordinates.
+                    */
+
+                    locationStatus.textContent =
+                        "📍 City name unavailable. Loading local weather...";
+
+
+                    await loadWeather(
+
+                        latitude,
+
+                        longitude,
+
+                        "My Location",
+
+                        ""
+
                     );
 
+                }
 
-                    hideLoading();
+
+                locationBtn.disabled = false;
+
+                locationBtn.textContent =
+                    "📍 My Location";
+
+
+                hideLoading();
+
+            },
+
+            (error) => {
+
+                console.error(error);
+
+
+                locationBtn.disabled = false;
+
+                locationBtn.textContent =
+                    "📍 My Location";
+
+
+                hideLoading();
+
+
+                locationStatus.textContent =
+                    "";
+
+
+                if (
+                    error.code ===
+                    error.PERMISSION_DENIED
+                ) {
+
+                    alert(
+                        "❌ Location permission was denied. Please allow location access in your browser."
+                    );
+
+                } else if (
+                    error.code ===
+                    error.POSITION_UNAVAILABLE
+                ) {
+
+                    alert(
+                        "❌ Your location could not be determined."
+                    );
+
+                } else if (
+                    error.code ===
+                    error.TIMEOUT
+                ) {
+
+                    alert(
+                        "❌ Location request timed out. Please try again."
+                    );
+
+                } else {
+
+                    alert(
+                        "❌ Unable to get your location."
+                    );
 
                 }
 
             },
 
-            () => {
-
-                alert(
-                    "❌ Location permission denied."
-                );
-
-
-                hideLoading();
-
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 300000
             }
 
         );
 
     }
 );
+
+
+/* =====================================================
+   REVERSE GEOCODING
+===================================================== */
+
+async function reverseGeocodeLocation(
+    latitude,
+    longitude
+) {
+
+    /*
+       BigDataCloud's free client-side
+       reverse geocoding endpoint is used
+       to identify the nearest city.
+    */
+
+    const url =
+        "https://api.bigdatacloud.net/data/reverse-geocode-client" +
+
+        "?latitude=" +
+        encodeURIComponent(
+            latitude
+        ) +
+
+        "&longitude=" +
+        encodeURIComponent(
+            longitude
+        ) +
+
+        "&localityLanguage=en";
+
+
+    const response =
+        await fetch(url);
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Reverse geocoding failed"
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    /*
+       Try several possible locality fields.
+    */
+
+    const name =
+        data.city ||
+        data.locality ||
+        data.principalSubdivision ||
+        data.localityInfo?.administrative?.find(
+            item =>
+                item.description ===
+                "city"
+        )?.name ||
+        "Unknown Location";
+
+
+    const country =
+        data.countryName ||
+        "";
+
+
+    return {
+
+        name,
+        country
+
+    };
+
+}
 
 
 /* =====================================================
@@ -2786,9 +2938,7 @@ function getHistory() {
 }
 
 
-function saveHistory(
-    history
-) {
+function saveHistory(history) {
 
     localStorage.setItem(
 
@@ -2803,9 +2953,7 @@ function saveHistory(
 }
 
 
-function addToHistory(
-    city
-) {
+function addToHistory(city) {
 
     let history =
         getHistory();
@@ -3141,3 +3289,4 @@ async function loadDefaultWeather() {
 initializeApp();
 
 loadDefaultWeather();
+
