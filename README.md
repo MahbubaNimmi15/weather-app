@@ -57,7 +57,7 @@ weather-app/
 
 ## 🔗 Live Demo
 
-[🌤️ Weather App](https://mahbubanimmi15.github.io/weather-app/)
+[🌤️ Weather App](weather-app-sage-nine-96.vercel.app)
 
 ## 👩‍💻 Developer
 
